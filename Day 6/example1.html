@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Simple Internal CSS Example</title>
+        <style>
+            .highlight {
+                color: white;
+                background-color: green;
+                padding: 10px;
+            }
+
+            #special,h3 {
+                color: blue;
+                font-weight: bold;
+                font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            }
+
+            h1 {
+                color: darkred;
+                /* background-color: #dab1b1; */
+                font-family: Georgia, 'Times New Roman', Times, serif;
+            }
+
+            .Marathi{
+                color: hwb(81 5% 64%);
+                font-family:cursive;
+                background-color: antiquewhite;
+                text-align:right;
+
+            }
+
+            [ct-at="check"]{
+                color: #e57d7d;
+                font-weight: 600;
+                background-color: rgba(54, 24, 83, 0.218);
+                padding: 10px;
+                font-style:italic;
+                word-spacing: 15px;
+                text-transform: uppercase;
+            }
+            h6,.all,#id_all,[at-kt="all_cus"]{
+                color: rgb(0, 255, 106);
+            }
+            h6{
+                color: rgb(0, 195, 255);
+            }
+
+            h5
+            {
+                color:#17abbb
+            }
+
+
+        </style>
+    </head>
+    <body>
+        <h1>Welcome to CSS Basics</h1>
+        <p class="highlight">This paragraph uses a <b>class</b> .</p>
+        <p id="special">This paragraph uses an <b>ID</b> #</p>
+        <p>This is a normal paragraph.</p>
+
+        <h3 style="padding: 10px; background-color: aqua;">This is by using ,</h3>
+        <p class="Marathi">नमस्कार मंडळी </p>
+        <p class="Marathi"> कस काय केल येण मग?</p>
+
+        <span ct-at="check">Using custom attribute</span>
+
+        <p ct-at=check>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Assumenda nisi possimus blanditiis nam, aperiam nemo quasi beatae ipsam totam. Voluptatum quaerat dolore qui dolorum eius dolorem eligendi molestiae atque est.</p>
+
+        <h6  class="all" id="id_all" at-kt="all_cus" >This is use of all attribute</h6>
+    
+        <h5>use of # for color</h5>
+
+    </body>
+
+</html>

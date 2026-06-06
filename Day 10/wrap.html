@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Grid Example</title>
+        <style>
+            
+            * {
+                margin:0;
+                padding: 0px;
+                box-sizing: border-box;
+
+            }
+            .grid {
+                display: flex;
+                gap:10px;
+                flex-wrap:wrap;
+                
+
+            }
+            .box {
+                background: #4CAF50;
+                color: #fff;
+                padding: 24px;
+                border-radius: 8px;
+                align-items: center;
+                font-size: 18px;
+                height: 100px;
+                width: 400px;
+             }
+           
+        </style>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    </head>
+    <body>
+        <h2 >Simple CSS Grid</h2>
+        <div class="grid">
+            <div class="box">1</div>
+            <div class="box">2</div>
+            <div class="box">3</div>
+            <div class="box">4</div>
+            <div class="box">5</div>
+            <div class="box">6</div>
+        </div>
+    </body>
+</html>

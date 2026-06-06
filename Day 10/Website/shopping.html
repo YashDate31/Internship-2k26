@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shopping - Amazon</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:Arial, Helvetica, sans-serif;
+            background:#f4f7fc;
+        }
+
+        #one{
+            background:linear-gradient(to right,#1e3a8a,#2563eb);
+            color:white;
+            display:flex;
+            align-items:center;
+            gap:20px;
+            padding:15px;
+            margin:15px;
+            border-radius:15px;
+        }
+
+        #two{
+            width:120px;
+            height:120px;
+            border-radius:50%;
+            overflow:hidden;
+            background:white;
+        }
+
+        #two img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+        }
+
+        #three{
+            color:white;
+        }
+
+        .navlink{
+            display:flex;
+            gap:20px;
+            flex-wrap:wrap;
+            background:#111827;
+            padding:12px;
+            margin:15px;
+            border-radius:10px;
+        }
+
+        .navlink a{
+            color:white;
+            text-decoration:none;
+            padding:8px 12px;
+            border-radius:6px;
+        }
+
+        .navlink a:hover{
+            background:#2563eb;
+        }
+
+        .banner{
+            text-align:center;
+            background:white;
+            margin:20px;
+            padding:25px;
+            border-radius:15px;        }
+
+        .banner h2{
+            color:#1e3a8a;
+            margin-bottom:10px;
+        }
+
+        #products{
+            display:grid;
+            /* grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); */
+            grid-template-columns:33% 33% 33%;
+            gap:20px;
+            padding:20px;
+        }
+
+        .product{
+            background:white;
+            border-radius:15px;
+            padding:15px;
+            text-align:center;
+        }
+
+
+        .product img{
+            width:100%;
+            height:220px;
+            object-fit:cover;
+            border-radius:10px;
+        }
+
+        .product h3{
+            margin-top:12px;
+            color:#1e3a8a;
+        }
+
+        .price{
+            color:#dc2626;
+            font-weight:bold;
+            margin:10px 0;
+            font-size:20px;
+        }
+
+        .btn{
+            background:#f59e0b;
+            color:white;
+            border:none;
+            padding:10px 15px;
+            border-radius:8px;
+            cursor:pointer;
+            margin-top:10px;
+        }
+
+        .btn:hover{
+            background:#d97706;
+        }
+
+        .foot{
+            background:#111827;
+            color:white;
+            text-align:center;
+            padding:25px;
+            margin-top:20px;
+        }
+
+        .foot a{
+            color:white;
+            text-decoration:none;
+        }
+
+        @media(max-width:768px){
+
+            #one{
+                flex-direction:column;
+                text-align:center;
+            }
+
+            #products{
+                grid-template-columns:1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div id="one">
+
+        <div id="two">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkQZwfIF1UdjlMBtjg4fmlfdGU0suXMgG5qA&s" alt="Logo">
+        </div>
+
+        <div id="three">
+            <h1>Amazon : The Shopping King</h1>
+            <p>Your One Stop Shopping Destination</p>
+        </div>
+
+    </div>
+
+</header>
+
+<nav>
+
+    <div class="navlink">
+        <a href="index.html">Home</a>
+        <a href="shopping.html">Shopping</a>
+        <a href="profile.html">Profile</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+</nav>
+
+<div class="banner">
+
+    <h2>Our Products</h2>
+
+    <p>
+        Explore our collection of quality products at affordable prices.
+    </p>
+
+</div>
+
+<section id="products">
+
+    <div class="product">
+
+        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff" alt="Nike Shoes">
+
+        <h3>Nike Shoes</h3>
+
+        <p class="price">₹4,999</p>
+
+        <p>Comfortable running shoes for everyday use.</p>
+
+        <button class="btn">Order Now</button>
+
+    </div>
+
+    <div class="product">
+
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="Headphones">
+
+        <h3>Headphones</h3>
+
+        <p class="price">₹1,499</p>
+
+        <p>Premium sound quality and comfortable design.</p>
+
+        <button class="btn">Order Now</button>
+
+    </div>
+
+    <div class="product">
+
+        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab" alt="T-Shirt">
+
+        <h3>T-Shirt</h3>
+
+        <p class="price">₹799</p>
+
+        <p>Soft cotton fabric with modern style.</p>
+
+        <button class="btn">Order Now</button>
+
+    </div>
+
+     <div class="product">
+
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="Headphones">
+
+        <h3>Headphones</h3>
+
+        <p class="price">₹1,499</p>
+
+        <p>Premium sound quality and comfortable design.</p>
+
+        <button class="btn">Order Now</button>
+
+    </div>
+
+
+     <div class="product">
+
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="Headphones">
+
+        <h3>Headphones</h3>
+
+        <p class="price">₹1,499</p>
+
+        <p>Premium sound quality and comfortable design.</p>
+
+        <button class="btn">Order Now</button>
+
+    </div>
+
+
+     <div class="product">
+
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="Headphones">
+
+        <h3>Headphones</h3>
+
+        <p class="price">₹1,499</p>
+
+        <p>Premium sound quality and comfortable design.</p>
+
+        <button class="btn">Order Now</button>
+
+    </div>
+
+
+     <div class="product">
+
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="Headphones">
+
+        <h3>Headphones</h3>
+
+        <p class="price">₹1,499</p>
+
+        <p>Premium sound quality and comfortable design.</p>
+
+        <button class="btn">Order Now</button>
+
+    </div>
+
+     <div class="product">
+
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="Headphones">
+
+        <h3>Headphones</h3>
+
+        <p class="price">₹1,499</p>
+
+        <p>Premium sound quality and comfortable design.</p>
+
+        <button class="btn">Order Now</button>
+
+    </div>
+     <div class="product">
+
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="Headphones">
+
+        <h3>Headphones</h3>
+
+        <p class="price">₹1,499</p>
+
+        <p>Premium sound quality and comfortable design.</p>
+
+        <button class="btn">Order Now</button>
+
+    </div>
+     <div class="product">
+
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="Headphones">
+
+        <h3>Headphones</h3>
+
+        <p class="price">₹1,499</p>
+
+        <p>Premium sound quality and comfortable design.</p>
+
+        <button class="btn">Order Now</button>
+
+    </div>
+
+
+</section>
+
+<footer class="foot">
+
+    <p>Amazon : The Shopping King</p>
+
+    <p>
+        <a href="index.html">Home</a> |
+        <a href="shopping.html">Shopping</a> |
+        <a href="profile.html">Profile</a> |
+        <a href="privacy.html">Privacy</a> |
+        <a href="contact.html">Contact</a>
+    </p>
+
+    <p>© 2026 All Rights Reserved</p>
+
+</footer>
+
+</body>
+</html>

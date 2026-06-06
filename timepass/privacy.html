@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Profile - Amazon</title>
+
+<style>
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    body{
+        font-family:Arial, Helvetica, sans-serif;
+        background:#f4f7fc;
+    }
+
+    #one{
+        background:linear-gradient(to right,#1e3a8a,#2563eb);
+        color:white;
+        display:flex;
+        align-items:center;
+        gap:20px;
+        padding:15px;
+        margin:15px;
+        border-radius:15px;
+    }
+
+    #two{
+        width:120px;
+        height:120px;
+        border-radius:50%;
+        overflow:hidden;
+        background:white;
+    }
+
+    #two img{
+        width:100%;
+        height:100%;
+        object-fit:cover;
+    }
+
+    #three{
+        color:white;
+    }
+
+    .navlink{
+        display:flex;
+        gap:20px;
+        flex-wrap:wrap;
+        background:#111827;
+        padding:12px;
+        margin:15px;
+        border-radius:10px;
+    }
+
+    .navlink a{
+        color:white;
+        text-decoration:none;
+        padding:8px 12px;
+        border-radius:6px;
+    }
+
+    .navlink a:hover{
+        background:#2563eb;
+    }
+
+    .profile-card{
+        background:white;
+        margin:20px;
+        padding:30px;
+        border-radius:15px;
+        text-align:center;
+        box-shadow:0px 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .profile-card img{
+        width:180px;
+        height:180px;
+        border-radius:50%;
+        object-fit:cover;
+        border:4px solid #2563eb;
+    }
+
+    .profile-card h2{
+        margin-top:15px;
+        color:#1e3a8a;
+    }
+
+    .badge{
+        display:inline-block;
+        margin-top:10px;
+        background:#f59e0b;
+        color:white;
+        padding:8px 15px;
+        border-radius:20px;
+    }
+
+    .info{
+        background:white;
+        margin:20px;
+        padding:25px;
+        border-radius:15px;
+        box-shadow:0px 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .info h2{
+        color:#1e3a8a;
+        margin-bottom:15px;
+    }
+
+    .info p{
+        margin:12px 0;
+        font-size:17px;
+    }
+
+    .orders{
+        background:white;
+        margin:20px;
+        padding:25px;
+        border-radius:15px;
+        box-shadow:0px 2px 10px rgba(0,0,0,0.1);
+        overflow-x:auto;
+    }
+
+    .orders h2{
+        color:#1e3a8a;
+        margin-bottom:15px;
+    }
+
+    table{
+        width:100%;
+        border-collapse:collapse;
+    }
+
+    th{
+        background:#2563eb;
+        color:white;
+    }
+
+    th,td{
+        border:1px solid #ddd;
+        padding:12px;
+        text-align:center;
+    }
+
+    tr:nth-child(even){
+        background:#f9f9f9;
+    }
+
+    .foot{
+        background:#111827;
+        color:white;
+        text-align:center;
+        padding:25px;
+        margin-top:20px;
+    }
+
+    .foot a{
+        color:white;
+        text-decoration:none;
+    }
+
+    .foot p{
+        margin:8px 0;
+    }
+
+    @media(max-width:768px){
+
+        #one{
+            flex-direction:column;
+            text-align:center;
+        }
+
+        .profile-card img{
+            width:130px;
+            height:130px;
+        }
+
+        table{
+            font-size:14px;
+        }
+
+    }
+
+</style>
+
+
+</head>
+
+<body>
+
+<header>
+
+
+<div id="one">
+
+    <div id="two">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkQZwfIF1UdjlMBtjg4fmlfdGU0suXMgG5qA&s" alt="Logo">
+    </div>
+
+    <div id="three">
+        <h1>Amazon : The Shopping King</h1>
+        <p>Your One Stop Shopping Destination</p>
+    </div>
+
+</div>
+
+
+</header>
+
+<nav>
+
+
+<div class="navlink">
+    <a href="index.html">Home</a>
+    <a href="shopping.html">Shopping</a>
+    <a href="profile.html">Profile</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="contact.html">Contact</a>
+</div>
+
+
+</nav>
+
+<section class="profile-card">
+
+
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile">
+
+<h2>Yash Date</h2>
+
+<div class="badge">
+    Premium Member
+</div>
+
+
+</section>
+
+<section class="info">
+
+
+<h2>Personal Information</h2>
+
+<p><strong>Email:</strong> yash@example.com</p>
+
+<p><strong>Mobile:</strong> +91 9876543210</p>
+
+<p><strong>Address:</strong> Pune, Maharashtra</p>
+
+<p><strong>Member Since:</strong> January 2024</p>
+
+
+</section>
+
+<section class="orders">
+
+
+<h2>Recent Orders</h2>
+
+<table>
+
+    <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Status</th>
+    </tr>
+
+    <tr>
+        <td>Nike Shoes</td>
+        <td>₹4,999</td>
+        <td>Delivered</td>
+    </tr>
+
+    <tr>
+        <td>Headphones</td>
+        <td>₹1,499</td>
+        <td>Delivered</td>
+    </tr>
+
+    <tr>
+        <td>T-Shirt</td>
+        <td>₹799</td>
+        <td>Shipped</td>
+    </tr>
+
+    <tr>
+        <td>Smart Watch</td>
+        <td>₹2,999</td>
+        <td>Delivered</td>
+    </tr>
+
+    <tr>
+        <td>Gaming Mouse</td>
+        <td>₹999</td>
+        <td>Processing</td>
+    </tr>
+
+</table>
+
+
+</section>
+
+<footer class="foot">
+
+
+<p><strong>Amazon : The Shopping King</strong></p>
+
+<p>
+    <a href="index.html">Home</a> |
+    <a href="shopping.html">Shopping</a> |
+    <a href="profile.html">Profile</a> |
+    <a href="privacy.html">Privacy</a> |
+    <a href="contact.html">Contact</a>
+</p>
+
+<p>Email : support@amazon.com</p>
+
+<p>Phone : +91 9876543210</p>
+
+<p>© 2026 All Rights Reserved</p>
+
+
+</footer>
+
+</body>
+</html>

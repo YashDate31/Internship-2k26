@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Priority CSS</title>
+        <style>
+            body {
+                min-height: 100vh;
+                margin: 0;
+                font-family: 'Segoe UI', Arial, sans-serif;
+                background: linear-gradient(135deg, #6a82fb 0%, #fc5c7d 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .card {
+                background: #fff;
+                border-radius: 18px;
+                box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+                padding: 40px 32px;
+                max-width: 400px;
+                width: 100%;
+                text-align: center;
+                transition: box-shadow 0.3s;
+            }
+            .card:hover {
+                box-shadow: 0 16px 40px 0 rgba(31, 38, 135, 0.3);
+            }
+            .one {
+                box-shadow: #888;
+                color: #4360e8;
+                font-size: 2.2rem;
+                margin-bottom: 0.5em;
+                letter-spacing: 1px;
+                font-weight: 700;
+                text-shadow: 1px 2px 8px #e0e7ff;
+            }
+            [at-kt="check"] {
+                color: #fc5c7d;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+            }
+            .subtitle {
+                color: #555;
+                font-size: 1.1rem;
+                margin-bottom: 1.5em;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="card">
+            <h3 at-kt="check" class="one">Priority CSS Demo</h3>
+            <div class="subtitle">hello</div>
+            <p style="color:#888;">Yello</p>
+        </div>
+    </body>
+
+    
+</html>
