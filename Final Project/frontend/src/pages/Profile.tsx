@@ -41,7 +41,6 @@ export function Profile() {
     lastName: firebaseUser?.name?.split(' ')[1] || firebaseUser?.displayName?.split(' ')[1] || '',
     email: firebaseUser?.email || 'Not provided',
     role: firebaseUser?.email === 'yashdate31@gmail.com' ? 'admin' : 'student',
-    role: firebaseUser?.email === 'yashdate31@gmail.com' ? 'admin' : 'student',
     mobile: mobile,
     college: college
   };

@@ -50,7 +50,7 @@ export function ForgotPassword() {
   if (sent) {
     return (
       <AuthLayout
-        title="Check your inbox dY""
+        title="Check your inbox 📫"
         subtitle="Password reset OTP sent"
         rightPaneImage="/logo1.png"
         rightPaneText={<>Get back on track with<br/><span className="highlight">College Sahayak</span></>}

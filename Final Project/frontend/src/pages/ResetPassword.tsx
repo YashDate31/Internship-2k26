@@ -120,7 +120,7 @@ export function ResetPassword() {
   return (
     <AuthLayout
       title="Create new password"
-      subtitle={\Enter the 6-digit OTP sent to \ and your new password.\}
+      subtitle={`Enter the 6-digit OTP sent to ${email} and your new password.`}
       rightPaneImage="/logo1.png"
       rightPaneText={<>Get back on track with<br/><span className="highlight">College Sahayak</span></>}
     >
