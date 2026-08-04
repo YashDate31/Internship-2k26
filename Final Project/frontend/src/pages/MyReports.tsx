@@ -34,7 +34,7 @@ export function MyReports() {
               Manage all your personal academic reports, micro-project submissions, and custom notes in one secure place.
             </p>
             <div style={{ marginTop: '1.5rem' }}>
-              <button className="btn-primary" onClick={() => setIsUploadOpen(true)}>
+              <button className="btn btn-primary" onClick={() => setIsUploadOpen(true)}>
                 <Upload size={18} style={{ display: 'inline', marginRight: '0.5rem' }} />
                 Upload Document
               </button>
@@ -150,7 +150,7 @@ export function MyReports() {
               <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', maxWidth: '400px' }}>
                 You haven't uploaded any documents in this folder yet. Upload your first file to get started!
               </p>
-              <button className="btn-primary" onClick={() => setIsUploadOpen(true)}>
+              <button className="btn btn-primary" onClick={() => setIsUploadOpen(true)}>
                 <Upload size={18} style={{ display: 'inline', marginRight: '0.5rem' }} />
                 Upload Document
               </button>
