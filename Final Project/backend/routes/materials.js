@@ -147,4 +147,39 @@ router.put('/:id/approve', verifyAuth, async (req, res) => {
   }
 });
 
+// PUT /api/materials/:id/trending - Toggle trending flag (Admin Only)
+router.put('/:id/trending', verifyAuth, async (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).json({ error: 'Forbidden: Admin access required' });
+  }
+  if (!supabase) {
+    return res.status(500).json({ error: 'Supabase client not initialized' });
+  }
+
+  const { id } = req.params;
+  const { is_trending } = req.body;
+
+  try {
+    const { data, error } = await supabase
+      .from('materials')
+      .update({ is_trending: is_trending })
+      .eq('id', id)
+      .select();
+
+    if (error) {
+      console.error('Supabase trending update error:', error);
+      // Common cause: the is_trending column doesn't exist yet.
+      if (error.message && error.message.includes('column')) {
+        return res.status(500).json({ error: 'Database column "is_trending" is missing. Run: ALTER TABLE materials ADD COLUMN IF NOT EXISTS is_trending BOOLEAN DEFAULT FALSE; in Supabase SQL Editor.' });
+      }
+      return res.status(500).json({ error: 'Failed to update trending status: ' + error.message });
+    }
+
+    res.status(200).json({ message: 'Trending status updated', data: data[0] });
+  } catch (err) {
+    console.error('Error updating trending status:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router;

@@ -1,0 +1,131 @@
+import { useState, useRef, useEffect } from 'react';
+import { MessageSquare, X, Send, Bot, User, Loader2 } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import './Chatbot.css';
+
+interface Message {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+export function Chatbot() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([
+    { role: 'assistant', content: 'Hi there! I am your AI academic and career counselor. How can I help you with your studies or MSBTE curriculum today?' }
+  ]);
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isOpen]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || isLoading) return;
+
+    const userMessage = input.trim();
+    setInput('');
+    
+    // Optimistically add user message
+    const newMessages: Message[] = [...messages, { role: 'user', content: userMessage }];
+    setMessages(newMessages);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: newMessages })
+      });
+
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      
+      setMessages([...newMessages, { role: 'assistant', content: data.reply }]);
+    } catch (error) {
+      console.error('Chat error:', error);
+      setMessages([...newMessages, { role: 'assistant', content: "Sorry, I'm having trouble connecting to my servers right now. Please try again later." }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <button 
+        className={`chatbot-trigger ${isOpen ? 'hidden' : ''}`}
+        onClick={() => setIsOpen(true)}
+        aria-label="Open chat assistant"
+      >
+        <MessageSquare size={24} />
+      </button>
+
+      {isOpen && (
+        <div className="chatbot-window animate-fade-in-up">
+          <div className="chatbot-header">
+            <div className="chatbot-brand">
+              <Bot size={24} />
+              <div>
+                <h3>College Mitra</h3>
+                <span className="status-online">Online</span>
+              </div>
+            </div>
+            <button className="chatbot-close" onClick={() => setIsOpen(false)}>
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="chatbot-messages">
+            {messages.map((msg, index) => (
+              <div key={index} className={`message-wrapper ${msg.role}`}>
+                <div className="message-bubble">
+                  {msg.role === 'assistant' ? <Bot size={14} className="message-icon" /> : <User size={14} className="message-icon" />}
+                  <div className="message-content">
+                    {msg.role === 'assistant' ? (
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {msg.content}
+                      </ReactMarkdown>
+                    ) : (
+                      msg.content
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+            {isLoading && (
+              <div className="message-wrapper assistant">
+                <div className="message-bubble">
+                  <Bot size={14} className="message-icon" />
+                  <div className="message-content">
+                    <Loader2 size={16} className="animate-spin" />
+                  </div>
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          <form className="chatbot-input" onSubmit={handleSubmit}>
+            <input 
+              type="text" 
+              placeholder="Ask me anything..." 
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              disabled={isLoading}
+            />
+            <button type="submit" disabled={!input.trim() || isLoading}>
+              <Send size={18} />
+            </button>
+          </form>
+        </div>
+      )}
+    </>
+  );
+}

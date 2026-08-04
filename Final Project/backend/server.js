@@ -5,6 +5,7 @@ const cors = require('cors');
 // Import routes
 const materialsRoutes = require('./routes/materials');
 const usersRoutes = require('./routes/users');
+const chatRoutes = require('./routes/chat');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -16,6 +17,7 @@ app.use(express.json());
 // Routes
 app.use('/api/materials', materialsRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/chat', chatRoutes);
 
 // Basic health check route
 app.get('/health', (req, res) => {

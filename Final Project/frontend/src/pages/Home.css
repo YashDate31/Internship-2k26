@@ -184,7 +184,6 @@
 
 @media (min-width: 768px) {
   .resource-grid { grid-template-columns: repeat(3, 1fr); }
-  .trending-grid { grid-template-columns: repeat(2, 1fr); }
   .features-grid { grid-template-columns: repeat(3, 1fr); }
   .updates-grid { grid-template-columns: repeat(3, 1fr); }
   .reviews-grid { grid-template-columns: repeat(2, 1fr); }
@@ -195,7 +194,6 @@
 
 @media (min-width: 1024px) {
   .resource-grid { grid-template-columns: repeat(5, 1fr); }
-  .trending-grid { grid-template-columns: repeat(4, 1fr); }
   .reviews-grid { grid-template-columns: repeat(3, 1fr); }
   .links-grid { grid-template-columns: repeat(3, 1fr); }
   .branch-grid { grid-template-columns: repeat(3, 1fr); }
@@ -285,7 +283,20 @@
 }
 
 /* Trending Section */
+.trending-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-xl);
+  max-width: 100%;
+  margin: 0 auto;
+}
+
 .trending-card {
+  flex: 1 1 280px;
+  max-width: 320px;
+  box-sizing: border-box;
   background: linear-gradient(135deg, #fffaf0 0%, #fff5f5 100%);
   border: 1px solid #feebc8;
   padding: var(--spacing-xl);

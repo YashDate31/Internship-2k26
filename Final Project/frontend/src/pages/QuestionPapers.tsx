@@ -1,4 +1,4 @@
-import { Search, Filter, GraduationCap, Download, Calendar, FileText } from 'lucide-react';
+import { Search, Filter, GraduationCap, Download, Calendar, FileText, BookOpen } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import './Curriculum.css';
 

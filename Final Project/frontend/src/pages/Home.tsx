@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Award, Bell, BookmarkPlus, Calendar, CheckCircle,
@@ -30,12 +31,14 @@ const quickResources = [
   { name: 'Updates', path: '/updates', icon: Bell, color: 'icon-gray', description: 'Latest announcements' },
 ];
 
-const trendingMaterials = [
-  { title: 'Data Structures & Algorithms Complete Notes', subject: 'Computer Engineering', semester: 'Semester 4', downloads: '2,847', rating: '4.9', growth: '+45%' },
-  { title: 'Engineering Mechanics Lab Manual 2025', subject: 'Mechanical Engineering', semester: 'Semester 3', downloads: '1,923', rating: '4.8', growth: '+32%' },
-  { title: 'Digital Electronics Micro-Project Collection', subject: 'Electronics Engineering', semester: 'Semester 5', downloads: '3,156', rating: '4.9', growth: '+67%' },
-  { title: 'Construction Technology Assignment Solutions', subject: 'Civil Engineering', semester: 'Semester 4', downloads: '1,456', rating: '4.7', growth: '+28%' },
-];
+interface TrendingMaterial {
+  id: string;
+  title: string;
+  branch: string;
+  semester: string;
+  category: string;
+  drive_link: string;
+}
 
 const officialUpdates = [
   { title: 'MSBTE Summer 2025 Exam Schedule Released', description: 'Check exam dates and prepare with the complete timetable.', type: 'Exam Schedule', date: 'Jan 15, 2025', priority: 'High' },
@@ -76,16 +79,46 @@ function SectionHeading({ title, description, icon: Icon }: { title: string; des
 export function Home() {
   const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
   const [selectedSemester, setSelectedSemester] = useState<number | null>(null);
+  const [trendingMaterials, setTrendingMaterials] = useState<TrendingMaterial[]>([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/materials')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          const trending = data.filter((m: any) => m.is_trending && !m.title.startsWith('[PENDING]'));
+          setTrendingMaterials(trending);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const handleShowMaterials = () => {
     if (selectedBranch && selectedSemester) {
-      navigate(`/lab-manuals?branch=${selectedBranch}&semester=${selectedSemester}`);
+      navigate(`/materials?branch=${selectedBranch}&semester=${selectedSemester}`);
     }
   };
 
   return (
-    <div className="home-container">
+    <>
+      <Helmet>
+        <title>College Sahayak - Free MSBTE Diploma Study Material & Resources</title>
+        <meta name="description" content="Download free MSBTE polytechnic diploma study materials, lab manuals, assignments, microprojects, and previous year question papers for Maharashtra students." />
+        <meta name="keywords" content="MSBTE, polytechnic, diploma notes, lab manuals, microprojects, previous year papers, Maharashtra, computer engineering" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{
+          __html: `
+            {
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "College Sahayak",
+              "url": "https://collegesahayak.com/",
+              "description": "Educational resources for MSBTE diploma students."
+            }
+          `
+        }} />
+      </Helmet>
+      <div className="home-container">
       {/* 1. Hero Section */}
       <section className="hero-section">
         <div className="hero-bg-overlay" />
@@ -163,37 +196,38 @@ export function Home() {
       </section>
 
       {/* 3. Trending Materials */}
+      {trendingMaterials.length > 0 && (
       <section className="section">
         <div className="container">
           <SectionHeading title="Trending This Week" description="Most popular resources among students right now" icon={Flame} />
-          <div className="grid trending-grid">
+          <div className="trending-grid">
             {trendingMaterials.map((item) => (
-              <article key={item.title} className="trending-card group">
+              <article key={item.id} className="trending-card group">
                 <div className="trending-header">
                   <span className="badge badge-orange">TRENDING</span>
                   <span className="rating">
                     <Star size={14} className="star-icon" fill="currentColor" />
-                    {item.rating}
+                    4.9
                   </span>
                 </div>
                 <h3 className="trending-title">{item.title}</h3>
-                <p className="trending-subject">{item.subject}</p>
+                <p className="trending-subject">{item.branch}</p>
                 <p className="trending-semester">{item.semester}</p>
                 <div className="trending-stats">
                   <span className="downloads">
                     <Download size={14} />
-                    {item.downloads}
+                    {item.category}
                   </span>
-                  <span className="growth">{item.growth}</span>
                 </div>
-                <div className="resource-link link-orange">
+                <a href={item.drive_link} target="_blank" rel="noopener noreferrer" className="resource-link link-orange">
                   Download Now <ChevronRight size={16} />
-                </div>
+                </a>
               </article>
             ))}
           </div>
         </div>
       </section>
+      )}
 
       {/* 4. Find Materials */}
       <section id="find-materials" className="section bg-light">
@@ -359,5 +393,6 @@ export function Home() {
         </div>
       </section>
     </div>
+    </>
   );
 }

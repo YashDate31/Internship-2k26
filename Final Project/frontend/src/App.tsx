@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, Outlet, Navigate } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
 import { Curriculum } from './pages/Curriculum';
 import { CurriculumDetail } from './pages/CurriculumDetail';
 import { Branch } from './pages/Branch';
 import { LabManuals } from './pages/LabManuals';
+import { MaterialsHub } from './pages/MaterialsHub';
 import { MicroProjects } from './pages/MicroProjects';
 import { QuestionPapers } from './pages/QuestionPapers';
 import { Notes } from './pages/Notes';
@@ -24,6 +26,7 @@ import { About } from './pages/About';
 import { Feedback } from './pages/Feedback';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { PrivacyPolicy } from './pages/PrivacyPolicy';
 
 const MainLayout = () => (
   <Layout>
@@ -33,14 +36,16 @@ const MainLayout = () => (
 
 function App() {
   return (
-    <Router>
-      <Routes>
+    <HelmetProvider>
+      <Router>
+        <Routes>
         {/* Main Application Routes (with Navbar & Footer) */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/curriculum" element={<Curriculum />} />
           <Route path="/curriculum/:id" element={<CurriculumDetail />} />
           <Route path="/branch/:branchId" element={<Branch />} />
+          <Route path="/materials" element={<MaterialsHub />} />
           <Route path="/lab-manuals" element={<LabManuals />} />
           <Route path="/microprojects" element={<MicroProjects />} />
           <Route path="/question-papers" element={<QuestionPapers />} />
@@ -54,6 +59,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/about" element={<About />} />
           <Route path="/feedback" element={<Feedback />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         </Route>
 
         {/* Authentication Routes (Standalone Full-Screen Layout) */}
@@ -72,6 +78,7 @@ function App() {
         } />
       </Routes>
     </Router>
+    </HelmetProvider>
   );
 }
 

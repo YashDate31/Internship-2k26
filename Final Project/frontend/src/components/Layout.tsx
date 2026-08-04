@@ -2,6 +2,8 @@ import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { BookOpen, GraduationCap, LogIn, Menu, MessageSquare, User, X } from 'lucide-react';
+import { CookieBanner } from './CookieBanner';
+import { Chatbot } from './Chatbot';
 import './Layout.css';
 
 const navItems = [
@@ -147,9 +149,12 @@ export function Layout({ children }: { children: ReactNode }) {
           </div>
         </div>
         <div className="footer-bottom">
-          &copy; {new Date().getFullYear()} College Sahayak. All Rights Reserved.
+          &copy; {new Date().getFullYear()} College Sahayak. All Rights Reserved. | <Link to="/privacy-policy" style={{ color: '#94a3b8', textDecoration: 'none' }}>Privacy Policy</Link>
         </div>
       </footer>
+
+      <CookieBanner />
+      <Chatbot />
     </div>
   );
 }
