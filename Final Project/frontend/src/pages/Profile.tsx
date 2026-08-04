@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { User, Mail, Phone, Building2, Edit2, Shield } from 'lucide-react';
-import { auth } from '../lib/firebase';
-import { onAuthStateChanged } from 'firebase/auth';
+import { jwtDecode } from 'jwt-decode';
 import './Profile.css';
 
 export function Profile() {
@@ -10,11 +9,20 @@ export function Profile() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setFirebaseUser(currentUser);
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      window.location.href = '/login';
+      return;
+    }
+    
+    try {
+      const decoded: any = jwtDecode(token);
+      setFirebaseUser(decoded);
       setLoading(false);
-    });
-    return () => unsubscribe();
+    } catch (e) {
+      localStorage.removeItem('auth_token');
+      window.location.href = '/login';
+    }
   }, []);
 
   if (loading) {
@@ -23,17 +31,17 @@ export function Profile() {
 
   // Use real data or fallback
   const user = {
-    firstName: firebaseUser?.displayName?.split(' ')[0] || 'Student',
-    lastName: firebaseUser?.displayName?.split(' ')[1] || '',
+    firstName: firebaseUser?.name?.split(' ')[0] || firebaseUser?.displayName?.split(' ')[0] || 'Student',
+    lastName: firebaseUser?.name?.split(' ')[1] || firebaseUser?.displayName?.split(' ')[1] || '',
     email: firebaseUser?.email || 'Not provided',
     role: firebaseUser?.email === 'yashdate31@gmail.com' ? 'admin' : 'student',
     mobile: 'Add mobile number',
     college: 'Add your college'
   };
 
-  const initials = firebaseUser?.displayName 
-    ? `${user.firstName[0] || ''}${user.lastName[0] || ''}` 
-    : (firebaseUser?.email ? firebaseUser.email[0].toUpperCase() : 'U');
+  const initials = (user.firstName && user.lastName)
+    ? `${user.firstName[0]}${user.lastName[0]}` 
+    : (user.email !== 'Not provided' ? user.email[0].toUpperCase() : 'U');
 
   return (
     <div className="profile-page">
