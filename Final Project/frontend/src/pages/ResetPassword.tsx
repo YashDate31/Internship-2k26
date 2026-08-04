@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Lock, Eye, EyeOff, AlertCircle, CheckCircle2, ArrowRight, ShieldCheck } from 'lucide-react';
+﻿import { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Lock, Eye, EyeOff, AlertCircle, CheckCircle2, ShieldCheck, KeyRound } from 'lucide-react';
 import { AuthLayout } from '../components/AuthLayout';
+import { API_URL } from '../utils/api';
 import './Login.css'; // Reusing base auth styles
 import './ResetPassword.css';
 
@@ -23,6 +24,7 @@ const strengthWidths = ['0%', '25%', '50%', '75%', '100%'];
 const strengthColors = ['', 'var(--danger-color)', 'var(--warning-color)', 'var(--warning-color)', 'var(--success-color)'];
 
 export function ResetPassword() {
+  const [otp, setOtp] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -30,17 +32,27 @@ export function ResetPassword() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  
-  // For UI mockup purposes, we'll assume they have a valid token
-  const hasToken = true; 
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const email = location.state?.email || '';
+  
   const strength = getPasswordStrength(password);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (!email) {
+      navigate('/forgot-password');
+    }
+  }, [email, navigate]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
+    if (!otp) {
+      setError('Please enter the OTP sent to your email.');
+      return;
+    }
     if (!password) {
       setError('Please enter a new password.');
       return;
@@ -59,58 +71,47 @@ export function ResetPassword() {
     }
 
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const response = await fetch(\\/api/auth/reset-password\, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, otp, newPassword: password })
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to reset password');
+      }
+
       setSuccess(true);
-    }, 1000);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (success) {
     return (
-      <AuthLayout title="Password updated! 🎉" subtitle="Your account is now secured" rightPaneImage="/logo1.png" rightPaneText={<>Security first with<br/><span className="highlight">College Sahayak</span></>}>
-        <div className="success-card">
+      <AuthLayout
+        title="Password Reset!"
+        subtitle="Your password has been successfully updated."
+        rightPaneImage="/logo1.png"
+        rightPaneText={<>Get back on track with<br/><span className="highlight">College Sahayak</span></>}
+      >
+        <div className="success-card" style={{ marginTop: '2rem' }}>
           <div className="success-icon-wrapper">
-            <ShieldCheck size={40} className="success-icon" />
+            <CheckCircle2 size={40} className="success-icon" />
           </div>
           <div className="success-text">
-            <p className="primary">Your password has been successfully updated.</p>
-            <p className="secondary">You can now sign in with your new password.</p>
+            <p className="primary">You're all set!</p>
+            <p className="secondary">
+              Your password has been changed successfully. You can now use your new password to log in to your account.
+            </p>
           </div>
-          <button
-            type="button"
-            onClick={() => navigate('/login')}
-            className="btn-primary auth-submit mt-4 group"
-          >
-            Continue to Sign In
-            <ArrowRight size={18} className="arrow-icon" />
-          </button>
-        </div>
-      </AuthLayout>
-    );
-  }
-
-  if (!hasToken) {
-    return (
-      <AuthLayout title="Invalid reset link" subtitle="This link may have expired" rightPaneImage="/logo1.png" rightPaneText={<>Oops! Let's try again</>}>
-        <div className="success-card">
-          <div className="success-icon-wrapper" style={{ backgroundColor: 'var(--warning-light)' }}>
-            <AlertCircle size={40} style={{ color: 'var(--warning-color)' }} />
-          </div>
-          <div className="success-text">
-            <p className="primary">This password reset link is invalid or has expired.</p>
-            <p className="secondary">Reset links expire after 1 hour for security.</p>
-          </div>
-          <button
-            onClick={() => navigate('/forgot-password')}
-            className="btn-primary auth-submit mt-4 group"
-          >
-            Request New Reset Link
-            <ArrowRight size={18} className="arrow-icon" />
-          </button>
-          <div className="back-link-wrapper mt-4">
-            <Link to="/login" className="back-link">Back to Sign In</Link>
-          </div>
+          <Link to="/login" className="btn btn-primary auth-submit mt-4" style={{ display: 'flex', justifyContent: 'center', textDecoration: 'none' }}>
+            Go to Login
+          </Link>
         </div>
       </AuthLayout>
     );
@@ -118,10 +119,10 @@ export function ResetPassword() {
 
   return (
     <AuthLayout
-      title="Set new password"
-      subtitle="Create a strong, unique password for your account"
+      title="Create new password"
+      subtitle={\Enter the 6-digit OTP sent to \ and your new password.\}
       rightPaneImage="/logo1.png"
-      rightPaneText={<>Keep your account safe<br/>and secure</>}
+      rightPaneText={<>Get back on track with<br/><span className="highlight">College Sahayak</span></>}
     >
       {error && (
         <div className="auth-alert error">
@@ -130,110 +131,98 @@ export function ResetPassword() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="auth-form" noValidate>
-        {/* New password */}
-        <div className="form-group mb-4">
-          <label htmlFor="reset-password" className="auth-label">New Password</label>
-          <div className="input-wrapper mt-1">
-            <div className="input-icon">
-              <Lock size={18} />
-            </div>
-            <input
-              id="reset-password"
-              type={showPassword ? 'text' : 'password'}
-              autoComplete="new-password"
-              className="auth-input"
-              placeholder="Min. 8 characters"
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginTop: '1.5rem' }}>
+        
+        {/* OTP Input */}
+        <div className="form-group">
+          <label style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)' }}>6-Digit OTP</label>
+          <div className="input-with-icon">
+            <KeyRound className="input-icon" size={18} />
+            <input 
+              type="text"
+              maxLength={6}
+              className="auth-input has-icon" 
+              placeholder="000000"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              required
+              style={{ letterSpacing: '2px', fontFamily: 'monospace' }}
+            />
+          </div>
+        </div>
+
+        {/* Password Input */}
+        <div className="form-group">
+          <label style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)' }}>New Password</label>
+          <div className="input-with-icon">
+            <Lock className="input-icon" size={18} />
+            <input 
+              type={showPassword ? "text" : "password"} 
+              className="auth-input has-icon" 
+              placeholder="Create a new password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              autoFocus
+              required
             />
-            <button
-              type="button"
-              tabIndex={-1}
-              onClick={() => setShowPassword((v) => !v)}
+            <button 
+              type="button" 
               className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
-          {/* Strength meter */}
+          
+          {/* Password Strength Indicator */}
           {password && (
-            <div className="strength-meter">
+            <div className="password-strength-container mt-2">
               <div className="strength-bar-bg">
-                <div
-                  className="strength-bar-fill"
-                  style={{
+                <div 
+                  className="strength-bar-fill" 
+                  style={{ 
                     width: strengthWidths[strength.level],
-                    backgroundColor: strengthColors[strength.level],
+                    backgroundColor: strengthColors[strength.level]
                   }}
-                />
+                ></div>
               </div>
-              <p className="strength-text" style={{ color: strengthColors[strength.level] }}>
-                {strength.label} password
-              </p>
+              <div className="strength-text" style={{ color: strengthColors[strength.level] }}>
+                <ShieldCheck size={12} style={{ marginRight: '4px' }} />
+                {strength.label}
+              </div>
             </div>
           )}
         </div>
 
-        {/* Confirm password */}
-        <div className="form-group mb-4">
-          <label htmlFor="reset-confirm-password" className="auth-label">Confirm New Password</label>
-          <div className="input-wrapper mt-1">
-            <div className="input-icon">
-              <Lock size={18} />
-            </div>
-            <input
-              id="reset-confirm-password"
-              type={showConfirmPassword ? 'text' : 'password'}
-              autoComplete="new-password"
-              className="auth-input"
-              placeholder="Repeat your new password"
+        {/* Confirm Password Input */}
+        <div className="form-group">
+          <label style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)' }}>Confirm Password</label>
+          <div className="input-with-icon">
+            <Lock className="input-icon" size={18} />
+            <input 
+              type={showConfirmPassword ? "text" : "password"} 
+              className="auth-input has-icon" 
+              placeholder="Confirm your new password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              required
             />
-            <button
-              type="button"
-              tabIndex={-1}
-              onClick={() => setShowConfirmPassword((v) => !v)}
+            <button 
+              type="button" 
               className="password-toggle"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             >
-              {showConfirmPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+              {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
-          {confirmPassword && password === confirmPassword && (
-            <p className="match-text">
-              <CheckCircle2 size={12} /> Passwords match
-            </p>
-          )}
-        </div>
-
-        <div className="password-reqs">
-          <p className="reqs-title">Password requirements:</p>
-          <ul className="reqs-list">
-            <li className={password.length >= 8 ? 'valid' : ''}>✓ At least 8 characters</li>
-            <li className={/[A-Z]/.test(password) ? 'valid' : ''}>✓ One uppercase letter</li>
-            <li className={/[0-9]/.test(password) ? 'valid' : ''}>✓ One number</li>
-            <li className={/[^A-Za-z0-9]/.test(password) ? 'valid' : ''}>✓ One special character</li>
-          </ul>
         </div>
 
         <button
           type="submit"
           disabled={isLoading}
-          className="btn-primary auth-submit group mt-4"
+          className="btn btn-primary auth-submit"
+          style={{ marginTop: '0.5rem' }}
         >
-          {isLoading ? (
-            <>
-              <span className="spinner" />
-              Updating password…
-            </>
-          ) : (
-            <>
-              Update Password
-              <ArrowRight size={18} className="arrow-icon" />
-            </>
-          )}
+          {isLoading ? 'Resetting Password...' : 'Reset Password'}
         </button>
       </form>
     </AuthLayout>

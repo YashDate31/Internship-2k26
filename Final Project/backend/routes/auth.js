@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const router = express.Router();
 const supabase = require('../config/supabase');
 const bcrypt = require('bcryptjs');
@@ -229,4 +229,92 @@ router.post('/login', async (req, res) => {
   }
 });
 
+
+// POST /api/auth/forgot-password
+router.post('/forgot-password', async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ error: 'Email is required' });
+
+  try {
+    const { data: user, error: findError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .single();
+
+    if (findError || !user) {
+      // Even if not found, we shouldn't reveal email existence. Just return success.
+      return res.status(200).json({ message: 'If that email exists, we have sent a reset link.' });
+    }
+
+    const otp = generateOTP();
+    const otpExpiry = new Date();
+    otpExpiry.setMinutes(otpExpiry.getMinutes() + 15);
+
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({ otp_code: otp, otp_expiry: otpExpiry.toISOString() })
+      .eq('id', user.id);
+
+    if (updateError) {
+      console.error('Update OTP error:', updateError);
+      return res.status(500).json({ error: 'Failed to process request' });
+    }
+
+    await sendOTP(email, otp);
+
+    res.status(200).json({ message: 'If that email exists, we have sent a reset link.' });
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST /api/auth/reset-password
+router.post('/reset-password', async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+  if (!email || !otp || !newPassword) {
+    return res.status(400).json({ error: 'Email, OTP, and new password are required' });
+  }
+
+  try {
+    const { data: user, error: findError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .single();
+
+    if (findError || !user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (user.otp_code !== otp) {
+      return res.status(400).json({ error: 'Invalid OTP' });
+    }
+
+    if (new Date(user.otp_expiry) < new Date()) {
+      return res.status(400).json({ error: 'OTP has expired. Please request a new password reset.' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const password_hash = await bcrypt.hash(newPassword, salt);
+
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({ password_hash, otp_code: null, otp_expiry: null })
+      .eq('id', user.id);
+
+    if (updateError) {
+      console.error('Update password error:', updateError);
+      return res.status(500).json({ error: 'Failed to update password' });
+    }
+
+    res.status(200).json({ message: 'Password has been successfully reset.' });
+  } catch (error) {
+    console.error('Reset password error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router;
+

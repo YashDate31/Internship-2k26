@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+﻿import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Mail, ArrowRight, AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { AuthLayout } from '../components/AuthLayout';
-import './Login.css'; // Reusing base auth styles
+import { API_URL } from '../utils/api';
+import './Login.css';
 import './ForgotPassword.css';
 
 export function ForgotPassword() {
@@ -10,8 +11,9 @@ export function ForgotPassword() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [sent, setSent] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -25,18 +27,31 @@ export function ForgotPassword() {
     }
 
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const response = await fetch(\\/api/auth/forgot-password\, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send reset email');
+      }
+
       setSent(true);
-    }, 1000);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (sent) {
     return (
       <AuthLayout
-        title="Check your inbox 📬"
-        subtitle="Password reset link sent"
+        title="Check your inbox dY""
+        subtitle="Password reset OTP sent"
         rightPaneImage="/logo1.png"
         rightPaneText={<>Get back on track with<br/><span className="highlight">College Sahayak</span></>}
       >
@@ -46,11 +61,11 @@ export function ForgotPassword() {
           </div>
           <div className="success-text">
             <p className="primary">
-              We've sent a password reset link to <br/>
+              We've sent a 6-digit OTP to <br/>
               <span className="highlight">{email}</span>
             </p>
             <p className="secondary">
-              Click the link in the email to set a new password. The link will expire in 1 hour.
+              Check your email and enter the OTP on the next screen to set a new password. The OTP will expire in 15 minutes.
             </p>
           </div>
           <div className="success-tip">
@@ -58,16 +73,16 @@ export function ForgotPassword() {
           </div>
           <button
             type="button"
-            onClick={() => { setSent(false); setEmail(''); }}
-            className="btn-outline auth-submit mt-4"
+            onClick={() => navigate('/reset-password', { state: { email } })}
+            className="btn btn-primary auth-submit mt-4"
           >
-            Try a different email
+            Enter OTP to Reset Password
           </button>
           <div className="back-link-wrapper" style={{ marginTop: '2rem' }}>
-            <Link to="/login" className="back-link">
+            <button onClick={() => { setSent(false); setEmail(''); }} className="back-link" style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}>
               <ArrowLeft size={16} />
-              Back to Sign In
-            </Link>
+              Try a different email
+            </button>
           </div>
         </div>
       </AuthLayout>
@@ -76,8 +91,8 @@ export function ForgotPassword() {
 
   return (
     <AuthLayout
-      title="Forgot your password?"
-      subtitle="Enter your email and we'll send you a reset link"
+      title="Forgot Password?"
+      subtitle="Don't worry! It happens. Please enter the email associated with your account."
       rightPaneImage="/logo1.png"
       rightPaneText={<>Get back on track with<br/><span className="highlight">College Sahayak</span></>}
     >
@@ -88,22 +103,18 @@ export function ForgotPassword() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="auth-form" noValidate>
-        <div className="form-group" style={{ marginBottom: '1rem' }}>
-          <label htmlFor="forgot-email" className="auth-label">Email Address</label>
-          <div className="input-wrapper mt-1">
-            <div className="input-icon">
-              <Mail size={18} />
-            </div>
-            <input
-              id="forgot-email"
-              type="email"
-              autoComplete="email"
-              className="auth-input"
-              placeholder="you@example.com"
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginTop: '2rem' }}>
+        <div className="form-group">
+          <label style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)' }}>Email Address</label>
+          <div className="input-with-icon">
+            <Mail className="input-icon" size={18} />
+            <input 
+              type="email" 
+              className="auth-input has-icon" 
+              placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              autoFocus
+              required
             />
           </div>
         </div>
@@ -111,23 +122,14 @@ export function ForgotPassword() {
         <button
           type="submit"
           disabled={isLoading}
-          className="btn-primary auth-submit group"
+          className="btn btn-primary auth-submit"
         >
-          {isLoading ? (
-            <>
-              <span className="spinner" />
-              Sending reset link…
-            </>
-          ) : (
-            <>
-              Send Reset Link
-              <ArrowRight size={18} className="arrow-icon" />
-            </>
-          )}
+          {isLoading ? 'Sending...' : 'Send Reset OTP'}
+          {!isLoading && <ArrowRight size={18} />}
         </button>
       </form>
 
-      <div className="back-link-wrapper" style={{ marginTop: '2.5rem' }}>
+      <div className="back-link-wrapper">
         <Link to="/login" className="back-link">
           <ArrowLeft size={16} />
           Back to Sign In
