@@ -72,11 +72,16 @@ router.post('/register', async (req, res) => {
     }
 
     // 5. Send OTP Email
-    await sendOTP(email, otp);
+    const emailSent = await sendOTP(email, otp);
+    
+    if (!emailSent) {
+      // If email couldn't be sent (e.g. Render blocks SMTP or missing credentials), auto-verify the user so they aren't stuck!
+      await supabase.from('users').update({ is_verified: true }).eq('email', email);
+    }
 
     res.status(201).json({
       message: 'Registration initiated. Please verify your email.',
-      requireVerification: true
+      requireVerification: emailSent
     });
 
   } catch (error) {
@@ -261,7 +266,12 @@ router.post('/forgot-password', async (req, res) => {
       return res.status(500).json({ error: 'Failed to process request' });
     }
 
-    await sendOTP(email, otp);
+    const emailSent = await sendOTP(email, otp);
+    
+    if (!emailSent) {
+      // If email couldn't be sent (e.g. Render blocks SMTP or missing credentials), auto-verify the user so they aren't stuck!
+      await supabase.from('users').update({ is_verified: true }).eq('email', email);
+    }
 
     res.status(200).json({ message: 'If that email exists, we have sent a reset link.' });
   } catch (error) {
@@ -317,4 +327,5 @@ router.post('/reset-password', async (req, res) => {
 });
 
 module.exports = router;
+
 

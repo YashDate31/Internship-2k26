@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer');
+﻿const nodemailer = require('nodemailer');
 
 const sendOTP = async (to, otp) => {
   const user = process.env.EMAIL_USER;
@@ -6,18 +6,20 @@ const sendOTP = async (to, otp) => {
 
   // Always log for development convenience
   console.log('==================================================');
-  console.log(`🔑 DEV OTP for ${to}: ${otp}`);
+  console.log(`ðŸ”‘ DEV OTP for ${to}: ${otp}`);
   console.log('==================================================');
 
   // If no credentials, we skip sending actual email (great for dev)
   if (!user || !pass) {
-    console.log('⚠️  Email credentials not provided in .env (EMAIL_USER, EMAIL_PASS). Email not sent, using console log above.');
-    return true; 
+    console.log('âš ï¸  Email credentials not provided in .env (EMAIL_USER, EMAIL_PASS). Email not sent, using console log above.');
+    return false; 
   }
 
   try {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
+      connectionTimeout: 5000,
+      socketTimeout: 5000,
       auth: {
         user,
         pass,
@@ -42,10 +44,10 @@ const sendOTP = async (to, otp) => {
     };
 
     await transporter.sendMail(mailOptions);
-    console.log(`✉️  OTP email sent successfully to ${to}`);
+    console.log(`âœ‰ï¸  OTP email sent successfully to ${to}`);
     return true;
   } catch (error) {
-    console.error('❌ Error sending OTP email:', error);
+    console.error('âŒ Error sending OTP email:', error);
     return false;
   }
 };
@@ -55,7 +57,7 @@ const sendFeedbackEmail = async (feedbackType, message, userEmail) => {
   const pass = process.env.EMAIL_PASS;
 
   if (!user || !pass) {
-    console.log('⚠️ Email credentials missing. Logging feedback instead:');
+    console.log('âš ï¸ Email credentials missing. Logging feedback instead:');
     console.log(`Type: ${feedbackType}\nUser: ${userEmail}\nMessage: ${message}`);
     return true;
   }
@@ -63,6 +65,8 @@ const sendFeedbackEmail = async (feedbackType, message, userEmail) => {
   try {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
+      connectionTimeout: 5000,
+      socketTimeout: 5000,
       auth: { user, pass },
     });
 
@@ -75,12 +79,13 @@ const sendFeedbackEmail = async (feedbackType, message, userEmail) => {
     };
 
     await transporter.sendMail(mailOptions);
-    console.log('✉️ Feedback email sent successfully.');
+    console.log('âœ‰ï¸ Feedback email sent successfully.');
     return true;
   } catch (error) {
-    console.error('❌ Error sending feedback email:', error);
+    console.error('âŒ Error sending feedback email:', error);
     return false;
   }
 };
 
 module.exports = { sendOTP, sendFeedbackEmail };
+
