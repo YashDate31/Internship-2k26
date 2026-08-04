@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { User, Mail, Phone, Building2, Edit2, Shield } from 'lucide-react';
 import { jwtDecode } from 'jwt-decode';
 import './Profile.css';
 
 export function Profile() {
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [firebaseUser, setFirebaseUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  
+  // Local state for editable fields
+  const [mobile, setMobile] = useState(localStorage.getItem('user_mobile') || 'Add mobile number');
+  const [college, setCollege] = useState(localStorage.getItem('user_college') || 'Add your college');
 
   useEffect(() => {
     const token = localStorage.getItem('auth_token');
@@ -35,8 +41,9 @@ export function Profile() {
     lastName: firebaseUser?.name?.split(' ')[1] || firebaseUser?.displayName?.split(' ')[1] || '',
     email: firebaseUser?.email || 'Not provided',
     role: firebaseUser?.email === 'yashdate31@gmail.com' ? 'admin' : 'student',
-    mobile: 'Add mobile number',
-    college: 'Add your college'
+    role: firebaseUser?.email === 'yashdate31@gmail.com' ? 'admin' : 'student',
+    mobile: mobile,
+    college: college
   };
 
   const initials = (user.firstName && user.lastName)
@@ -107,9 +114,9 @@ export function Profile() {
                 <div className="detail-value">
                   <Phone size={18} className="detail-icon" />
                   {isEditing ? (
-                    <input type="tel" className="auth-input" defaultValue={user.mobile} style={{ padding: '0.25rem' }} />
+                    <input type="tel" className="auth-input" value={mobile} onChange={(e) => setMobile(e.target.value)} style={{ padding: '0.25rem' }} />
                   ) : (
-                    <span>+91 {user.mobile}</span>
+                    <span>{user.mobile !== 'Add mobile number' ? '+91 ' : ''}{user.mobile}</span>
                   )}
                 </div>
               </div>
@@ -119,7 +126,7 @@ export function Profile() {
                 <div className="detail-value">
                   <Building2 size={18} className="detail-icon" />
                   {isEditing ? (
-                    <input type="text" className="auth-input" defaultValue={user.college} style={{ padding: '0.25rem' }} />
+                    <input type="text" className="auth-input" value={college} onChange={(e) => setCollege(e.target.value)} style={{ padding: '0.25rem' }} />
                   ) : (
                     <span>{user.college}</span>
                   )}
@@ -130,23 +137,27 @@ export function Profile() {
 
             {isEditing && (
               <div className="profile-actions">
-                <button className="btn-primary" onClick={() => setIsEditing(false)}>Save Changes</button>
+                <button className="btn-primary" onClick={() => {
+                  localStorage.setItem('user_mobile', mobile);
+                  localStorage.setItem('user_college', college);
+                  setIsEditing(false);
+                  alert('Profile updated successfully!');
+                }}>Save Changes</button>
               </div>
             )}
             
             {!isEditing && (
               <div className="profile-actions" style={{ marginTop: '2rem', flexWrap: 'wrap', gap: '1rem', display: 'flex', alignItems: 'center' }}>
-                <button className="btn-outline sm" style={{ color: 'var(--text-secondary)' }}>
+                <button className="btn-outline sm" style={{ color: 'var(--text-secondary)' }} onClick={() => navigate('/forgot-password')}>
                   <Shield size={16} style={{ marginRight: '0.5rem' }} />
                   Change Password
                 </button>
                 <button 
                   className="btn-outline sm" 
                   style={{ color: 'var(--danger-color)', borderColor: 'rgba(239, 68, 68, 0.2)', marginLeft: 'auto' }}
-                  onClick={async () => {
+                  onClick={() => {
                     localStorage.removeItem('mock_logged_in');
                     localStorage.removeItem('auth_token');
-                    await import('firebase/auth').then(({ signOut }) => signOut(auth));
                     window.location.href = '/login';
                   }}
                 >
