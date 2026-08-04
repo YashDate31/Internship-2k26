@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Coordinates
+    </title>
+
+</head>
+
+<body>
+    <div id="track" style="width:150px;background-color: aquamarine;height:200px;"></div>
+    <p id="coords"></p>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>$(document).ready(function() {
+
+        $("#track").mousemove(function(e) {
+            $("#coords").html("X: " + e.offsetX + ", Y: " + e.offsetY);
+        });
+    
+});</script>
+</body>
+
+</html>

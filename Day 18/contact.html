@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Amazon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #eef4ff;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        #one {
+            background: linear-gradient(to right, #1e3a8a, #2563eb);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 15px;
+            border-radius: 15px;
+        }
+
+        #two {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: white;
+            flex-shrink: 0;
+        }
+
+        #two img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #three h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        #three p {
+            font-size: 15px;
+            opacity: 0.95;
+        }
+
+        .navlink {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            background: #111827;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 10px;
+        }
+
+        .navlink a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .navlink a:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 14px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            margin-bottom: 18px;
+        }
+
+        .card h2 {
+            margin-bottom: 10px;
+            color: #1e3a8a;
+        }
+
+        .card p {
+            line-height: 1.7;
+            color: #4b5563;
+        }
+
+        .contact-form form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 15px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .btn {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 12px ;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: fit-content;
+        }
+
+        .btn:hover {
+            background: #d97706;
+        }
+
+        .contact-info p {
+            margin-top: 12px;
+            line-height: 1.6;
+        }
+
+        footer {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            #one {
+                flex-direction: column;
+                text-align: center;
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header id="one">
+            <div id="two">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkQZwfIF1UdjlMBtjg4fmlfdGU0suXMgG5qA&s" alt="Logo">
+            </div>
+            <div id="three">
+                <h1>Amazon : The Shopping King</h1>
+                <p>Your One Stop Shopping Destination</p>
+            </div>
+        </header>
+
+        <nav class="navlink">
+            <a href="index.html">Home</a>
+            <a href="shopping.html">Shopping</a>
+            <a href="profile.html">Profile</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+
+        <main>
+            <section class="card">
+                <h2>Contact Us</h2>
+                <p>Have questions, suggestions, or feedback? We'd love to hear from you.</p>
+            </section>
+
+            <section class="contact-form">
+                <h2>Send Message</h2>
+                <form>
+                    <input type="text" placeholder="Enter Your Name" id="name">
+                    <div id="error" style="color: red;font-weight: bold;"></div>
+
+                    <input type="email" placeholder="Enter Your Email" id="email">
+                    <div id="error" style="color: red;font-weight: bold;"></div>
+
+                    <input type="text" placeholder="Enter Subject" id="subject">
+                    <div id="error" style="color: red;font-weight: bold;"></div>
+
+                    <textarea rows="6" placeholder="Enter Your Message" id="msg"></textarea>
+                    <div id="error" style="color: red;font-weight: bold;"></div>
+
+                    <button class="btn" type="submit" onclick="validate()">Send Message</button>
+                </form>
+            </section>
+
+            <section class="card contact-info">
+                <h2>Contact Information</h2>
+                <p><strong>Email:</strong> support@amazon.com</p>
+                <p><strong>Phone:</strong> +91 9876543210</p>
+                <p><strong>Address:</strong> Pune, Maharashtra, India</p>
+                <p><strong>Working Hours:</strong> Monday - Saturday, 9:00 AM - 6:00 PM</p>
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2026 Amazon : The Shopping King. All Rights Reserved</p>
+        </footer>
+    </div>
+</body>
+</html>
+<script>
+    function validate()
+    {
+    var name = document.getElementById("name").value;
+    var email = document.getElementById("email").value;
+    var subject = document.getElementById("subject").value;
+    var msg = document.getElementById("msg").value;
+
+    if(email.indexOf("@")==-1 || email.indexOf(".")==-1)
+{
+    alert("Invalid mail");
+}
+else if(name =="")
+{
+    alert("name cant be empty");
+}
+else if(subject ==""){
+    alert("can't be empty");
+}
+else if(msg=="")
+{
+    alert("Msg cant be empty")
+}
+else{
+    alert("login Successful..");
+}
+    }
+
+</script>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Keyboard Events Syntax Reference</title>
+</head>
+<body>
+    <h1>Keyboard Events Syntax</h1>
+    <ul>
+        <li><code>keydown</code>: Fires when a key is pressed down.</li>
+        <li><code>keyup</code>: Fires when a key is released.</li>
+        <li><code>keypress</code>: Fires when a key that produces a character value is pressed down. (Deprecated)</li>
+    </ul>
+    <h2>Example:</h2>
+    <pre>
+        document.keydown(function(event) {
+            console.log('Key pressed: ' + event.key);
+        });
+    </pre>
+</body>
+</html>

@@ -1,0 +1,188 @@
+/* About page specific styles */
+
+/* Mission cards animation */
+.mission-card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.mission-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.mission-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.mission-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* Founder card special styling */
+.founder-card {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  animation: founderEntrance 0.8s ease-out 0.4s forwards;
+}
+
+@keyframes founderEntrance {
+  to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+  }
+}
+
+/* Team member cards */
+.team-member-card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s ease-out forwards;
+  transition: all 0.3s ease;
+}
+
+.team-member-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Staggered animation for team members */
+.team-member-card:nth-child(1) { animation-delay: 0.1s; }
+.team-member-card:nth-child(2) { animation-delay: 0.15s; }
+.team-member-card:nth-child(3) { animation-delay: 0.2s; }
+.team-member-card:nth-child(4) { animation-delay: 0.25s; }
+.team-member-card:nth-child(5) { animation-delay: 0.3s; }
+.team-member-card:nth-child(6) { animation-delay: 0.35s; }
+.team-member-card:nth-child(7) { animation-delay: 0.4s; }
+.team-member-card:nth-child(8) { animation-delay: 0.45s; }
+.team-member-card:nth-child(9) { animation-delay: 0.5s; }
+.team-member-card:nth-child(10) { animation-delay: 0.55s; }
+
+/* Co-founder cards */
+.cofounder-card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease-out forwards;
+  transition: all 0.3s ease;
+}
+
+.cofounder-card:nth-child(1) { animation-delay: 0.2s; }
+.cofounder-card:nth-child(2) { animation-delay: 0.3s; }
+.cofounder-card:nth-child(3) { animation-delay: 0.4s; }
+
+.cofounder-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Values cards */
+.value-card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s ease-out forwards;
+  transition: all 0.3s ease;
+}
+
+.value-card:nth-child(1) { animation-delay: 0.1s; }
+.value-card:nth-child(2) { animation-delay: 0.2s; }
+.value-card:nth-child(3) { animation-delay: 0.3s; }
+.value-card:nth-child(4) { animation-delay: 0.4s; }
+
+.value-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Keyframe animations */
+@keyframes fadeInUp {
+  from {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+/* Profile image hover effects */
+.profile-image {
+  transition: all 0.3s ease;
+}
+
+.team-member-card:hover .profile-image {
+  transform: scale(1.05);
+}
+
+/* Social links hover effects */
+.social-link {
+  transition: all 0.2s ease;
+}
+
+.social-link:hover {
+  transform: translateY(-2px);
+}
+
+/* Prose styling for story section */
+.prose {
+  color: #374151;
+}
+
+.prose p {
+  margin-bottom: 1.5rem;
+}
+
+.prose p:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .founder-card {
+      margin: 0 1rem;
+  }
+  
+  .team-member-card {
+      margin-bottom: 1rem;
+  }
+}
+
+/* Special gradient backgrounds for different roles */
+.founder-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.cofounder-gradient-1 {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.cofounder-gradient-2 {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.cofounder-gradient-3 {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.team-gradient-1 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+.team-gradient-2 { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+.team-gradient-3 { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+.team-gradient-4 { background: linear-gradient(135deg, #ff8a80 0%, #ea4c89 100%); }
+.team-gradient-5 { background: linear-gradient(135deg, #8fd3f4 0%, #84fab0 100%); }
+.team-gradient-6 { background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); }
+.team-gradient-7 { background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); }
+
+/* Loading animation for team cards */
+.loading-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+      background-position: -200% 0;
+  }
+  100% {
+      background-position: 200% 0;
+  }
+}

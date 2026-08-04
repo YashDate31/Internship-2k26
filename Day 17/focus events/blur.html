@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blur Event</title>
+</head>
+<body>
+    <h1>Blur Event</h1>
+    <input type="text" id="myInput" placeholder="Click me, then click outside">
+
+    <script>
+        document.getElementById('myInput').addEventListener('blur', function() {
+            console.log("Input lost focus!");
+            alert("Blur event triggered!");
+        });
+    </script>
+</body>
+</html>

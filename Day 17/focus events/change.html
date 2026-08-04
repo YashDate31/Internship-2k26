@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Change Event</title>
+</head>
+<body>
+    <h1>Change Event</h1>
+    <p>Type something and then click outside the box.</p>
+    <input type="text" id="myInput">
+
+    <script>
+        document.getElementById('myInput').addEventListener('change', function() {
+            console.log("Value changed to: " + this.value);
+            alert("Change event triggered!");
+        });
+    </script>
+</body>
+</html>

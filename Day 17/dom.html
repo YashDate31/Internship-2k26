@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        DOM
+    </title>
+    <!-- Added Bootstrap CSS so the Modal looks correct -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #mybtn {
+            background-color: aliceblue;
+            padding: 55px;
+            height: 60px;
+            width: 100px;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. Your original button with pure JavaScript fix -->
+    <div id="mybtn">CLICK ME TO HIDE</div>
+    
+    <hr class="my-5">
+
+    <!-- 2. A Button to trigger the Bootstrap Modal -->
+    <h3 class="mb-3">Bootstrap JS Practical Example:</h3>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Click me to open a Bootstrap Modal
+    </button>
+
+    <!-- 3. The Bootstrap Modal (Hidden by default, shown by Bootstrap.min.js when the button above is clicked) -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">It works!</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            This popup box only works because you included <strong>Bootstrap.min.js</strong> at the bottom of the page! Without it, clicking the button wouldn't do anything.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Bootstrap JavaScript file that makes the modal work -->
+    <script src="../Day 21/Bootstrap.min.js"></script>
+    
+    <!-- Your old script, fixed to not use jQuery -->
+    <script>
+        let btn = document.getElementById("mybtn");
+        btn.onclick = function () {
+            // Standard JavaScript way to hide an element (since we don't have jQuery)
+            this.style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

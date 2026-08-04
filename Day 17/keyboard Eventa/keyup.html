@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Keyup Event</title>
+</head>
+<body>
+    <h1>Keyup Event</h1>
+    <p>Fires when a key is released.</p>
+    <input type="text" id="inputField" placeholder="Type and release key">
+    <p id="output"></p>
+    <script>
+        document.getElementById('inputField').addEventListener('keyup', function(event) {
+            document.getElementById('output').innerText = 'Key released: ' + event.key;
+        });
+    </script>
+</body>
+</html>

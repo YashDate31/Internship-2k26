@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<head>
+    <title>
+        focus event
+    </title>
+
+</head>
+<body>
+    
+    <input type="text" id="one" placeholder="Enter Your Name">
+
+</body>
+<script>
+    let name = document.getElementById("one");
+    name.addEventListener("focus",function(){
+        name.style.backgroundColor = "red";});
+</script>
+</html>

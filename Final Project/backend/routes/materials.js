@@ -1,0 +1,150 @@
+const express = require('express');
+const router = express.Router();
+const supabase = require('../config/supabase');
+const verifyAuth = require('../middleware/auth');
+
+// GET /api/materials - Fetch all materials (Public)
+router.get('/', async (req, res) => {
+  if (!supabase) {
+    return res.status(500).json({ error: 'Supabase client not initialized' });
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('materials')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Supabase fetch error:', error);
+      return res.status(500).json({ error: 'Failed to fetch materials' });
+    }
+
+    res.status(200).json(data);
+  } catch (err) {
+    console.error('Error fetching materials:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST /api/materials - Add a new material (Protected)
+// Admins upload directly; students get a [PENDING] prefix for moderation
+router.post('/', verifyAuth, async (req, res) => {
+  if (!supabase) {
+    return res.status(500).json({ error: 'Supabase client not initialized' });
+  }
+
+  const { title, description, category, branch, semester, driveLink, imageLink, subjectCode } = req.body;
+
+  if (!title || !category || !driveLink || !subjectCode) {
+    return res.status(400).json({ error: 'Title, category, driveLink, and subjectCode are required fields' });
+  }
+
+  // If the uploader is NOT the admin, prefix title with [PENDING] for moderation
+  const finalTitle = req.isAdmin ? title : `[PENDING] ${title}`;
+
+  try {
+    const { data, error } = await supabase
+      .from('materials')
+      .insert([
+        {
+          title: finalTitle,
+          description,
+          category,
+          branch,
+          semester,
+          subject_code: subjectCode,
+          drive_link: driveLink,
+          image_link: imageLink,
+        },
+      ])
+      .select();
+
+    if (error) {
+      console.error('Supabase insert error:', error);
+      return res.status(500).json({ error: 'Failed to add material to database' });
+    }
+
+    res.status(201).json({ message: 'Material added successfully', data: data[0] });
+  } catch (err) {
+    console.error('Error adding material:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// DELETE /api/materials/:id - Delete a material (Protected - Admin Only)
+router.delete('/:id', verifyAuth, async (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).json({ error: 'Forbidden: Admin access required' });
+  }
+
+  if (!supabase) {
+    return res.status(500).json({ error: 'Supabase client not initialized' });
+  }
+
+  const { id } = req.params;
+
+  try {
+    const { data, error } = await supabase
+      .from('materials')
+      .delete()
+      .eq('id', id)
+      .select();
+
+    if (error) {
+      console.error('Supabase delete error:', error);
+      return res.status(500).json({ error: 'Failed to delete material' });
+    }
+
+    if (!data || data.length === 0) {
+        return res.status(404).json({ error: 'Material not found' });
+    }
+
+    res.status(200).json({ message: 'Material deleted successfully', data: data[0] });
+  } catch (err) {
+    console.error('Error deleting material:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// PUT /api/materials/:id/approve - Approve a student-submitted material (Admin Only)
+// This strips the [PENDING] prefix and makes the material visible to all students
+router.put('/:id/approve', verifyAuth, async (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).json({ error: 'Forbidden: Admin access required' });
+  }
+
+  if (!supabase) {
+    return res.status(500).json({ error: 'Supabase client not initialized' });
+  }
+
+  const { id } = req.params;
+  const { title } = req.body;
+
+  try {
+    // Remove [PENDING] from title to publish it
+    const newTitle = title.replace(/^\[PENDING\]\s*/, '');
+
+    const { data, error } = await supabase
+      .from('materials')
+      .update({ title: newTitle })
+      .eq('id', id)
+      .select();
+
+    if (error) {
+      console.error('Supabase update error:', error);
+      return res.status(500).json({ error: 'Failed to approve material' });
+    }
+
+    if (!data || data.length === 0) {
+        return res.status(404).json({ error: 'Material not found' });
+    }
+
+    res.status(200).json({ message: 'Material approved successfully', data: data[0] });
+  } catch (err) {
+    console.error('Error approving material:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+module.exports = router;

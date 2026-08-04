@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Keydown Event</title>
+</head>
+<body>
+    <h1>Keydown Event</h1>
+    <p>Fires when a key is pressed down.</p>
+    <input type="text" id="inputField" placeholder="Press any key">
+    <p id="output"></p>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>$(document).ready(function() {
+
+        $("#inputField").keydown(function(event) {
+            $("#output").innerText = 'Key pressed: ' + event.key;
+        });
+    
+});</script>
+</body>
+</html>

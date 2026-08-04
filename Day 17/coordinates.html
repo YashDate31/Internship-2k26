@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Coordinates
+    </title>
+
+</head>
+
+<body>
+    <div id="track" style="width:150px;background-color: aquamarine;height:200px;"></div>
+    <p id="coords"></p>
+    <script>
+        document.getElementById("track").addEventListener("mousemove", function (e) {
+            document.getElementById("coords").innerHTML = "X: " + e.offsetX + ", Y: " + e.offsetY;
+        });
+    </script>
+</body>
+
+</html>

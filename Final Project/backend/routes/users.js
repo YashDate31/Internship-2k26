@@ -1,0 +1,59 @@
+const express = require('express');
+const router = express.Router();
+const supabase = require('../config/supabase');
+const verifyTokenOnly = require('../middleware/authVerifyOnly');
+
+// POST /api/users/sync - Sync Firebase user to Supabase
+router.post('/sync', verifyTokenOnly, async (req, res) => {
+  if (!supabase) {
+    return res.status(500).json({ error: 'Supabase client not initialized' });
+  }
+
+  const { uid, email, name, picture } = req.user;
+
+  try {
+    // Check if user already exists
+    const { data: existingUser, error: checkError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('firebase_uid', uid)
+      .single();
+
+    if (checkError && checkError.code !== 'PGRST116') { // PGRST116 means zero rows returned
+      console.error('Supabase check user error:', checkError);
+      return res.status(500).json({ error: 'Database error checking user' });
+    }
+
+    if (existingUser) {
+      // User exists, just update their info if needed (e.g. name changed)
+      const { data, error: updateError } = await supabase
+        .from('users')
+        .update({ email, name: name || existingUser.name })
+        .eq('firebase_uid', uid)
+        .select();
+        
+      if (updateError) throw updateError;
+      return res.status(200).json({ message: 'User synced successfully', user: data[0] });
+    } else {
+      // New user
+      const { data, error: insertError } = await supabase
+        .from('users')
+        .insert([
+          {
+            firebase_uid: uid,
+            email: email,
+            name: name || '',
+          },
+        ])
+        .select();
+
+      if (insertError) throw insertError;
+      return res.status(201).json({ message: 'User created and synced successfully', user: data[0] });
+    }
+  } catch (err) {
+    console.error('Error syncing user:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+module.exports = router;

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blur Event</title>
+</head>
+<body>
+    <h1>Blur Event</h1>
+    <input type="text" id="myInput" placeholder="Click me, then click outside">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>$(document).ready(function() {
+
+        $("#myInput").blur(function() {
+            console.log("Input lost focus!");
+            alert("Blur event triggered!");
+        });
+    
+});</script>
+</body>
+</html>

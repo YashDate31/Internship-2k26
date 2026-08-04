@@ -1,0 +1,191 @@
+/* ============================================================
+   shared-nav.css — Same dark navbar for ALL pages
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+
+:root {
+  --nav-bg:       #111827;
+  --nav-text:     #e5e7eb;
+  --nav-hover-bg: rgba(255,255,255,0.1);
+  --accent:       #4f46e5;     /* indigo */
+  --accent-hover: #4338ca;
+  --accent-red:   #ef4444;
+}
+
+body { padding-top: 70px; font-family: 'Outfit', sans-serif; }
+
+/* ---- Navbar wrapper ---- */
+#shared-navbar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  z-index: 9999;
+  background: var(--nav-bg);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  font-family: 'Outfit', sans-serif;
+}
+
+.sn-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 66px;
+  gap: 16px;
+}
+
+/* Brand */
+.sn-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.sn-brand img {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+}
+
+/* Links */
+.sn-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+}
+
+.sn-links a {
+  text-decoration: none;
+  color: var(--nav-text);
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.sn-links a:hover {
+  background: var(--nav-hover-bg);
+  color: white;
+}
+
+.sn-links a.sn-active {
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+}
+
+/* Auth area */
+.sn-auth {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.sn-btn-login {
+  background: var(--accent);
+  color: white;
+  padding: 9px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.sn-btn-login:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.sn-btn-logout {
+  background: transparent;
+  color: #fca5a5;
+  border: 1.5px solid #fca5a5;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.sn-btn-logout:hover {
+  background: var(--accent-red);
+  border-color: var(--accent-red);
+  color: white;
+}
+
+.sn-user-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.sn-user-pill img {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  object-fit: cover;
+}
+
+/* Hamburger */
+.sn-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: white;
+  padding: 4px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .sn-hamburger { display: block; }
+
+  .sn-links {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--nav-bg);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    z-index: 9998;
+  }
+
+  .sn-links.sn-open { display: flex; }
+
+  .sn-close-btn {
+    position: absolute;
+    top: 20px; right: 22px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: white;
+  }
+
+  .sn-links a { font-size: 1.2rem; padding: 14px 36px; }
+}

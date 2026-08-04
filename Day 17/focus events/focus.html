@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Focus Event</title>
+</head>
+<body>
+    <h1>Focus Event</h1>
+    <input type="text" id="myInput" placeholder="Click inside me">
+
+    <script>
+        document.getElementById('myInput').addEventListener('focus', function() {
+            console.log("Input is focused!");
+            this.style.backgroundColor = "yellow";
+        });
+    </script>
+</body>
+</html>

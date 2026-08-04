@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="College Sahayak - Your comprehensive study companion for polytechnic diploma students in Maharashtra. Access syllabus, practicals, assignments, and micro-projects.">
+    <meta name="keywords" content="polytechnic, diploma, engineering, study materials, Maharashtra, college, education">
+    <title>Lab Manuals</title>
+
+    <!-- Preconnect to external domains for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide@0.344.0/font/lucide.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.344.0/dist/umd/lucide.min.js" defer></script>
+
+    <!-- Open Graph meta tags for social sharing -->
+    <meta property="og:title" content="College Sahayak - Your Diploma Studies, Simplified">
+    <meta property="og:description"
+        content="Access comprehensive study materials for polytechnic diploma students. Syllabus, practicals, assignments, and micro-projects all in one place.">
+    <meta property="og:type" content="website">
+
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#2563EB">
+
+    <link rel="stylesheet" href="./static/css/const/style.css">
+    
+<script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body>
+    <div class="min-h-screen bg-gray-50 flex flex-col">
+        <nav class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
+                            <i data-lucide="book-open" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">College Sahayak</span>
+                    </div>
+                    
+                    <!-- Desktop Menu -->
+                    <div class="hidden md:flex items-center space-x-6">
+                        <a href="index.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-1"><span>Home</span></a>
+                        <a href="discover.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-1"><i data-lucide="compass" class="w-4 h-4"></i><span>Discover</span></a>
+                        <a href="resources.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-1"><i data-lucide="book-open" class="w-4 h-4"></i><span>Resources</span></a>
+                        <a href="blog.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-1"><i data-lucide="pen-tool" class="w-4 h-4"></i><span>Blog</span></a>
+                        <a href="login.html" id="nav-auth-btn" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-1"><i data-lucide="log-in" class="w-4 h-4"></i><span id="nav-auth-text">Login</span></a>
+                        <a href="about.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-1"><i data-lucide="info" class="w-4 h-4"></i><span>About Us</span></a>
+                        <a href="feedback.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center space-x-1"><i data-lucide="message-square" class="w-4 h-4"></i><span>Contact</span></a>
+                    </div>
+
+                    <!-- Mobile menu button -->
+                    <div class="md:hidden flex items-center">
+                        <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 focus:outline-none" onclick="toggleMobileMenu()">
+                            <i data-lucide="menu" class="block h-6 w-6"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full-Screen Mobile Menu (Responsive Overlay) -->
+            <div class="md:hidden hidden fixed inset-0 bg-white z-[9998] flex-col justify-center items-center" id="mobile-menu">
+                <button onclick="toggleMobileMenu()" class="absolute top-6 right-6 text-gray-500 hover:text-gray-900 focus:outline-none p-2 bg-gray-100 rounded-full">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+                <div class="flex flex-col space-y-8 text-center w-full px-8">
+                    <a href="index.html" class="block text-2xl font-semibold text-gray-800 hover:text-blue-600">Home</a>
+                    <a href="discover.html" class="block text-2xl font-semibold text-gray-800 hover:text-blue-600">Discover</a>
+                    <a href="resources.html" class="block text-2xl font-semibold text-gray-800 hover:text-blue-600">Resources</a>
+                    <a href="blog.html" class="block text-2xl font-semibold text-gray-800 hover:text-blue-600">Blog</a>
+                    <a href="login.html" id="mobile-auth-btn" class="block text-2xl font-semibold text-gray-800 hover:text-blue-600">Login / Profile</a>
+                    <a href="about.html" class="block text-2xl font-semibold text-gray-800 hover:text-blue-600">About Us</a>
+                    <a href="feedback.html" class="block text-xl font-semibold text-white bg-blue-600 rounded-full py-4 mt-4 shadow-lg">Contact Us</a>
+                </div>
+            </div>
+        </nav>
+        <main class="flex-grow">
+
+<div class="max-w-7xl mx-auto px-4 py-12 flex flex-col lg:flex-row gap-8">
+    <!-- Left Sidebar: Experiments List -->
+    <div class="w-full lg:w-1/3">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-900"><i data-lucide="flask-conical" class="inline w-6 h-6 mr-2 text-green-600"></i>Lab Manuals</h1>
+            <select class="border border-gray-300 rounded text-xs px-2 py-1 bg-white font-semibold outline-none"><option>Java (22412)</option><option>Data Structures (22317)</option></select>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-2 overflow-y-auto max-h-[75vh] custom-scrollbar">
+            <button class="w-full text-left p-4 rounded-xl bg-green-50 border border-green-200 mb-2 hover:bg-green-100 transition-colors">
+                <div class="flex justify-between items-start">
+                    <h3 class="font-bold text-green-900 text-sm">Exp 1: Install JDK & Write First Java Program</h3>
+                    <i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i>
+                </div>
+                <p class="text-xs text-green-700 mt-1">Java Programming • Completed</p>
+            </button>
+            <button class="w-full text-left p-4 rounded-xl bg-green-50 border border-green-200 mb-2 hover:bg-green-100 transition-colors">
+                <div class="flex justify-between items-start">
+                    <h3 class="font-bold text-green-900 text-sm">Exp 2: Implement Classes and Objects</h3>
+                    <i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i>
+                </div>
+                <p class="text-xs text-green-700 mt-1">Java Programming • Completed</p>
+            </button>
+            <button class="w-full text-left p-4 rounded-xl bg-blue-50 border border-blue-200 mb-2 shadow-sm transition-colors relative overflow-hidden">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-500"></div>
+                <div class="flex justify-between items-start">
+                    <h3 class="font-bold text-blue-900 text-sm">Exp 3: Constructor Overloading</h3>
+                    <i data-lucide="clock" class="w-4 h-4 text-blue-600"></i>
+                </div>
+                <p class="text-xs text-blue-700 mt-1">Java Programming • In Progress</p>
+            </button>
+            <button class="w-full text-left p-4 rounded-xl bg-white border border-gray-100 mb-2 hover:bg-gray-50 transition-colors">
+                <h3 class="font-bold text-gray-900 text-sm">Exp 4: Single Inheritance in Java</h3>
+                <p class="text-xs text-gray-500 mt-1">Java Programming • Pending</p>
+            </button>
+            <button class="w-full text-left p-4 rounded-xl bg-white border border-gray-100 mb-2 hover:bg-gray-50 transition-colors">
+                <h3 class="font-bold text-gray-900 text-sm">Exp 5: Multilevel & Hierarchical Inheritance</h3>
+                <p class="text-xs text-gray-500 mt-1">Java Programming • Pending</p>
+            </button>
+            <button class="w-full text-left p-4 rounded-xl bg-white border border-gray-100 mb-2 hover:bg-gray-50 transition-colors">
+                <h3 class="font-bold text-gray-900 text-sm">Exp 6: Interfaces and Packages</h3>
+                <p class="text-xs text-gray-500 mt-1">Java Programming • Pending</p>
+            </button>
+            <button class="w-full text-left p-4 rounded-xl bg-white border border-gray-100 mb-2 hover:bg-gray-50 transition-colors">
+                <h3 class="font-bold text-gray-900 text-sm">Exp 7: Exception Handling (Try, Catch, Finally)</h3>
+                <p class="text-xs text-gray-500 mt-1">Java Programming • Pending</p>
+            </button>
+            <button class="w-full text-left p-4 rounded-xl bg-white border border-gray-100 mb-2 hover:bg-gray-50 transition-colors">
+                <h3 class="font-bold text-gray-900 text-sm">Exp 8: Multithreading (Thread Class)</h3>
+                <p class="text-xs text-gray-500 mt-1">Java Programming • Pending</p>
+            </button>
+            <button class="w-full text-left p-4 rounded-xl bg-white border border-gray-100 mb-2 hover:bg-gray-50 transition-colors">
+                <h3 class="font-bold text-gray-900 text-sm">Exp 9: Applet Lifecycle</h3>
+                <p class="text-xs text-gray-500 mt-1">Java Programming • Pending</p>
+            </button>
+            <button class="w-full text-left p-4 rounded-xl bg-white border border-gray-100 mb-2 hover:bg-gray-50 transition-colors">
+                <h3 class="font-bold text-gray-900 text-sm">Exp 10: Simple AWT Application</h3>
+                <p class="text-xs text-gray-500 mt-1">Java Programming • Pending</p>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Right Sidebar: Journal Viewer -->
+    <div class="w-full lg:w-2/3">
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-200 h-[80vh] flex flex-col overflow-hidden relative">
+            <div class="bg-gray-900 text-white p-4 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i data-lucide="file-text" class="w-4 h-4 text-gray-400"></i>
+                    <span class="font-mono text-sm tracking-wider">java_exp3_constructors.pdf</span>
+                </div>
+                <div class="flex space-x-4 text-gray-400">
+                    <button class="hover:text-white transition"><i data-lucide="zoom-out" class="w-5 h-5"></i></button>
+                    <span class="text-sm font-mono">100%</span>
+                    <button class="hover:text-white transition"><i data-lucide="zoom-in" class="w-5 h-5"></i></button>
+                    <div class="w-px h-5 bg-gray-700 mx-2"></div>
+                    <button class="hover:text-white transition flex items-center"><i data-lucide="download" class="w-5 h-5 mr-1"></i> <span class="text-xs font-bold uppercase tracking-wider">Download</span></button>
+                </div>
+            </div>
+            
+            <div class="flex-grow bg-gray-200 p-8 overflow-y-auto">
+                <div class="bg-white shadow-xl max-w-3xl mx-auto min-h-full p-12 relative font-serif text-gray-900 border border-gray-100">
+                    <div class="border-b-2 border-black pb-4 mb-8 text-center">
+                        <h2 class="text-lg font-bold uppercase tracking-widest text-gray-500">Experiment No. 3</h2>
+                        <h1 class="text-3xl font-bold mt-2">Constructor Overloading in Java</h1>
+                    </div>
+                    
+                    <h3 class="font-bold text-xl mb-3 text-blue-900 border-l-4 border-blue-600 pl-3 bg-blue-50 py-1">1. Practical Significance:</h3>
+                    <p class="text-gray-700 mb-6 leading-relaxed">Constructor overloading is a concept of having more than one constructor with different parameter lists, in such a way so that each constructor performs a different task. They are differentiated by the compiler by the number of parameters in the list and their types.</p>
+                    
+                    <h3 class="font-bold text-xl mb-3 text-blue-900 border-l-4 border-blue-600 pl-3 bg-blue-50 py-1">2. Relevant Program Outcomes (POs):</h3>
+                    <ul class="list-disc list-inside text-gray-700 mb-6 space-y-2">
+                        <li><strong>PO1:</strong> Basic knowledge of Object-Oriented paradigms.</li>
+                        <li><strong>PO2:</strong> Discipline knowledge of classes, objects, and memory allocation.</li>
+                        <li><strong>PO3:</strong> Experiments and practice in writing Java code.</li>
+                    </ul>
+
+                    <h3 class="font-bold text-xl mb-3 text-blue-900 border-l-4 border-blue-600 pl-3 bg-blue-50 py-1">3. Source Code:</h3>
+                    <div class="bg-gray-900 text-green-400 p-4 rounded-lg mb-6 overflow-x-auto font-mono text-sm shadow-inner border border-gray-800">
+<pre><code>class Student {
+    int id;
+    String name;
+    int age;
+    
+    // Default Constructor
+    Student() {
+        System.out.println("Default Constructor Called.");
+    }
+    
+    // Parameterized Constructor 1
+    Student(int i, String n) {
+        id = i;
+        name = n;
+    }
+    
+    // Parameterized Constructor 2
+    Student(int i, String n, int a) {
+        id = i;
+        name = n;
+        age = a;
+    }
+    
+    void display() {
+        System.out.println(id + " " + name + " " + age);
+    }
+    
+    public static void main(String args[]) {
+        Student s1 = new Student(111, "Karan");
+        Student s2 = new Student(222, "Aryan", 25);
+        s1.display();
+        s2.display();
+    }
+}</code></pre>
+                    </div>
+
+                    <h3 class="font-bold text-xl mb-3 text-blue-900 border-l-4 border-blue-600 pl-3 bg-blue-50 py-1">4. Output:</h3>
+                    <div class="bg-black text-white p-4 rounded-lg mb-6 font-mono text-sm border border-gray-800 shadow-inner">
+<pre><code>Default Constructor Called.
+111 Karan 0
+222 Aryan 25
+Process finished with exit code 0</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</main>
+        <footer class="bg-gray-900 text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- About College Sahayak -->
+                    <div>
+                        <div class="flex items-center space-x-2 mb-4">
+                            <div
+                                class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
+                                <i data-lucide="book-open" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <span class="text-xl font-bold">College Sahayak</span>
+                        </div>
+                        <p class="text-gray-300 leading-relaxed mb-4">
+                            Empowering polytechnic diploma students across Maharashtra with comprehensive study
+                            materials,
+                            practicals, and resources for academic excellence.
+                        </p>
+                        <div class="space-y-2 text-sm text-gray-400">
+                            <div class="flex items-center">
+                                <i data-lucide="map-pin" class="w-4 h-4 mr-2"></i>
+                                <span>Maharashtra, India</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i data-lucide="mail" class="w-4 h-4 mr-2"></i>
+                                <span>support@collegesahayak.com</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Essential Links -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Essential Links</h3>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Home</a></li>
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors">All Resources</a>
+                            </li>
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors">About Us</a></li>
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Contact Support</a>
+                            </li>
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Privacy Policy</a>
+                            </li>
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Terms of
+                                    Service</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Connect With Us -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
+                        <p class="text-gray-300 text-sm mb-4">
+                            Follow us for updates, study tips, and educational content.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="#"
+                                class="w-10 h-10 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center justify-center transition-colors">
+                                <i data-lucide="facebook" class="w-5 h-5"></i>
+                            </a>
+                            <a href="#"
+                                class="w-10 h-10 bg-blue-400 hover:bg-blue-500 rounded-lg flex items-center justify-center transition-colors">
+                                <i data-lucide="twitter" class="w-5 h-5"></i>
+                            </a>
+                            <a href="#"
+                                class="w-10 h-10 bg-pink-600 hover:bg-pink-700 rounded-lg flex items-center justify-center transition-colors">
+                                <i data-lucide="instagram" class="w-5 h-5"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Bar -->
+                <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                    <p class="text-gray-400 text-sm">
+                        © 2025 College Sahayak. All Rights Reserved.
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+            
+            // Auth State Logic
+            const userStr = localStorage.getItem('cs_user');
+            if (userStr) {
+                const user = JSON.parse(userStr);
+                
+                // Desktop Auth Button
+                const authBtn = document.getElementById('nav-auth-btn');
+                if (authBtn) {
+                    authBtn.href = 'profile.html';
+                    authBtn.innerHTML = `<img src="${user.photoURL || 'https://via.placeholder.com/32'}" class="w-6 h-6 rounded-full border border-gray-300"> <span class="ml-2 font-semibold text-blue-600">${user.displayName}</span>`;
+                }
+                
+                // Mobile Auth Button
+                const mobileAuthBtn = document.getElementById('mobile-auth-btn');
+                if (mobileAuthBtn) {
+                    mobileAuthBtn.href = 'profile.html';
+                    mobileAuthBtn.innerText = 'My Profile';
+                }
+            }
+        });
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu) {
+                if (menu.classList.contains('hidden')) {
+                    menu.classList.remove('hidden');
+                    menu.classList.add('flex');
+                    document.body.style.overflow = 'hidden';
+                    if (window.lucide) window.lucide.createIcons();
+                } else {
+                    menu.classList.add('hidden');
+                    menu.classList.remove('flex');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

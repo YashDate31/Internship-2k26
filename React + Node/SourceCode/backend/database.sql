@@ -1,0 +1,18 @@
+CREATE DATABASE productdb;
+USE productdb;
+CREATE TABLE users(
+id INT PRIMARY KEY AUTO_INCREMENT,
+name VARCHAR(50),
+email VARCHAR(100) UNIQUE,
+password VARCHAR(100)
+);
+
+CREATE TABLE products(
+id INT PRIMARY KEY AUTO_INCREMENT,
+name VARCHAR(100),
+price INT,
+category VARCHAR(50),
+image VARCHAR(300),
+user_id INT,
+FOREIGN KEY(user_id) REFERENCES users(id)
+);

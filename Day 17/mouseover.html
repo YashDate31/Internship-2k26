@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Eveent Listener 
+        </title>
+    </head>
+    <style>
+        #mybtn
+            {
+                background-color: rgb(174, 203, 229);
+                padding:55px ;
+                height: 60px;
+                width:100px;
+                align-items: center;
+            }
+    </style>
+    <body>
+        <div id="mybtn">CLICK ME</div>
+
+    </body>
+
+</html>
+<script>
+    let btn= document.getElementById("mybtn").addEventListener("mouseover",function(){this.style.color="blue";});
+
+</script>

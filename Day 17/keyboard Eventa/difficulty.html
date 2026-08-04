@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Keyboard Events Difficulty</title>
+</head>
+<body>
+    <h1>Keyboard Events Difficulty Levels</h1>
+    <h2>Beginner</h2>
+    <p>Listen for a 'keydown' event and log the key pressed.</p>
+    <input type="text" id="beginnerInput" placeholder="Type here">
+    <script>
+        document.getElementById('beginnerInput').addEventListener('keydown', function(event) {
+            console.log('Beginner keydown: ' + event.key);
+        });
+    </script>
+    
+    <h2>Intermediate</h2>
+    <p>Detect specific keys, like 'Enter' or 'Escape'.</p>
+    <input type="text" id="intermediateInput" placeholder="Press Enter">
+    <script>
+        document.getElementById('intermediateInput').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                alert('Enter key pressed!');
+            }
+        });
+    </script>
+</body>
+</html>

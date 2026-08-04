@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Age Calculator</title>
+</head>
+<body>
+    <h1>Age Calculator</h1>
+    <p>Please enter your birth date:</p>
+    <input type="date" id="birthDate">
+    <br><br>
+    <button onclick="calculateAge()">Calculate Age</button>
+    <p id="result"></p>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>$(document).ready(function() {
+
+        function calculateAge() {
+            var birthDate = new Date($("#birthDate").val());
+            var today = new Date();
+            var age = today.getFullYear() - birthDate.getFullYear();
+            // alert("Initial age calculation: " + today.getFullYear());
+            $("#result").html("Your age is: " + age + " years");
+        }
+    
+});</script>
+</body>
+</html>

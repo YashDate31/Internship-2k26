@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            DOM 
+        </title>
+        <style>
+            #mybtn
+            {
+                background-color: aliceblue;
+                padding:55px ;
+                height: 60px;
+                width:100px;
+                align-items: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="mybtn">CLICK ME</div>
+
+    </body>
+
+</html>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>$(document).ready(function() {
+
+    let btn= $("#mybtn");
+    btn.onclick= function()
+    {
+        alert("buttooon preeeeeeeeeeesed");
+    }
+
+});</script>

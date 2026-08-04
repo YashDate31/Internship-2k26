@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mousedown & Mouseup Events</title>
+</head>
+<body>
+    <h1>Mousedown & Mouseup Events</h1>
+    <p>Fires when a mouse button is pressed down, and when it is released.</p>
+    <div id="mouseDiv" style="width: 200px; height: 100px; background-color: lightblue; display: flex; align-items: center; justify-content: center;">
+        Press and Release
+    </div>
+    <script>
+        const div = document.getElementById('mouseDiv');
+        div.addEventListener('mousedown', function() {
+            div.style.backgroundColor = 'salmon';
+            div.innerText = 'Mouse Down!';
+        });
+        div.addEventListener('mouseup', function() {
+            div.style.backgroundColor = 'lightblue';
+            div.innerText = 'Mouse Up!';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login Form</title>
+</head>
+<style>
+    .textfield {
+        color: rgb(0, 0, 0);
+        background-color: rgba(241, 156, 156, 0.177);
+    }
+
+    #button {
+        color: rgb(34, 27, 27);
+        background-color: rgb(162, 162, 184);
+        align-self: center;
+
+    }
+
+    #butt {
+        text-align: center;
+    }
+</style>
+
+<body>
+
+
+    <form>
+        <fieldset>
+            <legend>Login Form</legend>
+            Email:
+            <input type="text" id="email" class="textfield"><br><br>
+
+            Phone:
+            <input type="text" id="phone" class="textfield"><br><br>
+
+            Password:
+            <input type="password" id="pass" class="textfield"><br><br>
+            Age:
+            <input type="number" id="age" class="textfield"><br><br>
+
+            <div id="butt"><input type="button" value="Login" onclick="validate()" id="button"></div>
+
+        </fieldset>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="C:\Users\Yash\OneDrive\Desktop\Internship 2026\Day 21\Bootstrap.min.js"></script>
+    <script>
+        function validate() {
+            debugger;
+            var email = $("#email").val();
+            var pass = $("#pass").val();
+            var phone = $("#phone").val();
+            var age = $("#age").val();
+
+            if (email.indexOf("@") == -1 || email.indexOf(".") == -1) {
+                alert("Invalid Email");
+            }
+            else if (pass.length < 6) {
+                alert("Password must be at least 6 characters");
+            }
+
+            else if (phone == "" || phone.length != 10) {
+                alert("Enter the valid number.");
+            }
+            else if (age == "" || age < 18) {
+                alert("age is valid or u r minor");
+            }
+            else {
+                alert("Login Successful");
+            }
+        }
+    </script>
+
+</body>
+
+</html>

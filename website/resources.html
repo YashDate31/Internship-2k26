@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="College Sahayak - Your comprehensive study companion for polytechnic diploma students in Maharashtra. Access syllabus, practicals, assignments, and micro-projects.">
+    <meta name="keywords" content="polytechnic, diploma, engineering, study materials, Maharashtra, college, education">
+    <title>Resources - College Sahayak</title>
+
+    <!-- Preconnect to external domains for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide@0.344.0/font/lucide.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.344.0/dist/umd/lucide.min.js" defer></script>
+
+    <!-- Open Graph meta tags for social sharing -->
+    <meta property="og:title" content="College Sahayak - Your Diploma Studies, Simplified">
+    <meta property="og:description"
+        content="Access comprehensive study materials for polytechnic diploma students. Syllabus, practicals, assignments, and micro-projects all in one place.">
+    <meta property="og:type" content="website">
+
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#2563EB">
+
+    <link rel="stylesheet" href="./static/css/const/style.css">
+    
+<script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body>
+    <div class="min-h-screen bg-white flex flex-col">
+        <nav class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
+                            <i data-lucide="book-open" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">College Sahayak</span>
+                    </div>
+                    
+                    <!-- Desktop Menu -->
+                    <div class="hidden md:flex items-center space-x-6">
+                        <a href="index.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-1"><span>Home</span></a>
+                        <a href="discover.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-1"><i data-lucide="compass" class="w-4 h-4"></i><span>Discover</span></a>
+                        <a href="resources.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-1"><i data-lucide="book-open" class="w-4 h-4"></i><span>Resources</span></a>
+                        <a href="blog.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-1"><i data-lucide="pen-tool" class="w-4 h-4"></i><span>Blog</span></a>
+                        <a href="login.html" id="nav-auth-btn" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-1"><i data-lucide="log-in" class="w-4 h-4"></i><span id="nav-auth-text">Login</span></a>
+                        <a href="about.html" class="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-1"><i data-lucide="info" class="w-4 h-4"></i><span>About Us</span></a>
+                        <a href="feedback.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center space-x-1"><i data-lucide="message-square" class="w-4 h-4"></i><span>Contact</span></a>
+                    </div>
+
+                    <!-- Mobile menu button -->
+                    <div class="md:hidden flex items-center">
+                        <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 focus:outline-none" onclick="toggleMobileMenu()">
+                            <i data-lucide="menu" class="block h-6 w-6"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full-Screen Mobile Menu (Responsive Overlay) -->
+            <div class="md:hidden hidden fixed inset-0 bg-white z-[9998] flex-col justify-center items-center" id="mobile-menu">
+                <button onclick="toggleMobileMenu()" class="absolute top-6 right-6 text-gray-500 hover:text-gray-900 focus:outline-none p-2 bg-gray-100 rounded-full">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+                <div class="flex flex-col space-y-8 text-center w-full px-8">
+                    <a href="index.html" class="block text-2xl font-semibold text-gray-800 hover:text-blue-600">Home</a>
+                    <a href="discover.html" class="block text-2xl font-semibold text-gray-800 hover:text-blue-600">Discover</a>
+                    <a href="resources.html" class="block text-2xl font-semibold text-gray-800 hover:text-blue-600">Resources</a>
+                    <a href="blog.html" class="block text-2xl font-semibold text-gray-800 hover:text-blue-600">Blog</a>
+                    <a href="login.html" id="mobile-auth-btn" class="block text-2xl font-semibold text-gray-800 hover:text-blue-600">Login / Profile</a>
+                    <a href="about.html" class="block text-2xl font-semibold text-gray-800 hover:text-blue-600">About Us</a>
+                    <a href="feedback.html" class="block text-xl font-semibold text-white bg-blue-600 rounded-full py-4 mt-4 shadow-lg">Contact Us</a>
+                </div>
+            </div>
+        </nav>
+        <main class="flex-grow">
+            
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900" id="resource-title">Study Materials</h1>
+            <p class="mt-4 text-lg text-gray-600">Select your branch, semester, and subject to download resources.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-lg p-8 lg:p-12 border border-gray-100">
+            <!-- Step 1: Choose Branch -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">1</span>
+                    Choose Your Branch
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="branches-grid">
+                    <!-- Populated by script.js -->
+                </div>
+            </div>
+
+            <!-- Step 2: Choose Semester -->
+            <div class="mb-8" id="semester-section" style="display: none;">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <span class="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">2</span>
+                    Choose Your Semester
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3" id="semesters-grid">
+                    <!-- Populated by script.js -->
+                </div>
+            </div>
+
+            <!-- Step 3: Show Materials Button -->
+            <div class="text-center" id="show-materials-section" style="display: none;">
+                <button id="show-materials-btn"
+                    class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-12 py-4 rounded-xl font-semibold text-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl">
+                    View Resources
+                    <i data-lucide="chevron-down" class="w-5 h-5 ml-2 inline"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Download Results Section -->
+        <div id="results-section" class="mt-12" style="display: none;">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6" id="results-title">Available Downloads</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="results-grid">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Include script to populate branches/semesters -->
+<script src="./static/js/const/script.js"></script>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const type = urlParams.get('type') || 'materials';
+    
+    const formatTitle = (str) => {
+        if(str === 'question_papers') return 'Question Papers';
+        return str.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    };
+    
+    document.getElementById('resource-title').textContent = formatTitle(type);
+
+    const dummyData = {
+        'syllabus': [
+            { title: 'Core Mathematics Syllabus', type: 'PDF Document', size: '1.2 MB', icon: 'book' },
+            { title: 'Programming Fundamentals', type: 'PDF Document', size: '2.5 MB', icon: 'book' },
+            { title: 'Engineering Graphics', type: 'PDF Document', size: '3.1 MB', icon: 'book' }
+        ],
+        'lab-manuals': [
+            { title: 'Physics Lab Experiments', type: 'Lab Manual', size: '4.5 MB', icon: 'flask-conical' },
+            { title: 'C Programming Lab', type: 'Lab Code', size: '1.8 MB', icon: 'code' },
+            { title: 'Chemistry Practicals Journal', type: 'Lab Manual', size: '5.2 MB', icon: 'flask-round' }
+        ],
+        'assignments': [
+            { title: 'Maths Assignment 1: Calculus', type: 'Worksheet', size: '500 KB', icon: 'edit' },
+            { title: 'C++ OOP Concepts Tasks', type: 'Problem Set', size: '800 KB', icon: 'file-code' },
+            { title: 'Thermodynamics Practice', type: 'Assignment', size: '1.1 MB', icon: 'file-text' }
+        ],
+        'microprojects': [
+            { title: 'IoT Weather Station', type: 'Project Guide', size: '3.5 MB', icon: 'cpu' },
+            { title: 'Library Management System', type: 'Source Code', size: '2.1 MB', icon: 'database' },
+            { title: 'Smart Energy Meter', type: 'Project Report', size: '4.8 MB', icon: 'zap' }
+        ],
+        'question_papers': [
+            { title: 'Winter 2024 Exam Paper', type: 'Previous Paper', size: '2.3 MB', icon: 'file-question' },
+            { title: 'Summer 2024 Exam Paper', type: 'Previous Paper', size: '2.1 MB', icon: 'file-question' },
+            { title: 'Winter 2023 Exam Paper', type: 'Previous Paper', size: '2.4 MB', icon: 'file-question' }
+        ]
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            const btn = document.getElementById('show-materials-btn');
+            if (btn) {
+                const newBtn = btn.cloneNode(true);
+                btn.parentNode.replaceChild(newBtn, btn);
+                
+                newBtn.addEventListener('click', () => {
+                    const resultsSection = document.getElementById('results-section');
+                    const resultsGrid = document.getElementById('results-grid');
+                    
+                    resultsSection.style.display = 'block';
+                    
+                    const data = dummyData[type] || dummyData['syllabus'];
+                    
+                    resultsGrid.innerHTML = data.map(item => `
+                        <div class="bg-white rounded-xl shadow-sm hover:shadow-xl p-6 border border-gray-100 transition-all transform hover:-translate-y-1">
+                            <div class="flex items-start space-x-4 mb-4">
+                                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="${item.icon}" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 leading-tight">${item.title}</h4>
+                                    <p class="text-xs text-gray-500 mt-1">${item.type} • ${item.size}</p>
+                                </div>
+                            </div>
+                            <button onclick="alert('Starting secure download for: ${item.title}')" class="w-full mt-2 bg-white hover:bg-blue-600 text-blue-600 hover:text-white font-semibold py-2 rounded-lg border border-blue-200 hover:border-transparent transition-all flex justify-center items-center">
+                                <i data-lucide="download" class="w-4 h-4 mr-2"></i> Download
+                            </button>
+                        </div>
+                    `).join('');
+                    
+                    if (window.lucide) window.lucide.createIcons();
+                    
+                    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            }
+        }, 500); 
+    });
+</script>
+
+        </main>
+        <footer class="bg-gray-900 text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- About College Sahayak -->
+                    <div>
+                        <div class="flex items-center space-x-2 mb-4">
+                            <div
+                                class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
+                                <i data-lucide="book-open" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <span class="text-xl font-bold">College Sahayak</span>
+                        </div>
+                        <p class="text-gray-300 leading-relaxed mb-4">
+                            Empowering polytechnic diploma students across Maharashtra with comprehensive study
+                            materials,
+                            practicals, and resources for academic excellence.
+                        </p>
+                        <div class="space-y-2 text-sm text-gray-400">
+                            <div class="flex items-center">
+                                <i data-lucide="map-pin" class="w-4 h-4 mr-2"></i>
+                                <span>Maharashtra, India</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i data-lucide="mail" class="w-4 h-4 mr-2"></i>
+                                <span>support@collegesahayak.com</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Essential Links -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Essential Links</h3>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Home</a></li>
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors">All Resources</a>
+                            </li>
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors">About Us</a></li>
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Contact Support</a>
+                            </li>
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Privacy Policy</a>
+                            </li>
+                            <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Terms of
+                                    Service</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Connect With Us -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
+                        <p class="text-gray-300 text-sm mb-4">
+                            Follow us for updates, study tips, and educational content.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="#"
+                                class="w-10 h-10 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center justify-center transition-colors">
+                                <i data-lucide="facebook" class="w-5 h-5"></i>
+                            </a>
+                            <a href="#"
+                                class="w-10 h-10 bg-blue-400 hover:bg-blue-500 rounded-lg flex items-center justify-center transition-colors">
+                                <i data-lucide="twitter" class="w-5 h-5"></i>
+                            </a>
+                            <a href="#"
+                                class="w-10 h-10 bg-pink-600 hover:bg-pink-700 rounded-lg flex items-center justify-center transition-colors">
+                                <i data-lucide="instagram" class="w-5 h-5"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Bar -->
+                <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                    <p class="text-gray-400 text-sm">
+                        © 2025 College Sahayak. All Rights Reserved.
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+            
+            // Auth State Logic
+            const userStr = localStorage.getItem('cs_user');
+            if (userStr) {
+                const user = JSON.parse(userStr);
+                
+                // Desktop Auth Button
+                const authBtn = document.getElementById('nav-auth-btn');
+                if (authBtn) {
+                    authBtn.href = 'profile.html';
+                    authBtn.innerHTML = `<img src="${user.photoURL || 'https://via.placeholder.com/32'}" class="w-6 h-6 rounded-full border border-gray-300"> <span class="ml-2 font-semibold text-blue-600">${user.displayName}</span>`;
+                }
+                
+                // Mobile Auth Button
+                const mobileAuthBtn = document.getElementById('mobile-auth-btn');
+                if (mobileAuthBtn) {
+                    mobileAuthBtn.href = 'profile.html';
+                    mobileAuthBtn.innerText = 'My Profile';
+                }
+            }
+        });
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu) {
+                if (menu.classList.contains('hidden')) {
+                    menu.classList.remove('hidden');
+                    menu.classList.add('flex');
+                    document.body.style.overflow = 'hidden';
+                    if (window.lucide) window.lucide.createIcons();
+                } else {
+                    menu.classList.add('hidden');
+                    menu.classList.remove('flex');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

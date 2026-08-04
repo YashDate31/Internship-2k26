@@ -1,0 +1,480 @@
+import os
+
+admin_html = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Sahayak Admin Panel</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.344.0/dist/umd/lucide.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { admin: { 900: '#0f172a', 800: '#1e293b', 700: '#334155', accent: '#3b82f6' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .nav-item { cursor: pointer; }
+        .nav-item.active { background-color: #1e293b; color: white; }
+        .nav-item.active i { color: #3b82f6; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans flex h-screen overflow-hidden">
+
+    <!-- LOGIN SCREEN OVERLAY -->
+    <div id="login-overlay" class="fixed inset-0 bg-admin-900 z-[9999] flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md">
+            <div class="flex items-center justify-center space-x-3 mb-8">
+                <div class="w-12 h-12 bg-admin-accent rounded-xl flex items-center justify-center shadow-lg">
+                    <i data-lucide="shield" class="w-7 h-7 text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-900">Admin Login</h1>
+            </div>
+            
+            <form id="admin-login-form" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Username</label>
+                    <input type="text" id="admin-user" placeholder="Enter 'admin'" class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-accent transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                    <input type="password" id="admin-pass" placeholder="Enter 'admin123'" class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-admin-accent transition">
+                </div>
+                <div id="login-error" class="hidden text-red-500 text-sm font-semibold text-center">Invalid credentials. Try admin / admin123</div>
+                <button type="submit" class="w-full bg-admin-accent hover:bg-blue-600 text-white font-bold py-3 rounded-lg shadow-md transition-colors flex justify-center items-center">
+                    <i data-lucide="log-in" class="w-5 h-5 mr-2"></i> Access Dashboard
+                </button>
+            </form>
+            <p class="text-center text-xs text-gray-400 mt-6">Authorized Personnel Only. Monitored System.</p>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD WRAPPER (Hidden initially until logged in) -->
+    <div id="app-wrapper" class="flex w-full h-full opacity-0 pointer-events-none transition-opacity duration-500">
+        
+        <!-- Left Sidebar -->
+        <aside class="w-64 bg-admin-900 text-white flex flex-col hidden md:flex shrink-0">
+            <!-- Logo Area -->
+            <div class="h-16 flex items-center px-6 border-b border-admin-800 bg-admin-900">
+                <div class="w-8 h-8 bg-admin-accent rounded flex items-center justify-center mr-3 shadow-lg">
+                    <i data-lucide="shield" class="w-5 h-5 text-white"></i>
+                </div>
+                <span class="font-bold tracking-wide text-lg">Admin Panel</span>
+            </div>
+            
+            <!-- Navigation Links -->
+            <nav class="flex-grow py-6 overflow-y-auto px-4 space-y-1">
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Main</p>
+                <div class="nav-item active flex items-center px-4 py-2.5 text-gray-300 hover:bg-admin-800 hover:text-white rounded-lg transition group" onclick="switchTab('dashboard', this)">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3 group-hover:text-admin-accent transition"></i>
+                    <span class="font-medium">Dashboard</span>
+                </div>
+                <div class="nav-item flex items-center px-4 py-2.5 text-gray-300 hover:bg-admin-800 hover:text-white rounded-lg transition group" onclick="switchTab('users', this)">
+                    <i data-lucide="users" class="w-5 h-5 mr-3 group-hover:text-admin-accent transition"></i>
+                    <span class="font-medium">Manage Users</span>
+                </div>
+                <div class="nav-item flex items-center px-4 py-2.5 text-gray-300 hover:bg-admin-800 hover:text-white rounded-lg transition group" onclick="switchTab('materials', this)">
+                    <i data-lucide="database" class="w-5 h-5 mr-3 group-hover:text-admin-accent transition"></i>
+                    <span class="font-medium">Materials Library</span>
+                </div>
+                <div class="nav-item flex items-center px-4 py-2.5 text-gray-300 hover:bg-admin-800 hover:text-white rounded-lg transition group" onclick="switchTab('queue', this)">
+                    <i data-lucide="file-check" class="w-5 h-5 mr-3 group-hover:text-admin-accent transition"></i>
+                    <span class="font-medium">Review Queue</span>
+                    <span class="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">15</span>
+                </div>
+                
+                <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-6 mb-2">Configuration</p>
+                <div class="nav-item flex items-center px-4 py-2.5 text-gray-300 hover:bg-admin-800 hover:text-white rounded-lg transition group" onclick="switchTab('settings', this)">
+                    <i data-lucide="settings" class="w-5 h-5 mr-3 group-hover:text-admin-accent transition"></i>
+                    <span class="font-medium">Site Settings</span>
+                </div>
+            </nav>
+            
+            <!-- Bottom User Area -->
+            <div class="border-t border-admin-800 p-4">
+                <button onclick="logoutAdmin()" class="w-full flex items-center text-gray-400 hover:text-white transition px-2">
+                    <i data-lucide="log-out" class="w-5 h-5 mr-3"></i>
+                    <span>Log Out</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content wrapper -->
+        <div class="flex-grow flex flex-col h-screen overflow-hidden bg-gray-50">
+            
+            <!-- Top Bar -->
+            <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0 shadow-sm z-10">
+                <div class="flex items-center text-gray-500 font-semibold uppercase tracking-wider text-sm" id="topbar-title">
+                    DASHBOARD
+                </div>
+
+                <!-- Right side profile/notifications -->
+                <div class="flex items-center space-x-5">
+                    <button class="relative text-gray-500 hover:text-admin-accent transition">
+                        <i data-lucide="bell" class="w-5 h-5"></i>
+                        <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-white"></span>
+                        </span>
+                    </button>
+                    
+                    <div class="w-px h-6 bg-gray-300"></div>
+                    
+                    <button class="flex items-center space-x-2 focus:outline-none">
+                        <img src="https://i.pravatar.cc/150?img=11" alt="Admin" class="w-8 h-8 rounded-full border-2 border-blue-500">
+                        <div class="hidden md:block text-left">
+                            <p class="text-sm font-semibold leading-tight text-gray-800">Super Admin</p>
+                        </div>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Main Dashboard Content Area -->
+            <main class="flex-grow p-6 overflow-y-auto relative">
+                
+                <!-- TAB: DASHBOARD -->
+                <section id="tab-dashboard" class="tab-content active">
+                    <div class="flex justify-between items-end mb-6">
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
+                            <p class="text-gray-500 text-sm mt-1">Welcome back. Here is what is happening today.</p>
+                        </div>
+                        <button class="bg-admin-accent hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium shadow transition flex items-center">
+                            <i data-lucide="download-cloud" class="w-4 h-4 mr-2"></i> Export Report
+                        </button>
+                    </div>
+
+                    <!-- Metrics Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500 mb-1">Total Students</p>
+                                <h3 class="text-3xl font-bold text-gray-900">4,289</h3>
+                                <p class="text-xs font-semibold text-green-500 mt-2 flex items-center"><i data-lucide="trending-up" class="w-3 h-3 mr-1"></i> +12% this week</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-blue-600"><i data-lucide="users" class="w-6 h-6"></i></div>
+                        </div>
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500 mb-1">Materials Hosted</p>
+                                <h3 class="text-3xl font-bold text-gray-900">1,842</h3>
+                                <p class="text-xs font-semibold text-green-500 mt-2 flex items-center"><i data-lucide="trending-up" class="w-3 h-3 mr-1"></i> +54 new today</p>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-50 rounded-full flex items-center justify-center text-purple-600"><i data-lucide="database" class="w-6 h-6"></i></div>
+                        </div>
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500 mb-1">Pending Reviews</p>
+                                <h3 class="text-3xl font-bold text-gray-900">15</h3>
+                                <p class="text-xs font-semibold text-red-500 mt-2 flex items-center"><i data-lucide="alert-circle" class="w-3 h-3 mr-1"></i> Action Required</p>
+                            </div>
+                            <div class="w-12 h-12 bg-orange-50 rounded-full flex items-center justify-center text-orange-600"><i data-lucide="clock" class="w-6 h-6"></i></div>
+                        </div>
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500 mb-1">Server Health</p>
+                                <h3 class="text-3xl font-bold text-gray-900">99.9%</h3>
+                                <p class="text-xs font-semibold text-green-500 mt-2 flex items-center"><i data-lucide="check-circle" class="w-3 h-3 mr-1"></i> All systems nominal</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center text-green-600"><i data-lucide="server" class="w-6 h-6"></i></div>
+                        </div>
+                    </div>
+
+                    <!-- Two Column Layout: Chart & List -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Chart -->
+                        <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="font-bold text-gray-900">Traffic Overview</h3>
+                                <select class="border-none text-sm text-gray-500 font-medium outline-none bg-gray-50 px-2 py-1 rounded">
+                                    <option>Last 7 Days</option>
+                                    <option>Last 30 Days</option>
+                                </select>
+                            </div>
+                            <div class="h-64 w-full relative flex items-end justify-between px-2 pb-6 border-b border-l border-gray-200">
+                                <div class="w-[8%] bg-blue-100 rounded-t-sm" style="height: 40%"><span class="absolute top-full mt-2 text-xs text-gray-400">Mon</span></div>
+                                <div class="w-[8%] bg-blue-200 rounded-t-sm" style="height: 60%"><span class="absolute top-full mt-2 text-xs text-gray-400">Tue</span></div>
+                                <div class="w-[8%] bg-blue-400 rounded-t-sm" style="height: 80%"><span class="absolute top-full mt-2 text-xs text-gray-400">Wed</span></div>
+                                <div class="w-[8%] bg-blue-500 rounded-t-sm" style="height: 50%"><span class="absolute top-full mt-2 text-xs text-gray-400">Thu</span></div>
+                                <div class="w-[8%] bg-admin-accent rounded-t-sm" style="height: 95%"><span class="absolute top-full mt-2 font-bold text-gray-800">Fri</span></div>
+                                <div class="w-[8%] bg-blue-300 rounded-t-sm" style="height: 70%"><span class="absolute top-full mt-2 text-xs text-gray-400">Sat</span></div>
+                                <div class="w-[8%] bg-blue-200 rounded-t-sm" style="height: 45%"><span class="absolute top-full mt-2 text-xs text-gray-400">Sun</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Activity -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                            <h3 class="font-bold text-gray-900 mb-6">Recent Admin Actions</h3>
+                            <div class="space-y-6 relative before:absolute before:inset-0 before:ml-2.5 before:-translate-x-px before:h-full before:w-0.5 before:bg-gray-200">
+                                <div class="relative flex items-start group">
+                                    <div class="absolute -left-1 w-3 h-3 bg-blue-500 rounded-full border-2 border-white ring-4 ring-white mt-1.5"></div>
+                                    <div class="ml-8"><p class="text-sm font-semibold text-gray-900">Database Backup</p><span class="text-xs text-gray-400">10 mins ago</span></div>
+                                </div>
+                                <div class="relative flex items-start group">
+                                    <div class="absolute -left-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white ring-4 ring-white mt-1.5"></div>
+                                    <div class="ml-8"><p class="text-sm font-semibold text-gray-900">Deleted User</p><span class="text-xs text-gray-400">2 hours ago</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB: USERS -->
+                <section id="tab-users" class="tab-content">
+                    <div class="flex justify-between items-end mb-6">
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-900">Manage Students</h1>
+                            <p class="text-gray-500 text-sm mt-1">View, edit, or suspend student accounts.</p>
+                        </div>
+                        <div class="flex bg-white border border-gray-300 rounded-lg overflow-hidden shadow-sm">
+                            <input type="text" placeholder="Search by name or email" class="px-4 py-2 border-none outline-none text-sm w-64">
+                            <button class="bg-admin-accent text-white px-4 py-2 hover:bg-blue-600"><i data-lucide="search" class="w-4 h-4"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                                    <th class="px-6 py-4 font-semibold">Student Name</th>
+                                    <th class="px-6 py-4 font-semibold">Branch</th>
+                                    <th class="px-6 py-4 font-semibold">Joined Date</th>
+                                    <th class="px-6 py-4 font-semibold">Status</th>
+                                    <th class="px-6 py-4 font-semibold text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 text-sm">
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="px-6 py-4 font-medium text-gray-900 flex items-center"><div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold mr-3">R</div>Rahul Sharma</td>
+                                    <td class="px-6 py-4 text-gray-500">Computer Engg.</td>
+                                    <td class="px-6 py-4 text-gray-500">Jan 12, 2025</td>
+                                    <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded">Active</span></td>
+                                    <td class="px-6 py-4 text-right"><button class="text-blue-600 hover:text-blue-800 font-semibold px-2">Edit</button><button class="text-red-600 hover:text-red-800 font-semibold px-2">Ban</button></td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="px-6 py-4 font-medium text-gray-900 flex items-center"><div class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold mr-3">P</div>Priya Patel</td>
+                                    <td class="px-6 py-4 text-gray-500">Mechanical Engg.</td>
+                                    <td class="px-6 py-4 text-gray-500">Feb 01, 2025</td>
+                                    <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded">Active</span></td>
+                                    <td class="px-6 py-4 text-right"><button class="text-blue-600 hover:text-blue-800 font-semibold px-2">Edit</button><button class="text-red-600 hover:text-red-800 font-semibold px-2">Ban</button></td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition opacity-60">
+                                    <td class="px-6 py-4 font-medium text-gray-900 flex items-center"><div class="w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-bold mr-3">A</div>Aman Verma</td>
+                                    <td class="px-6 py-4 text-gray-500">Civil Engg.</td>
+                                    <td class="px-6 py-4 text-gray-500">Mar 10, 2025</td>
+                                    <td class="px-6 py-4"><span class="px-2 py-1 bg-red-100 text-red-700 text-xs font-bold rounded">Banned</span></td>
+                                    <td class="px-6 py-4 text-right"><button class="text-blue-600 hover:text-blue-800 font-semibold px-2">Edit</button><button class="text-green-600 hover:text-green-800 font-semibold px-2">Unban</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- TAB: MATERIALS -->
+                <section id="tab-materials" class="tab-content">
+                    <div class="flex justify-between items-end mb-6">
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-900">Materials Library</h1>
+                            <p class="text-gray-500 text-sm mt-1">Manage all public syllabus and lab manual PDFs.</p>
+                        </div>
+                        <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow flex items-center">
+                            <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Upload New
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Dummy file cards -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition">
+                            <div class="flex items-start justify-between mb-4">
+                                <div class="w-10 h-10 bg-red-100 text-red-600 rounded flex justify-center items-center"><i data-lucide="file-text" class="w-5 h-5"></i></div>
+                                <button class="text-gray-400 hover:text-gray-600"><i data-lucide="more-vertical" class="w-5 h-5"></i></button>
+                            </div>
+                            <h3 class="font-bold text-gray-900 truncate">Java_Unit_1_Notes.pdf</h3>
+                            <p class="text-xs text-gray-500 mt-1">Uploaded: 2 weeks ago • 2.4 MB</p>
+                            <div class="mt-4 flex space-x-2">
+                                <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded font-bold">Sem 4</span>
+                                <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded font-bold">Java</span>
+                            </div>
+                        </div>
+                        <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition">
+                            <div class="flex items-start justify-between mb-4">
+                                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded flex justify-center items-center"><i data-lucide="file-archive" class="w-5 h-5"></i></div>
+                                <button class="text-gray-400 hover:text-gray-600"><i data-lucide="more-vertical" class="w-5 h-5"></i></button>
+                            </div>
+                            <h3 class="font-bold text-gray-900 truncate">OS_Lab_Manual_Full.zip</h3>
+                            <p class="text-xs text-gray-500 mt-1">Uploaded: 1 month ago • 15.1 MB</p>
+                            <div class="mt-4 flex space-x-2">
+                                <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded font-bold">Sem 5</span>
+                                <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded font-bold">OS</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB: QUEUE -->
+                <section id="tab-queue" class="tab-content">
+                    <h1 class="text-2xl font-bold text-gray-900 mb-6">Pending Upload Approvals</h1>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                                    <th class="px-6 py-4 font-semibold">Material Title</th>
+                                    <th class="px-6 py-4 font-semibold">Uploader</th>
+                                    <th class="px-6 py-4 font-semibold">Category</th>
+                                    <th class="px-6 py-4 font-semibold text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 text-sm">
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="px-6 py-4 font-medium text-gray-900">Network Topology PDF</td>
+                                    <td class="px-6 py-4 text-gray-500">Student_883</td>
+                                    <td class="px-6 py-4"><span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded">Assignment</span></td>
+                                    <td class="px-6 py-4 text-right space-x-2">
+                                        <button class="text-green-600 border border-green-200 hover:bg-green-50 px-3 py-1 rounded">Approve</button>
+                                        <button class="text-red-600 border border-red-200 hover:bg-red-50 px-3 py-1 rounded">Reject</button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="px-6 py-4 font-medium text-gray-900">Winter 2025 OS Paper</td>
+                                    <td class="px-6 py-4 text-gray-500">Prof_Kumar</td>
+                                    <td class="px-6 py-4"><span class="px-2 py-1 bg-red-100 text-red-700 text-xs font-bold rounded">Exam Paper</span></td>
+                                    <td class="px-6 py-4 text-right space-x-2">
+                                        <button class="text-green-600 border border-green-200 hover:bg-green-50 px-3 py-1 rounded">Approve</button>
+                                        <button class="text-red-600 border border-red-200 hover:bg-red-50 px-3 py-1 rounded">Reject</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- TAB: SETTINGS -->
+                <section id="tab-settings" class="tab-content">
+                    <h1 class="text-2xl font-bold text-gray-900 mb-6">Site Configuration</h1>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-2xl">
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Platform Name</label>
+                                <input type="text" value="College Sahayak" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-admin-accent">
+                            </div>
+                            <div class="flex items-center justify-between border-t border-gray-100 pt-6">
+                                <div>
+                                    <h4 class="font-bold text-gray-900">Maintenance Mode</h4>
+                                    <p class="text-sm text-gray-500">Turn off public access to the frontend.</p>
+                                </div>
+                                <div class="w-12 h-6 bg-gray-300 rounded-full relative cursor-pointer shadow-inner">
+                                    <div class="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 shadow"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between border-t border-gray-100 pt-6">
+                                <div>
+                                    <h4 class="font-bold text-gray-900">Allow New Signups</h4>
+                                    <p class="text-sm text-gray-500">Let new students register accounts.</p>
+                                </div>
+                                <div class="w-12 h-6 bg-admin-accent rounded-full relative cursor-pointer shadow-inner">
+                                    <div class="w-5 h-5 bg-white rounded-full absolute top-0.5 right-0.5 shadow"></div>
+                                </div>
+                            </div>
+                            <div class="pt-6 border-t border-gray-100">
+                                <button class="bg-admin-accent hover:bg-blue-600 text-white font-bold py-2 px-6 rounded shadow transition">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+            
+            // Check session
+            if (sessionStorage.getItem('admin_logged_in') === 'true') {
+                showDashboard();
+            }
+        });
+
+        // Login Logic
+        document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = document.getElementById('admin-user').value;
+            const pass = document.getElementById('admin-pass').value;
+            
+            if (user === 'admin' && pass === 'admin123') {
+                sessionStorage.setItem('admin_logged_in', 'true');
+                showDashboard();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        });
+
+        function showDashboard() {
+            document.getElementById('login-overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('login-overlay').style.display = 'none';
+                const app = document.getElementById('app-wrapper');
+                app.style.opacity = '1';
+                app.style.pointerEvents = 'auto';
+            }, 500);
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem('admin_logged_in');
+            window.location.reload();
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabId, element) {
+            // Remove active from all nav items
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            // Add active to clicked nav item
+            element.classList.add('active');
+            
+            // Hide all sections
+            document.querySelectorAll('.tab-content').forEach(sec => sec.classList.remove('active'));
+            // Show targeted section
+            document.getElementById('tab-' + tabId).classList.add('active');
+            
+            // Update Title
+            const titles = {
+                'dashboard': 'DASHBOARD',
+                'users': 'USER MANAGEMENT',
+                'materials': 'MATERIALS LIBRARY',
+                'queue': 'REVIEW QUEUE',
+                'settings': 'SITE CONFIGURATION'
+            };
+            document.getElementById('topbar-title').innerText = titles[tabId];
+            
+            if (window.lucide) window.lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
+"""
+
+filepath = os.path.join(r"c:\Users\Yash\Downloads\college_sahayak-main\website\admin", "index.html")
+with open(filepath, "w", encoding="utf-8") as f:
+    f.write(admin_html)
+
+print("Admin panel upgraded with login and tabs!")

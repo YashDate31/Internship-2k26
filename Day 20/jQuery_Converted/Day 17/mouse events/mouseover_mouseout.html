@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mouseover & Mouseout Events</title>
+</head>
+<body>
+    <h1>Mouseover & Mouseout Events</h1>
+    <p>Fires when a pointing device is moved onto an element, and when it is moved off.</p>
+    <div id="hoverBox" style="width: 200px; height: 200px; background-color: lightgreen; border: 2px solid green; transition: 0.3s;">
+        Hover over me!
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>$(document).ready(function() {
+
+        const box = $("#hoverBox");
+        
+        box.mouseover(function() {
+            box.css("backgroundColor", 'yellow');
+            box.css("transform", 'scale(1.1)');
+            box.innerText = 'Mouse is over me!';
+        });
+
+        box.mouseout(function() {
+            box.css("backgroundColor", 'lightgreen');
+            box.css("transform", 'scale(1)');
+            box.innerText = 'Hover over me!';
+        });
+    
+});</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mousemove Event</title>
+</head>
+<body>
+    <h1>Mousemove Event</h1>
+    <p>Fires when a pointing device is moved.</p>
+    <div id="moveArea" style="width: 300px; height: 200px; background-color: lightgray; border: 1px solid black;">
+        Move mouse inside here
+    </div>
+    <p>Coordinates: <span id="coords">X: 0, Y: 0</span></p>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>$(document).ready(function() {
+
+        $("#moveArea").mousemove(function(event) {
+            $("#coords").innerText = 'X: ' + event.offsetX + ', Y: ' + event.offsetY;
+        });
+    
+});</script>
+</body>
+</html>

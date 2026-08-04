@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>
+    <title>
+        focus event
+    </title>
+
+</head>
+<body>
+    
+    <input type="text" id="one" placeholder="Enter Your Name">
+
+</body>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>$(document).ready(function() {
+
+    let name = $("#one");
+    name.focus(function() {
+        name.css("backgroundColor", "red");});
+
+});</script>
+</html>

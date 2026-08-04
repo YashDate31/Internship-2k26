@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mouse Events Syntax Reference</title>
+</head>
+<body>
+    <h1>Mouse Events Syntax</h1>
+    <ul>
+        <li><code>click</code>: Fires when a pointing device button is pressed and released.</li>
+        <li><code>dblclick</code>: Fires when a pointing device button is clicked twice rapidly.</li>
+        <li><code>mousedown</code>: Fires when a pointing device button is pressed.</li>
+        <li><code>mouseup</code>: Fires when a pointing device button is released.</li>
+        <li><code>mousemove</code>: Fires when a pointing device is moved.</li>
+        <li><code>mouseover</code>: Fires when a pointing device is moved onto the element.</li>
+        <li><code>mouseout</code>: Fires when a pointing device is moved off the element.</li>
+    </ul>
+    <h2>Example:</h2>
+    <pre>
+        document.getElementById('myButton').addEventListener('click', function(event) {
+            console.log('Button clicked!');
+        });
+    </pre>
+</body>
+</html>

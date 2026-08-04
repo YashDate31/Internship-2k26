@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Focus Event</title>
+</head>
+<body>
+    <h1>Focus Event</h1>
+    <input type="text" id="myInput" placeholder="Click inside me">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>$(document).ready(function() {
+
+        $("#myInput").focus(function() {
+            console.log("Input is focused!");
+            this.css("backgroundColor", "yellow");
+        });
+    
+});</script>
+</body>
+</html>

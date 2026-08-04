@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Eveent Listener
+    </title>
+    <style>
+        #mybtn {
+            background-color: aliceblue;
+            padding: 55px;
+            height: 60px;
+            width: 100px;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="mybtn">CLICK ME</div>
+
+</body>
+
+</html>
+<script>
+    $(document).ready(function () {
+        $("#mybtn").dblclick(function () {
+            $(this).css("color", "red");
+        });
+    });
+</script>

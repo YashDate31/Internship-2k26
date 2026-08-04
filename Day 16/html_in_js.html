@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>One Variable UI</title>
+</head>
+<body style="align-items: center;align-content: center;;">
+
+<button onclick="show()">Show Card</button>
+
+<div id="demo"></div>
+
+<script>
+function show()
+{
+    var data = "<div style='width:300px;padding:20px;margin:20px;border-radius:15px;text-align:center;font-family:Arial;background-color:rgb(156, 209, 209);'>" +
+               "<h2>Yash Date</h2>" +
+               "<p>Computer Engineering Student</p>" +
+               "<p>Government Polytechnic</p>" +
+               "<button>Contact</button>" +
+               "</div>";
+        
+
+    document.getElementById("demo").innerHTML = data;
+}
+</script>
+
+</body>
+</html>

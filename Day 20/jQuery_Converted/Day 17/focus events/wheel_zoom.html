@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wheel Event</title>
+</head>
+<body>
+    <h1>Wheel Event</h1>
+    <p>Scroll your mouse wheel over this page.</p>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+        window.wheel(function(event) {
+            console.log("You used the mouse wheel!");
+            alert("Wheel event triggered!");
+        });
+    </script>
+</body>
+</html>

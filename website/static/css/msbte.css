@@ -1,0 +1,108 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    color: #333;
+  }
+  
+  header {
+    background-color: #0056b3;
+    color: white;
+    text-align: center;
+    padding: 20px 10px;
+  }
+  
+  header h1 {
+    margin: 0;
+    font-size: 2rem;
+  }
+  
+  header p {
+    margin-top: 5px;
+    font-size: 1.1rem;
+  }
+  
+  .filter-section {
+    padding: 15px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .filter-section label {
+    font-size: 1rem;
+  }
+  
+  .filter-section select {
+    padding: 5px 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .updates {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+    padding: 20px;
+  }
+  
+  .update-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .update-card h2 {
+    margin: 0 0 10px;
+    font-size: 1.2rem;
+  }
+  
+  .update-card .date {
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .update-card .view-link {
+    text-decoration: none;
+    color: #0056b3;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 10px;
+  }
+  
+  .load-more {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #0056b3;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .load-more:hover {
+    background-color: #004494;
+  }
+  
+  footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #0056b3;
+    color: white;
+    margin-top: 20px;
+  }
+  
+  footer a {
+    color: #ffd700;
+    text-decoration: none;
+  }
+  

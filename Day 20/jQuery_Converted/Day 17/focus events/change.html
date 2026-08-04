@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Change Event</title>
+</head>
+<body>
+    <h1>Change Event</h1>
+    <p>Type something and then click outside the box.</p>
+    <input type="text" id="myInput">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>$(document).ready(function() {
+
+        $("#myInput").change(function() {
+            console.log("Value changed to: " + this.value);
+            alert("Change event triggered!");
+        });
+    
+});</script>
+</body>
+</html>
