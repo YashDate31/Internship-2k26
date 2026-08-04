@@ -1,4 +1,4 @@
-﻿import { PlayCircle, Search, ExternalLink, Filter, GraduationCap, Video } from 'lucide-react';
+import { PlayCircle, Search, ExternalLink, Filter, GraduationCap, Video } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import './Curriculum.css';
 import { handleProtectedDownload } from '../utils/auth';
@@ -25,7 +25,7 @@ export function LectureVideos() {
   const [selectedSemester, setSelectedSemester] = useState('');
 
   useEffect(() => {
-    fetch(\${API_URL}/api/materials\)
+    fetch(`${API_URL}/api/materials`)
       .then(res => res.json())
       .then(data => {
           setMaterials(data.filter((item: Material) => item.category === 'Lecture Videos' && !item.title.startsWith('[PENDING]')));

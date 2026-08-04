@@ -1,4 +1,4 @@
-﻿import { BookOpen, Search, Download, Lock, Filter, GraduationCap, Settings } from 'lucide-react';
+import { BookOpen, Search, Download, Lock, Filter, GraduationCap, Settings } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { UpgradeModal } from '../components/UpgradeModal';
 import './Curriculum.css';
@@ -27,7 +27,7 @@ export function LabManuals() {
   const [selectedSemester, setSelectedSemester] = useState('');
 
   useEffect(() => {
-    fetch(\${API_URL}/api/materials\)
+    fetch(`${API_URL}/api/materials`)
       .then(res => res.json())
       .then(data => {
           setMaterials(data.filter((item: Material) => item.category === 'Lab Manual' && !item.title.startsWith('[PENDING]')));

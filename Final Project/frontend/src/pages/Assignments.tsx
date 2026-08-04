@@ -1,4 +1,4 @@
-﻿import { FileText, Search, Download, Filter, GraduationCap, Calendar } from 'lucide-react';
+import { FileText, Search, Download, Filter, GraduationCap, Calendar } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import './Curriculum.css';
 import { handleProtectedDownload } from '../utils/auth';
@@ -25,7 +25,7 @@ export function Assignments() {
   const [selectedSemester, setSelectedSemester] = useState('');
 
   useEffect(() => {
-    fetch(\${API_URL}/api/materials\)
+    fetch(`${API_URL}/api/materials`)
       .then(res => res.json())
       .then(data => {
           setMaterials(data.filter((item: Material) => item.category === 'Assignments' && !item.title.startsWith('[PENDING]')));
