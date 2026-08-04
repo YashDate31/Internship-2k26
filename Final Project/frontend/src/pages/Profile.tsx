@@ -137,6 +137,7 @@ export function Profile() {
                   style={{ color: 'var(--danger-color)', borderColor: 'rgba(239, 68, 68, 0.2)', marginLeft: 'auto' }}
                   onClick={async () => {
                     localStorage.removeItem('mock_logged_in');
+                    localStorage.removeItem('auth_token');
                     await import('firebase/auth').then(({ signOut }) => signOut(auth));
                     window.location.href = '/login';
                   }}

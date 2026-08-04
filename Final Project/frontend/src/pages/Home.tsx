@@ -6,6 +6,8 @@ import {
   ChevronRight, ClipboardList, Download, ExternalLink, FileText,
   Flame, GraduationCap, Lightbulb, MessageSquare, Settings, Shield, Star, PlayCircle, BookOpen
 } from 'lucide-react';
+import { handleProtectedDownload } from '../utils/auth';
+import { API_URL } from '../utils/api';
 import './Home.css';
 
 // --- Data ---
@@ -83,7 +85,7 @@ export function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/materials')
+    fetch(`${API_URL}/api/materials`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -219,7 +221,7 @@ export function Home() {
                     {item.category}
                   </span>
                 </div>
-                <a href={item.drive_link} target="_blank" rel="noopener noreferrer" className="resource-link link-orange">
+                <a href={item.drive_link} onClick={(e) => { e.preventDefault(); handleProtectedDownload(item.drive_link); }} className="resource-link link-orange">
                   Download Now <ChevronRight size={16} />
                 </a>
               </article>

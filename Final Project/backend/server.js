@@ -6,6 +6,8 @@ const cors = require('cors');
 const materialsRoutes = require('./routes/materials');
 const usersRoutes = require('./routes/users');
 const chatRoutes = require('./routes/chat');
+const authRoutes = require('./routes/auth');
+const feedbackRoutes = require('./routes/feedback');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -18,6 +20,8 @@ app.use(express.json());
 app.use('/api/materials', materialsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/feedback', feedbackRoutes);
 
 // Basic health check route
 app.get('/health', (req, res) => {

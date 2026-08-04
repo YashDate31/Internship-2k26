@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const supabase = require('../config/supabase');
 const verifyTokenOnly = require('../middleware/authVerifyOnly');
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-me-in-production';
 
 // POST /api/users/sync - Sync Firebase user to Supabase
 router.post('/sync', verifyTokenOnly, async (req, res) => {
@@ -24,6 +27,8 @@ router.post('/sync', verifyTokenOnly, async (req, res) => {
       return res.status(500).json({ error: 'Database error checking user' });
     }
 
+    let userToSign;
+
     if (existingUser) {
       // User exists, just update their info if needed (e.g. name changed)
       const { data, error: updateError } = await supabase
@@ -33,7 +38,7 @@ router.post('/sync', verifyTokenOnly, async (req, res) => {
         .select();
         
       if (updateError) throw updateError;
-      return res.status(200).json({ message: 'User synced successfully', user: data[0] });
+      userToSign = data[0];
     } else {
       // New user
       const { data, error: insertError } = await supabase
@@ -43,13 +48,36 @@ router.post('/sync', verifyTokenOnly, async (req, res) => {
             firebase_uid: uid,
             email: email,
             name: name || '',
+            role: 'user'
           },
         ])
         .select();
 
       if (insertError) throw insertError;
-      return res.status(201).json({ message: 'User created and synced successfully', user: data[0] });
+      userToSign = data[0];
     }
+
+    // Generate custom JWT token
+    const token = jwt.sign(
+      { 
+        id: userToSign.id,
+        email: userToSign.email,
+        name: userToSign.name,
+        role: userToSign.role
+      },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    return res.status(200).json({ 
+      message: 'User synced successfully', 
+      token,
+      user: {
+        id: userToSign.id,
+        email: userToSign.email,
+        name: userToSign.name
+      }
+    });
   } catch (err) {
     console.error('Error syncing user:', err);
     res.status(500).json({ error: 'Internal server error' });

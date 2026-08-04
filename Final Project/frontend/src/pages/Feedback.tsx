@@ -1,14 +1,40 @@
 import { useState } from 'react';
 import { MessageSquare, Send, CheckCircle } from 'lucide-react';
+import { API_URL } from '../utils/api';
 import './Login.css'; // For .auth-input and .form-group
 
 export function Feedback() {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  
+  // Form fields
+  const [feedbackType, setFeedbackType] = useState('suggestion');
+  const [message, setMessage] = useState('');
+  const [email, setEmail] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In Phase 4, this will send data to Supabase
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setError('');
+
+    try {
+      const response = await fetch(`${API_URL}/api/feedback`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: feedbackType, message, email })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send feedback');
+      }
+
+      setSubmitted(true);
+    } catch (err: any) {
+      setError('Something went wrong. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const containerStyle: React.CSSProperties = {
@@ -60,9 +86,17 @@ export function Feedback() {
         </div>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          
+          {error && <div style={{ color: 'var(--danger-color)', textAlign: 'center', marginBottom: '0.5rem' }}>{error}</div>}
+
           <div className="form-group">
             <label style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)' }}>Feedback Type</label>
-            <select className="auth-input" required defaultValue="suggestion">
+            <select 
+              className="auth-input" 
+              required 
+              value={feedbackType}
+              onChange={(e) => setFeedbackType(e.target.value)}
+            >
               <option value="suggestion">Feature Suggestion</option>
               <option value="content">Request Study Material</option>
               <option value="bug">Report a Bug</option>
@@ -78,21 +112,31 @@ export function Feedback() {
               required 
               placeholder="Tell us exactly what you're looking for or what's on your mind..."
               style={{ resize: 'vertical' }}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
             ></textarea>
           </div>
 
           <div className="form-group">
-            <label style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)' }}>Email (Optional)</label>
+            <label style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)' }}>Email</label>
             <input 
               type="email" 
               className="auth-input" 
-              placeholder="If you'd like a response"
+              placeholder="Your email address"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
-          <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: '1rem' }}>
+          <button 
+            type="submit" 
+            className="btn btn-primary" 
+            style={{ width: '100%', justifyContent: 'center', marginTop: '1rem' }}
+            disabled={isSubmitting}
+          >
             <Send size={18} />
-            Submit Feedback
+            {isSubmitting ? 'Sending...' : 'Submit Feedback'}
           </button>
         </form>
       </div>

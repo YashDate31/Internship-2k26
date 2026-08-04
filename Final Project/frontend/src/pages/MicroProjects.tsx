@@ -1,6 +1,8 @@
-import { Rocket, Search, Filter, GraduationCap, Download, FileText, BookOpen } from 'lucide-react';
+﻿import { Rocket, Search, Filter, GraduationCap, Download, FileText, BookOpen } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import './Curriculum.css';
+import { handleProtectedDownload } from '../utils/auth';
+import { API_URL } from '../utils/api';
 
 interface Material {
   id: string;
@@ -23,7 +25,7 @@ export function MicroProjects() {
   const [selectedSemester, setSelectedSemester] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/materials')
+    fetch(\${API_URL}/api/materials\)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -164,7 +166,7 @@ export function MicroProjects() {
                     <span className="credits">Complete Files</span>
                     <button 
                       className="btn btn-primary btn-sm download-btn"
-                      onClick={() => window.open(project.drive_link, '_blank')}
+                      onClick={() => handleProtectedDownload()}
                     >
                       <Download size={14} /> Download Files
                     </button>
@@ -178,3 +180,4 @@ export function MicroProjects() {
     </div>
   );
 }
+

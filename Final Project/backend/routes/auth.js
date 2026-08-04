@@ -1,0 +1,232 @@
+const express = require('express');
+const router = express.Router();
+const supabase = require('../config/supabase');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { sendOTP } = require('../utils/sendEmail');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-me-in-production';
+
+// Helper to generate 6-digit OTP
+const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
+
+// POST /api/auth/register
+router.post('/register', async (req, res) => {
+  if (!supabase) {
+    return res.status(500).json({ error: 'Supabase client not initialized' });
+  }
+
+  const { email, password, name } = req.body;
+
+  if (!email || !password || !name) {
+    return res.status(400).json({ error: 'Email, password, and name are required' });
+  }
+
+  try {
+    // 1. Check if user already exists
+    const { data: existingUser, error: checkError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .single();
+
+    if (existingUser) {
+      return res.status(400).json({ error: 'User with this email already exists' });
+    }
+
+    if (checkError && checkError.code !== 'PGRST116') {
+      console.error('Supabase check error:', checkError);
+      return res.status(500).json({ error: 'Database error while checking user' });
+    }
+
+    // 2. Hash the password
+    const salt = await bcrypt.genSalt(10);
+    const password_hash = await bcrypt.hash(password, salt);
+
+    // 3. Generate OTP and expiry (10 minutes)
+    const otp = generateOTP();
+    const otpExpiry = new Date();
+    otpExpiry.setMinutes(otpExpiry.getMinutes() + 10);
+
+    // 4. Create user in Supabase (unverified)
+    const { data: newUser, error: insertError } = await supabase
+      .from('users')
+      .insert([
+        {
+          firebase_uid: `custom_${Date.now()}_${Math.random().toString(36).substring(7)}`,
+          email,
+          name,
+          password_hash,
+          role: 'user',
+          is_verified: false,
+          otp_code: otp,
+          otp_expiry: otpExpiry.toISOString()
+        }
+      ])
+      .select()
+      .single();
+
+    if (insertError) {
+      console.error('Insert user error:', insertError);
+      return res.status(500).json({ error: 'Failed to create user' });
+    }
+
+    // 5. Send OTP Email
+    await sendOTP(email, otp);
+
+    res.status(201).json({
+      message: 'Registration initiated. Please verify your email.',
+      requireVerification: true
+    });
+
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST /api/auth/verify-otp
+router.post('/verify-otp', async (req, res) => {
+  const { email, otp } = req.body;
+
+  if (!email || !otp) {
+    return res.status(400).json({ error: 'Email and OTP are required' });
+  }
+
+  try {
+    // 1. Find user
+    const { data: user, error: findError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .single();
+
+    if (findError || !user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (user.is_verified) {
+      return res.status(400).json({ error: 'User is already verified' });
+    }
+
+    // 2. Check OTP match
+    if (user.otp_code !== otp) {
+      return res.status(400).json({ error: 'Invalid OTP' });
+    }
+
+    // 3. Check OTP expiry
+    if (new Date(user.otp_expiry) < new Date()) {
+      return res.status(400).json({ error: 'OTP has expired. Please register again.' });
+    }
+
+    // 4. Mark verified, clear OTP
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({
+        is_verified: true,
+        otp_code: null,
+        otp_expiry: null
+      })
+      .eq('id', user.id);
+
+    if (updateError) {
+      console.error('Update verified error:', updateError);
+      return res.status(500).json({ error: 'Failed to verify user' });
+    }
+
+    // 5. Generate JWT token
+    const token = jwt.sign(
+      { 
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role
+      },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.status(200).json({
+      message: 'Verification successful',
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name
+      }
+    });
+  } catch (error) {
+    console.error('Verify OTP error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST /api/auth/login
+router.post('/login', async (req, res) => {
+  if (!supabase) {
+    return res.status(500).json({ error: 'Supabase client not initialized' });
+  }
+
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password are required' });
+  }
+
+  try {
+    // 1. Find user by email
+    const { data: user, error: findError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .single();
+
+    if (findError || !user) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    // 2. Check if the user has a password hash (might be a Google-only user if password_hash is null)
+    if (!user.password_hash) {
+      return res.status(401).json({ error: 'Please log in with Google, or reset your password' });
+    }
+
+    // 3. Compare passwords
+    const isMatch = await bcrypt.compare(password, user.password_hash);
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    // 4. Check if verified
+    if (user.is_verified === false) {
+      return res.status(403).json({ error: 'Please verify your email before logging in. Check your email for the OTP.' });
+    }
+
+    // 5. Generate JWT token
+    const token = jwt.sign(
+      { 
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role
+      },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.status(200).json({
+      message: 'Login successful',
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name
+      }
+    });
+
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+module.exports = router;

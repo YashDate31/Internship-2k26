@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { AlertCircle } from 'lucide-react';
 import { AuthLayout } from '../components/AuthLayout';
 import { auth, googleProvider } from '../lib/firebase';
 import { signInWithPopup } from 'firebase/auth';
+import { jwtDecode } from 'jwt-decode';
+import { API_URL } from '../utils/api';
 import './Login.css';
 
 const GoogleIcon = () => (
@@ -16,20 +18,64 @@ const GoogleIcon = () => (
 );
 
 export function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Login failed');
+      }
+
+      // Save the custom JWT
+      localStorage.setItem('auth_token', data.token);
+
+      const decoded: any = jwtDecode(data.token);
+      if (decoded.email === 'yashdate31@gmail.com') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const syncUserToBackend = async (token: string) => {
     try {
-      await fetch('http://localhost:5000/api/users/sync', {
+      const res = await fetch(`${API_URL}/api/users/sync`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      
+      // Save the custom JWT returned by our backend
+      if (data.token) {
+        localStorage.setItem('auth_token', data.token);
+      }
     } catch (err) {
       console.error('Failed to sync user to backend:', err);
+      throw err;
     }
   };
 
@@ -39,11 +85,17 @@ export function Login() {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const token = await result.user.getIdToken();
+      
       await syncUserToBackend(token);
       
-      localStorage.setItem('mock_logged_in', 'true');
-      if (result.user.email === 'yashdate31@gmail.com') {
-        navigate('/admin');
+      const customToken = localStorage.getItem('auth_token');
+      if (customToken) {
+        const decoded: any = jwtDecode(customToken);
+        if (decoded.email === 'yashdate31@gmail.com') {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
       } else {
         navigate('/');
       }
@@ -73,8 +125,52 @@ export function Login() {
         </div>
       )}
 
+      {/* Email Login Form */}
+      <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1.5rem' }}>
+        <div className="form-group">
+          <label style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)' }}>Email</label>
+          <input 
+            type="email" 
+            className="auth-input" 
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)' }}>Password</label>
+          <input 
+            type="password" 
+            className="auth-input" 
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="btn btn-primary"
+          style={{ width: '100%', justifyContent: 'center', marginTop: '0.5rem', padding: '12px' }}
+        >
+          {isLoading ? 'Logging in...' : 'Log In'}
+        </button>
+      </form>
+
+      <div style={{ textAlign: 'center', marginTop: '1rem', color: 'var(--text-secondary)' }}>
+        Don't have an account? <Link to="/register" style={{ color: 'var(--primary-color)', fontWeight: 600 }}>Sign up</Link>
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'center', margin: '2rem 0' }}>
+        <hr style={{ flex: 1, borderColor: 'var(--border-color)' }} />
+        <span style={{ padding: '0 1rem', color: 'var(--text-secondary)', fontSize: '0.875rem' }}>or continue with</span>
+        <hr style={{ flex: 1, borderColor: 'var(--border-color)' }} />
+      </div>
+
       {/* Social Login Button */}
-      <div className="social-login" style={{ marginTop: '2rem' }}>
+      <div className="social-login">
         <button
           type="button"
           onClick={handleGoogleLogin}
@@ -83,14 +179,8 @@ export function Login() {
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '12px', fontSize: '1.1rem', backgroundColor: '#fff', color: '#333', border: '1px solid #ddd' }}
           title="Sign in with Google"
         >
-          {isLoading ? (
-            <span className="spinner" style={{ borderColor: '#333', borderTopColor: 'transparent' }} />
-          ) : (
-            <>
-              <GoogleIcon />
-              Continue with Google
-            </>
-          )}
+          <GoogleIcon />
+          Google
         </button>
       </div>
 

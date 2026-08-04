@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { X, Upload, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
-import { auth } from '../lib/firebase';
+import { API_URL } from '../utils/api';
 
 interface ReportUploadModalProps {
   isOpen: boolean;
@@ -51,10 +51,8 @@ export function ReportUploadModal({ isOpen, onClose, onSuccess }: ReportUploadMo
     setError(null);
 
     try {
-      const user = auth.currentUser;
-      if (!user) throw new Error('You must be logged in to upload material.');
-
-      const token = await user.getIdToken();
+      const token = localStorage.getItem('auth_token');
+      if (!token) throw new Error('You must be logged in to upload material.');
 
       const payload = {
         title,
@@ -67,7 +65,7 @@ export function ReportUploadModal({ isOpen, onClose, onSuccess }: ReportUploadMo
         imageLink: ''
       };
 
-      const response = await fetch('http://localhost:5000/api/materials', {
+      const response = await fetch(`${API_URL}/api/materials`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

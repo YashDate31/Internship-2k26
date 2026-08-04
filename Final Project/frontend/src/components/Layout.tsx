@@ -55,7 +55,7 @@ export function Layout({ children }: { children: ReactNode }) {
             })}
             
             {/* Conditional Auth Links */}
-            {localStorage.getItem('mock_logged_in') === 'true' ? (
+            {localStorage.getItem('auth_token') ? (
               <Link to="/profile" className="nav-link">
                 <User size={16} />
                 <span>Profile</span>
@@ -94,7 +94,7 @@ export function Layout({ children }: { children: ReactNode }) {
               </Link>
             ))}
             {/* Conditional Mobile Auth Links */}
-            {localStorage.getItem('mock_logged_in') === 'true' ? (
+            {localStorage.getItem('auth_token') ? (
               <Link
                 to="/profile"
                 className="mobile-nav-link"
@@ -144,7 +144,7 @@ export function Layout({ children }: { children: ReactNode }) {
             <p className="footer-desc">Follow updates, study tips, and educational content from College Sahayak.</p>
             <div className="contact-info">
               <p>Maharashtra, India</p>
-              <p>support@collegesahayak.com</p>
+              <p>collegesahayak@gmail.com</p>
             </div>
           </div>
         </div>

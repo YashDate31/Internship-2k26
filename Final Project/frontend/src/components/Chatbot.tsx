@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { MessageSquare, X, Send, Bot, User, Loader2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { API_URL } from '../utils/api';
 import './Chatbot.css';
 
 interface Message {
@@ -39,7 +40,7 @@ export function Chatbot() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/chat', {
+      const response = await fetch(`${API_URL}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: newMessages })

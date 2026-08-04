@@ -1,6 +1,8 @@
-import { Bell, Search, ExternalLink, Filter, GraduationCap, Calendar } from 'lucide-react';
+﻿import { Bell, Search, ExternalLink, Filter, GraduationCap, Calendar } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import './Curriculum.css';
+import { handleProtectedDownload } from '../utils/auth';
+import { API_URL } from '../utils/api';
 
 interface Material {
   id: string;
@@ -23,7 +25,7 @@ export function Updates() {
   const [selectedSemester, setSelectedSemester] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/materials')
+    fetch(\${API_URL}/api/materials\)
       .then(res => res.json())
       .then(data => {
           setMaterials(data.filter((item: Material) => item.category === 'Updates' && !item.title.startsWith('[PENDING]')));
@@ -160,7 +162,7 @@ export function Updates() {
                     <span className="credits">Official Link</span>
                     <button 
                       className="btn btn-primary btn-sm download-btn"
-                      onClick={() => window.open(update.drive_link, '_blank')}
+                      onClick={() => handleProtectedDownload()}
                     >
                       <ExternalLink size={14} /> Read More
                     </button>
@@ -174,3 +176,4 @@ export function Updates() {
     </div>
   );
 }
+

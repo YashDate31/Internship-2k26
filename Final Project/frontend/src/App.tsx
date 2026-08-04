@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Outlet, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet, Navigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
@@ -18,6 +19,8 @@ import { Assignments } from './pages/Assignments';
 import { MyReports } from './pages/MyReports';
 import { Profile } from './pages/Profile';
 import { Login } from './pages/Login';
+import { Register } from './pages/Register';
+import { VerifyOTP } from './pages/VerifyOTP';
 import { ForgotPassword } from './pages/ForgotPassword';
 import { ResetPassword } from './pages/ResetPassword';
 import { CompleteProfile } from './pages/CompleteProfile';
@@ -27,6 +30,15 @@ import { Feedback } from './pages/Feedback';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
+
+// Scrolls to top on every route change
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [pathname]);
+  return null;
+}
 
 const MainLayout = () => (
   <Layout>
@@ -38,6 +50,7 @@ function App() {
   return (
     <HelmetProvider>
       <Router>
+        <ScrollToTop />
         <Routes>
         {/* Main Application Routes (with Navbar & Footer) */}
         <Route element={<MainLayout />}>
@@ -64,7 +77,8 @@ function App() {
 
         {/* Authentication Routes (Standalone Full-Screen Layout) */}
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Navigate to="/login" replace />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/verify-otp" element={<VerifyOTP />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/complete-profile" element={<CompleteProfile />} />

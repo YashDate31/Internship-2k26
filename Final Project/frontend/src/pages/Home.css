@@ -287,15 +287,11 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
   gap: var(--spacing-xl);
-  max-width: 100%;
-  margin: 0 auto;
 }
 
 .trending-card {
-  flex: 1 1 280px;
-  max-width: 320px;
+  flex: 0 0 280px; /* 0 grow, 0 shrink — always 280px wide */
   box-sizing: border-box;
   background: linear-gradient(135deg, #fffaf0 0%, #fff5f5 100%);
   border: 1px solid #feebc8;
