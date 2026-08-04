@@ -31,6 +31,30 @@ router.post('/register', async (req, res) => {
       .single();
 
     if (existingUser) {
+      // If user exists but is NOT verified, allow them to re-register (refresh OTP)
+      if (existingUser.is_verified === false) {
+        const newOtp = generateOTP();
+        const newExpiry = new Date();
+        newExpiry.setMinutes(newExpiry.getMinutes() + 10);
+
+        // Update OTP and password hash in case they changed their password
+        const salt = await bcrypt.genSalt(10);
+        const password_hash = await bcrypt.hash(password, salt);
+
+        await supabase
+          .from('users')
+          .update({ otp_code: newOtp, otp_expiry: newExpiry.toISOString(), name, password_hash })
+          .eq('email', email);
+
+        await sendOTP(email, newOtp);
+
+        return res.status(201).json({
+          message: 'A new OTP has been sent to your email. Please verify your account.',
+          requireVerification: true
+        });
+      }
+
+      // User is fully verified — block re-registration
       return res.status(400).json({ error: 'User with this email already exists' });
     }
 
