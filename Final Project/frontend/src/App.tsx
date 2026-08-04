@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Outlet, Navigate, useLocation } from 'react-router-dom';
+﻿import { BrowserRouter as Router, Routes, Route, Outlet, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Layout } from './components/Layout';
@@ -34,9 +34,15 @@ import { PrivacyPolicy } from './pages/PrivacyPolicy';
 // Scrolls to top on every route change
 function ScrollToTop() {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [pathname]);
+  useEffect(() => {
+    const handleForceLogin = () => navigate('/login');
+    window.addEventListener('force-login', handleForceLogin);
+    return () => window.removeEventListener('force-login', handleForceLogin);
+  }, [navigate]);
   return null;
 }
 
@@ -97,3 +103,4 @@ function App() {
 }
 
 export default App;
+

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Mail, Phone, Building2, Edit2, Shield, LogOut } from 'lucide-react';
 import { jwtDecode } from 'jwt-decode';
@@ -17,7 +17,7 @@ export function Profile() {
   useEffect(() => {
     const token = localStorage.getItem('auth_token');
     if (!token) {
-      window.location.href = '/login';
+      window.dispatchEvent(new Event('force-login'));
       return;
     }
     
@@ -27,7 +27,7 @@ export function Profile() {
       setLoading(false);
     } catch (e) {
       localStorage.removeItem('auth_token');
-      window.location.href = '/login';
+      window.dispatchEvent(new Event('force-login'));
     }
   }, []);
 
@@ -158,7 +158,7 @@ export function Profile() {
                   onClick={() => {
                     localStorage.removeItem('mock_logged_in');
                     localStorage.removeItem('auth_token');
-                    window.location.href = '/login';
+                    window.dispatchEvent(new Event('force-login'));
                   }}
                 >
                   <LogOut size={16} style={{ marginRight: '0.5rem', display: 'inline' }} />
@@ -174,3 +174,4 @@ export function Profile() {
     </div>
   );
 }
+
