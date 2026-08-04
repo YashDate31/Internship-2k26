@@ -1,16 +1,9 @@
 import { Link } from 'react-router-dom';
-import { GraduationCap, Search, Filter, BookOpen, Download } from 'lucide-react';
+import { GraduationCap, Search, Filter, BookOpen, Download, FileX } from 'lucide-react';
 import './Curriculum.css';
 
-// Mock data for UI demonstration
-const mockSubjects = [
-  { id: '1', code: '22810', name: 'Software Engineering', branch: 'Computer', semester: '5th', credits: 4, type: 'Theory' },
-  { id: '2', code: '22811', name: 'Database Management', branch: 'Computer', semester: '3rd', credits: 4, type: 'Theory & Practical' },
-  { id: '3', code: '22812', name: 'Web Development', branch: 'Information Technology', semester: '4th', credits: 6, type: 'Practical' },
-  { id: '4', code: '22813', name: 'Data Structures', branch: 'Computer', semester: '3rd', credits: 5, type: 'Theory & Practical' },
-  { id: '5', code: '22814', name: 'Operating Systems', branch: 'Computer', semester: '4th', credits: 4, type: 'Theory' },
-  { id: '6', code: '22815', name: 'Computer Networks', branch: 'Information Technology', semester: '5th', credits: 5, type: 'Theory & Practical' },
-];
+// Remove dummy data
+const mockSubjects: any[] = [];
 
 export function Curriculum() {
   return (
@@ -91,50 +84,83 @@ export function Curriculum() {
             </div>
           </div>
 
-          <div className="cards-grid">
-            {mockSubjects.map((subject) => (
-              <div key={subject.id} className="subject-card">
-                <div className="card-header">
-                  <div className="subject-code">{subject.code}</div>
-                  <div className="subject-type">{subject.type}</div>
-                </div>
-                
-                <h3 className="subject-name">{subject.name}</h3>
-                
-                <div className="subject-meta">
-                  <span className="meta-item">
-                    <GraduationCap size={14} /> {subject.branch}
-                  </span>
-                  <span className="meta-item">
-                    <BookOpen size={14} /> {subject.semester} Sem
-                  </span>
-                </div>
-                
-                <div className="card-footer">
-                  <span className="credits">{subject.credits} Credits</span>
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <Link to={`/curriculum/${subject.id}`} className="btn btn-outline btn-sm" style={{ textDecoration: 'none' }}>
-                      View Details
-                    </Link>
-                    <button className="btn btn-secondary btn-sm download-btn">
-                      <Download size={14} /> PDF
-                    </button>
+          {mockSubjects.length === 0 ? (
+            <div className="empty-state" style={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              padding: '4rem 2rem',
+              background: 'var(--surface-color)',
+              borderRadius: 'var(--radius-xl)',
+              border: '1px dashed var(--border-color)',
+              marginTop: '1rem',
+              textAlign: 'center'
+            }}>
+              <div style={{ 
+                width: '64px', 
+                height: '64px', 
+                borderRadius: '50%', 
+                background: 'rgba(37,99,235,0.1)', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                color: 'var(--primary-color)',
+                marginBottom: '1.5rem'
+              }}>
+                <FileX size={32} />
+              </div>
+              <h3 style={{ fontSize: '1.25rem', color: 'var(--text-primary)', marginBottom: '0.5rem' }}>No subjects found</h3>
+              <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', maxWidth: '400px' }}>
+                We couldn't find any curriculum subjects matching your filters. Please try adjusting your search criteria.
+              </p>
+            </div>
+          ) : (
+            <div className="cards-grid">
+              {mockSubjects.map((subject) => (
+                <div key={subject.id} className="subject-card">
+                  <div className="card-header">
+                    <div className="subject-code">{subject.code}</div>
+                    <div className="subject-type">{subject.type}</div>
+                  </div>
+                  
+                  <h3 className="subject-name">{subject.name}</h3>
+                  
+                  <div className="subject-meta">
+                    <span className="meta-item">
+                      <GraduationCap size={14} /> {subject.branch}
+                    </span>
+                    <span className="meta-item">
+                      <BookOpen size={14} /> {subject.semester} Sem
+                    </span>
+                  </div>
+                  
+                  <div className="card-footer">
+                    <span className="credits">{subject.credits} Credits</span>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <Link to={`/curriculum/${subject.id}`} className="btn btn-outline btn-sm" style={{ textDecoration: 'none' }}>
+                        View Details
+                      </Link>
+                      <button className="btn btn-secondary btn-sm download-btn">
+                        <Download size={14} /> PDF
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Pagination */}
-          <div className="pagination">
-            <button className="page-btn" disabled>Previous</button>
-            <div className="page-numbers">
-              <button className="page-num active">1</button>
-              <button className="page-num">2</button>
-              <button className="page-num">3</button>
+          {mockSubjects.length > 0 && (
+            <div className="pagination">
+              <button className="page-btn" disabled>Previous</button>
+              <div className="page-numbers">
+                <button className="page-num active">1</button>
+              </div>
+              <button className="page-btn" disabled>Next</button>
             </div>
-            <button className="page-btn">Next</button>
-          </div>
+          )}
         </main>
 
       </div>

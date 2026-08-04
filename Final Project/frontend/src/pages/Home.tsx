@@ -63,7 +63,7 @@ const reviews = [
 const importantLinks = [
   { name: 'MSBTE Official Portal', url: 'https://msbte.ac.in/', description: 'Official MSBTE website' },
   { name: 'Student Login Portal', url: 'https://mahadbt.maharashtra.gov.in/Login/Login', description: 'Access student services and dashboard' },
-  { name: 'Academic Calendar', url: '#', description: 'Important academic dates' },
+  { name: 'Academic Calendar', url: 'https://drive.google.com/file/d/1AuwaO-r6HYUSYaMGggBtPtUghV3SO4tz/view?usp=drive_link', description: 'Important academic dates' },
 ];
 
 function SectionHeading({ title, description, icon: Icon }: { title: string; description: string; icon?: React.ElementType }) {
@@ -369,7 +369,7 @@ export function Home() {
           <SectionHeading title="Important Links" description="Quick access to essential polytechnic resources" icon={BookmarkPlus} />
           <div className="grid links-grid">
             {importantLinks.map((link) => (
-              <a key={link.name} href={link.url} className="important-link-card group">
+              <a key={link.name} href={link.url} target="_blank" rel="noopener noreferrer" className="important-link-card group">
                 <div className="important-link-header">
                   <h3>{link.name}</h3>
                   <ExternalLink size={16} className="external-icon" />

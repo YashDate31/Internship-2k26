@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Mail, Phone, Building2, Edit2, Shield } from 'lucide-react';
+import { User, Mail, Phone, Building2, Edit2, Shield, LogOut } from 'lucide-react';
 import { jwtDecode } from 'jwt-decode';
 import './Profile.css';
 
@@ -77,10 +77,11 @@ export function Profile() {
                 <p className="profile-email">{user.email}</p>
               </div>
               <button 
-                className="btn-outline sm" 
+                className={isEditing ? "btn btn-outline btn-sm" : "btn btn-primary btn-sm"}
+                style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)' }}
                 onClick={() => setIsEditing(!isEditing)}
               >
-                <Edit2 size={16} style={{ marginRight: '0.5rem' }} />
+                <Edit2 size={16} style={{ marginRight: '0.5rem', display: 'inline' }} />
                 {isEditing ? 'Cancel Edit' : 'Edit Profile'}
               </button>
             </div>
@@ -136,7 +137,7 @@ export function Profile() {
 
             {isEditing && (
               <div className="profile-actions">
-                <button className="btn-primary" onClick={() => {
+                <button className="btn btn-primary" style={{ padding: '0.75rem 1.5rem', borderRadius: 'var(--radius-full)' }} onClick={() => {
                   localStorage.setItem('user_mobile', mobile);
                   localStorage.setItem('user_college', college);
                   setIsEditing(false);
@@ -146,20 +147,21 @@ export function Profile() {
             )}
             
             {!isEditing && (
-              <div className="profile-actions" style={{ marginTop: '2rem', flexWrap: 'wrap', gap: '1rem', display: 'flex', alignItems: 'center' }}>
-                <button className="btn-outline sm" style={{ color: 'var(--text-secondary)' }} onClick={() => navigate('/forgot-password')}>
-                  <Shield size={16} style={{ marginRight: '0.5rem' }} />
+              <div className="profile-actions" style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid var(--border-color)', display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
+                <button className="btn btn-outline btn-sm" style={{ color: 'var(--text-secondary)', padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)' }} onClick={() => navigate('/forgot-password')}>
+                  <Shield size={16} style={{ marginRight: '0.5rem', display: 'inline' }} />
                   Change Password
                 </button>
                 <button 
-                  className="btn-outline sm" 
-                  style={{ color: 'var(--danger-color)', borderColor: 'rgba(239, 68, 68, 0.2)', marginLeft: 'auto' }}
+                  className="btn btn-outline btn-sm" 
+                  style={{ color: 'var(--danger-color)', borderColor: 'rgba(239, 68, 68, 0.3)', marginLeft: 'auto', padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)' }}
                   onClick={() => {
                     localStorage.removeItem('mock_logged_in');
                     localStorage.removeItem('auth_token');
                     window.location.href = '/login';
                   }}
                 >
+                  <LogOut size={16} style={{ marginRight: '0.5rem', display: 'inline' }} />
                   Logout
                 </button>
               </div>
