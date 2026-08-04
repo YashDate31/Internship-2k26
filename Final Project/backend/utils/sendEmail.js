@@ -1,4 +1,4 @@
-﻿const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
 
 const sendOTP = async (to, otp) => {
   const user = process.env.EMAIL_USER;
@@ -6,27 +6,21 @@ const sendOTP = async (to, otp) => {
 
   // Always log for development convenience
   console.log('==================================================');
-  console.log(`ðŸ”‘ DEV OTP for ${to}: ${otp}`);
+  console.log(`🔑 OTP for ${to}: ${otp}`);
   console.log('==================================================');
 
-  // If no credentials, we skip sending actual email (great for dev)
   if (!user || !pass) {
-    console.log('âš ï¸  Email credentials not provided in .env (EMAIL_USER, EMAIL_PASS). Email not sent, using console log above.');
-    return false; 
+    console.warn('⚠️  EMAIL_USER or EMAIL_PASS not set in environment. Email not sent.');
+    return false;
   }
 
   try {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
-      connectionTimeout: 5000,
-      socketTimeout: 5000,
-      auth: {
-        user,
-        pass,
-      },
+      auth: { user, pass },
     });
 
-    const mailOptions = {
+    await transporter.sendMail({
       from: `"College Sahayak" <${user}>`,
       to,
       subject: 'Verify your College Sahayak account',
@@ -41,13 +35,12 @@ const sendOTP = async (to, otp) => {
           <p style="font-size: 14px; color: #666; text-align: center;">This code will expire in 10 minutes.</p>
         </div>
       `,
-    };
+    });
 
-    await transporter.sendMail(mailOptions);
-    console.log(`âœ‰ï¸  OTP email sent successfully to ${to}`);
+    console.log(`✉️  OTP email sent successfully to ${to}`);
     return true;
   } catch (error) {
-    console.error('âŒ Error sending OTP email:', error);
+    console.error('❌ Error sending OTP email:', error);
     return false;
   }
 };
@@ -57,7 +50,7 @@ const sendFeedbackEmail = async (feedbackType, message, userEmail) => {
   const pass = process.env.EMAIL_PASS;
 
   if (!user || !pass) {
-    console.log('âš ï¸ Email credentials missing. Logging feedback instead:');
+    console.log('⚠️ Email credentials missing. Logging feedback instead:');
     console.log(`Type: ${feedbackType}\nUser: ${userEmail}\nMessage: ${message}`);
     return true;
   }
@@ -65,27 +58,23 @@ const sendFeedbackEmail = async (feedbackType, message, userEmail) => {
   try {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
-      connectionTimeout: 5000,
-      socketTimeout: 5000,
       auth: { user, pass },
     });
 
-    const mailOptions = {
+    await transporter.sendMail({
       from: `"${userEmail} (via Feedback)" <${user}>`,
-      to: 'collegesahayak@gmail.com',
+      to: user,
       replyTo: userEmail,
       subject: `New Feedback: ${feedbackType}`,
       text: `Feedback Type: ${feedbackType}\nUser Email: ${userEmail}\n\nMessage:\n${message}`
-    };
+    });
 
-    await transporter.sendMail(mailOptions);
-    console.log('âœ‰ï¸ Feedback email sent successfully.');
+    console.log('✉️ Feedback email sent successfully.');
     return true;
   } catch (error) {
-    console.error('âŒ Error sending feedback email:', error);
+    console.error('❌ Error sending feedback email:', error);
     return false;
   }
 };
 
 module.exports = { sendOTP, sendFeedbackEmail };
-

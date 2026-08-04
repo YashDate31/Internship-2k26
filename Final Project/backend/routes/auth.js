@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const router = express.Router();
 const supabase = require('../config/supabase');
 const bcrypt = require('bcryptjs');
@@ -72,16 +72,11 @@ router.post('/register', async (req, res) => {
     }
 
     // 5. Send OTP Email
-    const emailSent = await sendOTP(email, otp);
-    
-    if (!emailSent) {
-      // If email couldn't be sent (e.g. Render blocks SMTP or missing credentials), auto-verify the user so they aren't stuck!
-      await supabase.from('users').update({ is_verified: true }).eq('email', email);
-    }
+    await sendOTP(email, otp);
 
     res.status(201).json({
       message: 'Registration initiated. Please verify your email.',
-      requireVerification: emailSent
+      requireVerification: true
     });
 
   } catch (error) {
