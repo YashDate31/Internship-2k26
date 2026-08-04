@@ -1,4 +1,4 @@
-import { BookOpen, Search, Download, Filter, GraduationCap, FileText } from 'lucide-react';
+﻿import { BookOpen, Search, Download, Filter, GraduationCap, FileText } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import './Curriculum.css';
 import { handleProtectedDownload } from '../utils/auth';
@@ -162,7 +162,7 @@ export function Notes() {
                     <span className="credits">Complete PDF</span>
                     <button 
                       className="btn btn-primary btn-sm download-btn"
-                      onClick={() => handleProtectedDownload()}
+                      onClick={() => handleProtectedDownload(note.drive_link)}
                     >
                       <Download size={14} /> Download PDF
                     </button>
@@ -176,4 +176,7 @@ export function Notes() {
     </div>
   );
 }
+
+
+
 

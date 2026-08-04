@@ -1,4 +1,4 @@
-import { PlayCircle, Search, ExternalLink, Filter, GraduationCap, Video } from 'lucide-react';
+﻿import { PlayCircle, Search, ExternalLink, Filter, GraduationCap, Video } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import './Curriculum.css';
 import { handleProtectedDownload } from '../utils/auth';
@@ -163,7 +163,7 @@ export function LectureVideos() {
                     <button 
                       className="btn btn-primary btn-sm download-btn"
                       style={{ backgroundColor: '#ff0000' }}
-                      onClick={() => handleProtectedDownload()}
+                      onClick={() => handleProtectedDownload(video.drive_link)}
                     >
                       <ExternalLink size={14} /> Watch Video
                     </button>
@@ -177,4 +177,7 @@ export function LectureVideos() {
     </div>
   );
 }
+
+
+
 

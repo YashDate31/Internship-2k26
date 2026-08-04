@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+﻿import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { 
@@ -178,7 +178,7 @@ export function MaterialsHub() {
               Your <span className="text-gradient">Study Materials</span>
             </h1>
             <p className="hero-description">
-              Everything you need for <strong>{displayBranch}</strong> {selectedSemester ? `— ${displaySemester}` : ''}. 
+              Everything you need for <strong>{displayBranch}</strong> {selectedSemester ? `â€” ${displaySemester}` : ''}. 
               Browse lab manuals, micro projects, previous year papers, and notes below.
             </p>
           </div>
@@ -289,7 +289,7 @@ export function MaterialsHub() {
                         <span className="credits">Complete PDF</span>
                         <button 
                           className="btn btn-primary btn-sm download-btn"
-                          onClick={() => handleProtectedDownload()}
+                          onClick={() => handleProtectedDownload(manual.drive_link)}
                         >
                           <Download size={14} /> View
                         </button>
@@ -333,3 +333,7 @@ export function MaterialsHub() {
     </div>
   );
 }
+
+
+
+

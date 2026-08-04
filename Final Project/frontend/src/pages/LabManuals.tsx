@@ -1,4 +1,4 @@
-import { BookOpen, Search, Download, Lock, Filter, GraduationCap, Settings } from 'lucide-react';
+﻿import { BookOpen, Search, Download, Lock, Filter, GraduationCap, Settings } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { UpgradeModal } from '../components/UpgradeModal';
 import './Curriculum.css';
@@ -164,7 +164,7 @@ export function LabManuals() {
                     <span className="credits">Complete PDF</span>
                     <button 
                       className="btn btn-primary btn-sm download-btn"
-                      onClick={() => handleProtectedDownload()}
+                      onClick={() => handleProtectedDownload(manual.drive_link)}
                     >
                       <Download size={14} /> Download PDF
                     </button>
@@ -180,4 +180,7 @@ export function LabManuals() {
     </div>
   );
 }
+
+
+
 

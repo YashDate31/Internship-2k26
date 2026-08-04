@@ -1,4 +1,4 @@
-import { Bell, Search, ExternalLink, Filter, GraduationCap, Calendar } from 'lucide-react';
+﻿import { Bell, Search, ExternalLink, Filter, GraduationCap, Calendar } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import './Curriculum.css';
 import { handleProtectedDownload } from '../utils/auth';
@@ -162,7 +162,7 @@ export function Updates() {
                     <span className="credits">Official Link</span>
                     <button 
                       className="btn btn-primary btn-sm download-btn"
-                      onClick={() => handleProtectedDownload()}
+                      onClick={() => handleProtectedDownload(update.drive_link)}
                     >
                       <ExternalLink size={14} /> Read More
                     </button>
@@ -176,4 +176,7 @@ export function Updates() {
     </div>
   );
 }
+
+
+
 
