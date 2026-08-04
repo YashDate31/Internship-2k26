@@ -11,7 +11,7 @@ const sendViaBrevo = (to, subject, htmlContent) => {
     }
 
     const body = JSON.stringify({
-      sender: { name: 'College Sahayak', email: 'yashdate31@gmail.com' },
+      sender: { name: 'College Sahayak', email: 'collegesahayak@gmail.com' },
       to: [{ email: to }],
       subject,
       htmlContent
