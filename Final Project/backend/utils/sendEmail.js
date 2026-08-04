@@ -1,27 +1,21 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendOTP = async (to, otp) => {
-  const user = process.env.EMAIL_USER;
-  const pass = process.env.EMAIL_PASS;
-
-  // Always log for development convenience
+  // Always log OTP for convenience
   console.log('==================================================');
   console.log(`🔑 OTP for ${to}: ${otp}`);
   console.log('==================================================');
 
-  if (!user || !pass) {
-    console.warn('⚠️  EMAIL_USER or EMAIL_PASS not set in environment. Email not sent.');
+  if (!process.env.RESEND_API_KEY) {
+    console.warn('⚠️  RESEND_API_KEY not set. Email not sent.');
     return false;
   }
 
   try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: { user, pass },
-    });
-
-    await transporter.sendMail({
-      from: `"College Sahayak" <${user}>`,
+    const { data, error } = await resend.emails.send({
+      from: 'College Sahayak <onboarding@resend.dev>',
       to,
       subject: 'Verify your College Sahayak account',
       html: `
@@ -33,46 +27,58 @@ const sendOTP = async (to, otp) => {
             <h1 style="margin: 0; font-size: 32px; letter-spacing: 5px; color: #d97706;">${otp}</h1>
           </div>
           <p style="font-size: 14px; color: #666; text-align: center;">This code will expire in 10 minutes.</p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
+          <p style="font-size: 12px; color: #999; text-align: center;">College Sahayak — Your Campus, Simplified.</p>
         </div>
       `,
     });
 
-    console.log(`✉️  OTP email sent successfully to ${to}`);
+    if (error) {
+      console.error('❌ Resend error:', error);
+      return false;
+    }
+
+    console.log(`✉️  OTP email sent successfully to ${to} (id: ${data?.id})`);
     return true;
-  } catch (error) {
-    console.error('❌ Error sending OTP email:', error);
+  } catch (err) {
+    console.error('❌ Exception sending OTP email:', err);
     return false;
   }
 };
 
 const sendFeedbackEmail = async (feedbackType, message, userEmail) => {
-  const user = process.env.EMAIL_USER;
-  const pass = process.env.EMAIL_PASS;
-
-  if (!user || !pass) {
-    console.log('⚠️ Email credentials missing. Logging feedback instead:');
+  if (!process.env.RESEND_API_KEY) {
+    console.log('⚠️ RESEND_API_KEY missing. Logging feedback instead:');
     console.log(`Type: ${feedbackType}\nUser: ${userEmail}\nMessage: ${message}`);
     return true;
   }
 
   try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: { user, pass },
-    });
-
-    await transporter.sendMail({
-      from: `"${userEmail} (via Feedback)" <${user}>`,
-      to: user,
+    const { error } = await resend.emails.send({
+      from: 'College Sahayak <onboarding@resend.dev>',
+      to: 'yashdate31@gmail.com',
       replyTo: userEmail,
       subject: `New Feedback: ${feedbackType}`,
-      text: `Feedback Type: ${feedbackType}\nUser Email: ${userEmail}\n\nMessage:\n${message}`
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 20px;">
+          <h3>New Feedback Received</h3>
+          <p><strong>Type:</strong> ${feedbackType}</p>
+          <p><strong>From:</strong> ${userEmail}</p>
+          <hr />
+          <p>${message}</p>
+        </div>
+      `
     });
+
+    if (error) {
+      console.error('❌ Resend feedback error:', error);
+      return false;
+    }
 
     console.log('✉️ Feedback email sent successfully.');
     return true;
-  } catch (error) {
-    console.error('❌ Error sending feedback email:', error);
+  } catch (err) {
+    console.error('❌ Exception sending feedback email:', err);
     return false;
   }
 };
