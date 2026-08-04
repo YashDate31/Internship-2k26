@@ -129,7 +129,7 @@ export function ForgotPassword() {
         </button>
       </form>
 
-      <div className="back-link-wrapper">
+      <div className="back-link-wrapper" style={{ marginTop: '1.5rem' }}>
         <Link to="/login" className="back-link">
           <ArrowLeft size={16} />
           Back to Sign In
