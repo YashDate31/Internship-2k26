@@ -4,14 +4,28 @@ const supabase = require('../config/supabase');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { sendOTP } = require('../utils/sendEmail');
+const rateLimit = require('express-rate-limit');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-me-in-production';
+
+// Rate limiters
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 15,
+  message: { error: 'Too many requests from this IP, please try again after 15 minutes' }
+});
+
+const otpLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5,
+  message: { error: 'Too many OTP attempts from this IP, please try again after 15 minutes' }
+});
 
 // Helper to generate 6-digit OTP
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
 
 // POST /api/auth/register
-router.post('/register', async (req, res) => {
+router.post('/register', authLimiter, async (req, res) => {
   if (!supabase) {
     return res.status(500).json({ error: 'Supabase client not initialized' });
   }
@@ -110,7 +124,7 @@ router.post('/register', async (req, res) => {
 });
 
 // POST /api/auth/verify-otp
-router.post('/verify-otp', async (req, res) => {
+router.post('/verify-otp', otpLimiter, async (req, res) => {
   const { email, otp } = req.body;
 
   if (!email || !otp) {
@@ -186,7 +200,7 @@ router.post('/verify-otp', async (req, res) => {
 });
 
 // POST /api/auth/login
-router.post('/login', async (req, res) => {
+router.post('/login', authLimiter, async (req, res) => {
   if (!supabase) {
     return res.status(500).json({ error: 'Supabase client not initialized' });
   }

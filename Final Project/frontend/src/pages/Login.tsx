@@ -46,7 +46,7 @@ export function Login() {
       localStorage.setItem('auth_token', data.token);
 
       const decoded: any = jwtDecode(data.token);
-      if (decoded.email === 'yashdate31@gmail.com') {
+      if (decoded.role === 'admin') {
         navigate('/admin');
       } else {
         navigate('/');
@@ -91,7 +91,7 @@ export function Login() {
       const customToken = localStorage.getItem('auth_token');
       if (customToken) {
         const decoded: any = jwtDecode(customToken);
-        if (decoded.email === 'yashdate31@gmail.com') {
+        if (decoded.role === 'admin') {
           navigate('/admin');
         } else {
           navigate('/');

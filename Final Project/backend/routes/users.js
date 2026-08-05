@@ -12,7 +12,11 @@ router.post('/sync', verifyTokenOnly, async (req, res) => {
     return res.status(500).json({ error: 'Supabase client not initialized' });
   }
 
-  const { uid, email, name, picture } = req.user;
+  const { uid, email, name, picture, email_verified } = req.user;
+
+  if (email_verified === false) {
+    return res.status(403).json({ error: 'Please verify your Google account email before logging in.' });
+  }
 
   try {
     // Check if user already exists

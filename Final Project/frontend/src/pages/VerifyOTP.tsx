@@ -51,7 +51,7 @@ export function VerifyOTP() {
       // Brief delay so the user can see the success message
       setTimeout(() => {
         const decoded: any = jwtDecode(data.token);
-        if (decoded.email === 'yashdate31@gmail.com') {
+        if (decoded.role === 'admin') {
           navigate('/admin');
         } else {
           navigate('/');

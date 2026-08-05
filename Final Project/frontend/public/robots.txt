@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://collegesahayak.com/sitemap.xml
+Sitemap: https://internship-2k26.vercel.app/sitemap.xml

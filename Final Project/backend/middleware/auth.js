@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-me-in-production';
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'yashdate31@gmail.com';
 
 const verifyAuth = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -16,7 +15,7 @@ const verifyAuth = async (req, res, next) => {
     req.user = decodedToken;
     
     // Check if the user is the admin
-    req.isAdmin = decodedToken.email === ADMIN_EMAIL;
+    req.isAdmin = decodedToken.role === 'admin';
 
     next();
   } catch (error) {

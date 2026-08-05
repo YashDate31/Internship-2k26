@@ -24,7 +24,7 @@ export function ProtectedRoute({ children, adminOnly = false }: ProtectedRoutePr
     }
 
     // Check admin rights
-    if (adminOnly && decoded.email !== 'yashdate31@gmail.com') {
+    if (adminOnly && decoded.role !== 'admin') {
       return <Navigate to="/" replace />;
     }
 

@@ -114,7 +114,7 @@ export function Home() {
               "@context": "https://schema.org",
               "@type": "WebSite",
               "name": "College Sahayak",
-              "url": "https://collegesahayak.com/",
+              "url": "https://internship-2k26.vercel.app/",
               "description": "Educational resources for MSBTE diploma students."
             }
           `

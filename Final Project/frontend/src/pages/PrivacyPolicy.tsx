@@ -55,7 +55,7 @@ export function PrivacyPolicy() {
 
           <section>
             <h2 style={{ fontSize: '1.5rem', color: '#1e293b', marginBottom: '0.75rem' }}>6. Contact Us</h2>
-            <p>If you have any questions about this privacy policy or our privacy practices, please contact us at support@collegesahayak.com.</p>
+            <p>If you have any questions about this privacy policy or our privacy practices, please contact us at support@internship-2k26.vercel.app.</p>
           </section>
         </div>
       </div>

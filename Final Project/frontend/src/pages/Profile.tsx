@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Mail, Phone, Building2, Edit2, Shield, LogOut } from 'lucide-react';
 import { jwtDecode } from 'jwt-decode';
@@ -40,7 +40,7 @@ export function Profile() {
     firstName: firebaseUser?.name?.split(' ')[0] || firebaseUser?.displayName?.split(' ')[0] || 'Student',
     lastName: firebaseUser?.name?.split(' ')[1] || firebaseUser?.displayName?.split(' ')[1] || '',
     email: firebaseUser?.email || 'Not provided',
-    role: firebaseUser?.email === 'yashdate31@gmail.com' ? 'admin' : 'student',
+    role: firebaseUser?.role || 'student',
     mobile: mobile,
     college: college
   };
