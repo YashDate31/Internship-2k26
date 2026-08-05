@@ -22,6 +22,10 @@ build/
 .DS_Store
 Thumbs.db
 
+# Large media files
+info/
+*.mp4
+
 # IDE
 .vscode/*
 !.vscode/extensions.json

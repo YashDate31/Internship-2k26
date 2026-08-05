@@ -10,6 +10,8 @@ const authRoutes = require('./routes/auth');
 const feedbackRoutes = require('./routes/feedback');
 
 const app = express();
+app.set('trust proxy', 1); // Trust the first proxy (Render) to get the correct client IP for rate limiting
+
 const PORT = process.env.PORT || 5000;
 
 // Middleware
