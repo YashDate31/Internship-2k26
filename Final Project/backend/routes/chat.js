@@ -4,7 +4,7 @@ const router = express.Router();
 // POST /api/chat - Proxy request to Gemini API
 router.post('/', async (req, res) => {
   const { messages } = req.body;
-  
+
   if (!messages || !Array.isArray(messages)) {
     return res.status(400).json({ error: 'Messages array is required' });
   }
@@ -14,11 +14,7 @@ router.post('/', async (req, res) => {
     return res.status(500).json({ error: 'Gemini API key is not configured on the server.' });
   }
 
-  // Convert chat history format to Gemini format
-  // Gemini expects: { contents: [{ role: "user" | "model", parts: [{ text: "..." }] }] }
-  // Wait, the API key provided (AQ.Ab8RN...) was returning 404 for gemini-1.5-flash.
-  // Wait, I should use gemini-3.5-flash since we verified earlier that it is available for this API key.
-  
+
   // Prepare contents array
   const contents = messages.map(msg => ({
     role: msg.role === 'assistant' ? 'model' : 'user',

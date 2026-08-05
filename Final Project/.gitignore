@@ -25,6 +25,7 @@ Thumbs.db
 # Large media files
 info/
 *.mp4
+*.pptx
 
 # IDE
 .vscode/*
