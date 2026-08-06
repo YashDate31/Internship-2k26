@@ -19,7 +19,7 @@ dist-ssr/
 build/
 
 # OS files
-.DS_Store
+.DS_Storeh 
 Thumbs.db
 
 # Large media files

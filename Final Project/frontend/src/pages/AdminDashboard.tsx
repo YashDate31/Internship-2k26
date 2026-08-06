@@ -1,12 +1,14 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../lib/firebase';
+import { signOut } from 'firebase/auth';
 import {
   BookOpen, LogOut, PlusCircle, Upload, CheckCircle, List,
   FileText, Check, Trash2, Clock, Users, Database, RefreshCw,
   LayoutDashboard, ExternalLink, AlertCircle, GraduationCap,
   BookMarked, Flame, Star, Table2, Eye, EyeOff
 } from 'lucide-react';
-import { API_URL } from '../utils/api';
 import './AdminDashboard.css';
 
 interface Material {
@@ -53,7 +55,7 @@ export function AdminDashboard() {
   const fetchAllMaterials = async () => {
     setFetchingPending(true);
     try {
-      const res = await fetch(`${API_URL}/api/materials`);
+      const res = await fetch('http://localhost:5000/api/materials');
       const data = await res.json();
       if (Array.isArray(data)) {
         const pending = data.filter((item: Material) => item.title.startsWith('[PENDING]'));
@@ -84,8 +86,9 @@ export function AdminDashboard() {
     setSuccess(false);
 
     try {
-      const token = localStorage.getItem('auth_token');
-      if (!token) throw new Error('Not authenticated');
+      const user = auth.currentUser;
+      if (!user) throw new Error('Not authenticated');
+      const token = await user.getIdToken();
 
       let finalSemester = formData.semester;
       if (formData.category === 'Question Paper' || formData.category === 'Model Answer') {
@@ -103,7 +106,7 @@ export function AdminDashboard() {
         imageLink: formData.imageLink
       };
 
-      const response = await fetch(`${API_URL}/api/materials`, {
+      const response = await fetch('http://localhost:5000/api/materials', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(payload)
@@ -126,9 +129,10 @@ export function AdminDashboard() {
 
   const handleApprove = async (id: string, currentTitle: string) => {
     try {
-      const token = localStorage.getItem('auth_token');
-      if (!token) throw new Error('Not authenticated');
-      const response = await fetch(`${API_URL}/api/materials/${id}/approve`, {
+      const user = auth.currentUser;
+      if (!user) throw new Error('Not authenticated');
+      const token = await user.getIdToken();
+      const response = await fetch(`http://localhost:5000/api/materials/${id}/approve`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ title: currentTitle })
@@ -141,9 +145,10 @@ export function AdminDashboard() {
   const handleReject = async (id: string) => {
     if (!window.confirm('Are you sure you want to reject and delete this material?')) return;
     try {
-      const token = localStorage.getItem('auth_token');
-      if (!token) throw new Error('Not authenticated');
-      const response = await fetch(`${API_URL}/api/materials/${id}`, {
+      const user = auth.currentUser;
+      if (!user) throw new Error('Not authenticated');
+      const token = await user.getIdToken();
+      const response = await fetch(`http://localhost:5000/api/materials/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -155,9 +160,10 @@ export function AdminDashboard() {
   const handleDelete = async (id: string, title: string) => {
     if (!window.confirm(`Delete "${title}"? This cannot be undone.`)) return;
     try {
-      const token = localStorage.getItem('auth_token');
-      if (!token) throw new Error('Not authenticated');
-      await fetch(`${API_URL}/api/materials/${id}`, {
+      const user = auth.currentUser;
+      if (!user) throw new Error('Not authenticated');
+      const token = await user.getIdToken();
+      await fetch(`http://localhost:5000/api/materials/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -167,9 +173,10 @@ export function AdminDashboard() {
 
   const handleToggleTrending = async (id: string, current: boolean) => {
     try {
-      const token = localStorage.getItem('auth_token');
-      if (!token) throw new Error('Not authenticated');
-      const response = await fetch(`${API_URL}/api/materials/${id}/trending`, {
+      const user = auth.currentUser;
+      if (!user) throw new Error('Not authenticated');
+      const token = await user.getIdToken(/* forceRefresh */ true);
+      const response = await fetch(`http://localhost:5000/api/materials/${id}/trending`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ is_trending: !current })
@@ -182,9 +189,9 @@ export function AdminDashboard() {
     } catch (err) { alert(err); }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('auth_token');
-    navigate('/login');
+  const handleLogout = async () => {
+    try { await signOut(auth); navigate('/login'); }
+    catch (error) { console.error('Logout error:', error); }
   };
 
   const navItems = [
@@ -423,7 +430,7 @@ export function AdminDashboard() {
                 {/* Table Filters */}
                 <div className="table-filters">
                   <div className="table-search-wrap">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
                     <input
                       type="text"
                       placeholder="Search by title or subject code..."
@@ -434,7 +441,7 @@ export function AdminDashboard() {
                   </div>
                   <select className="table-filter-select" value={tableCategory} onChange={e => setTableCategory(e.target.value)}>
                     <option value="">All Categories</option>
-                    {['Lab Manual','Micro Project','Question Paper','Model Answer','Manual Answer','Assignments','Notes','MSBTE IMP','Lecture Videos','Updates'].map(c => (
+                    {['Lab Manual', 'Micro Project', 'Question Paper', 'Model Answer', 'Manual Answer', 'Assignments', 'Notes', 'MSBTE IMP', 'Lecture Videos', 'Updates'].map(c => (
                       <option key={c} value={c}>{c}</option>
                     ))}
                   </select>
@@ -556,7 +563,7 @@ export function AdminDashboard() {
                 <div className="admin-panel-body">
                   <div className="table-filters">
                     <div className="table-search-wrap">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" /></svg>
                       <input
                         type="text"
                         placeholder="Search materials to pin..."
@@ -581,21 +588,21 @@ export function AdminDashboard() {
                         {activeMaterials
                           .filter(m => !m.is_trending && (!tableSearch || m.title.toLowerCase().includes(tableSearch.toLowerCase()) || (m.subject_code || '').toLowerCase().includes(tableSearch.toLowerCase())))
                           .map(mat => (
-                          <tr key={mat.id}>
-                            <td className="td-title"><span title={mat.title}>{mat.title}</span></td>
-                            <td><span className="cat-pill">{mat.category}</span></td>
-                            <td className="td-muted">{mat.branch}</td>
-                            <td><span className="code-pill">{mat.subject_code}</span></td>
-                            <td>
-                              <button
-                                className="toggle-trending-btn off"
-                                onClick={() => handleToggleTrending(mat.id, false)}
-                              >
-                                <Star size={13} /> Pin to Trending
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
+                            <tr key={mat.id}>
+                              <td className="td-title"><span title={mat.title}>{mat.title}</span></td>
+                              <td><span className="cat-pill">{mat.category}</span></td>
+                              <td className="td-muted">{mat.branch}</td>
+                              <td><span className="code-pill">{mat.subject_code}</span></td>
+                              <td>
+                                <button
+                                  className="toggle-trending-btn off"
+                                  onClick={() => handleToggleTrending(mat.id, false)}
+                                >
+                                  <Star size={13} /> Pin to Trending
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
                       </tbody>
                     </table>
                   </div>
@@ -658,7 +665,7 @@ export function AdminDashboard() {
                       <label>Semester *</label>
                       <select name="semester" value={formData.semester} onChange={handleChange} required>
                         <option value="" disabled>Select Semester</option>
-                        {['Semester 1','Semester 2','Semester 3','Semester 4','Semester 5','Semester 6'].map(s => (
+                        {['Semester 1', 'Semester 2', 'Semester 3', 'Semester 4', 'Semester 5', 'Semester 6'].map(s => (
                           <option key={s} value={s}>{s}</option>
                         ))}
                       </select>

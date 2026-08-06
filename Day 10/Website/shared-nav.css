@@ -1,18 +1,18 @@
 /* ============================================================
-   shared-nav.css — Same dark navbar for ALL pages
+   shared-nav.css — Premium Dark Navbar — Amazon Theme
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --nav-bg:       #111827;
-  --nav-text:     #e5e7eb;
-  --nav-hover-bg: rgba(255,255,255,0.1);
-  --accent:       #4f46e5;     /* indigo */
-  --accent-hover: #4338ca;
+  --nav-bg:       #0d1117;
+  --nav-border:   rgba(255,153,0,0.12);
+  --nav-text:     #c9d1de;
+  --nav-hover-bg: rgba(255,153,0,0.1);
+  --amazon-orange:#FF9900;
   --accent-red:   #ef4444;
 }
 
-body { padding-top: 70px; font-family: 'Outfit', sans-serif; }
+body { padding-top: 70px; font-family: 'Inter', sans-serif; }
 
 /* ---- Navbar wrapper ---- */
 #shared-navbar {
@@ -21,9 +21,10 @@ body { padding-top: 70px; font-family: 'Outfit', sans-serif; }
   width: 100%;
   z-index: 9999;
   background: var(--nav-bg);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
-  font-family: 'Outfit', sans-serif;
+  border-bottom: 1px solid var(--nav-border);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+  font-family: 'Inter', sans-serif;
+  backdrop-filter: blur(12px);
 }
 
 .sn-inner {
@@ -33,7 +34,7 @@ body { padding-top: 70px; font-family: 'Outfit', sans-serif; }
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
-  height: 66px;
+  height: 68px;
   gap: 16px;
 }
 
@@ -43,24 +44,25 @@ body { padding-top: 70px; font-family: 'Outfit', sans-serif; }
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  font-weight: 700;
-  font-size: 1.15rem;
+  font-weight: 800;
+  font-size: 1.1rem;
   color: white;
   flex-shrink: 0;
 }
+.sn-brand span { color: var(--amazon-orange); }
 
 .sn-brand img {
-  width: 40px; height: 40px;
-  border-radius: 50%;
+  width: 36px; height: 36px;
+  border-radius: 8px;
   object-fit: cover;
-  border: 2px solid var(--accent);
+  border: 2px solid rgba(255,153,0,0.5);
 }
 
 /* Links */
 .sn-links {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   flex-wrap: nowrap;
 }
 
@@ -68,7 +70,7 @@ body { padding-top: 70px; font-family: 'Outfit', sans-serif; }
   text-decoration: none;
   color: var(--nav-text);
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   padding: 8px 14px;
   border-radius: 8px;
   transition: all 0.2s ease;
@@ -77,12 +79,12 @@ body { padding-top: 70px; font-family: 'Outfit', sans-serif; }
 
 .sn-links a:hover {
   background: var(--nav-hover-bg);
-  color: white;
+  color: var(--amazon-orange);
 }
 
 .sn-links a.sn-active {
-  background: var(--accent);
-  color: white;
+  background: rgba(255,153,0,0.15);
+  color: var(--amazon-orange);
   font-weight: 600;
 }
 
@@ -95,28 +97,29 @@ body { padding-top: 70px; font-family: 'Outfit', sans-serif; }
 }
 
 .sn-btn-login {
-  background: var(--accent);
-  color: white;
+  background: var(--amazon-orange);
+  color: #111;
   padding: 9px 22px;
   border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.9rem;
+  font-weight: 700;
+  font-size: 0.88rem;
   text-decoration: none;
   border: none;
   cursor: pointer;
   font-family: inherit;
   transition: all 0.2s;
+  letter-spacing: 0.2px;
 }
-
 .sn-btn-login:hover {
-  background: var(--accent-hover);
+  background: #e68a00;
   transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255,153,0,0.3);
 }
 
 .sn-btn-logout {
   background: transparent;
   color: #fca5a5;
-  border: 1.5px solid #fca5a5;
+  border: 1.5px solid rgba(239,68,68,0.5);
   padding: 8px 16px;
   border-radius: 8px;
   font-weight: 600;
@@ -125,7 +128,6 @@ body { padding-top: 70px; font-family: 'Outfit', sans-serif; }
   font-family: inherit;
   transition: all 0.2s;
 }
-
 .sn-btn-logout:hover {
   background: var(--accent-red);
   border-color: var(--accent-red);
@@ -140,11 +142,10 @@ body { padding-top: 70px; font-family: 'Outfit', sans-serif; }
   font-weight: 600;
   font-size: 0.9rem;
 }
-
 .sn-user-pill img {
   width: 30px; height: 30px;
   border-radius: 50%;
-  border: 2px solid var(--accent);
+  border: 2px solid var(--amazon-orange);
   object-fit: cover;
 }
 
@@ -174,9 +175,7 @@ body { padding-top: 70px; font-family: 'Outfit', sans-serif; }
     gap: 10px;
     z-index: 9998;
   }
-
   .sn-links.sn-open { display: flex; }
-
   .sn-close-btn {
     position: absolute;
     top: 20px; right: 22px;
@@ -186,6 +185,5 @@ body { padding-top: 70px; font-family: 'Outfit', sans-serif; }
     cursor: pointer;
     color: white;
   }
-
   .sn-links a { font-size: 1.2rem; padding: 14px 36px; }
 }

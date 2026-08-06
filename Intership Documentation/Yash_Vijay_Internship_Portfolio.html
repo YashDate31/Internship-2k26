@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Internship Project Portfolio — Yash Vijay Date</title>
+<style>
+
+/* ============================================================
+   INTERNSHIP PORTFOLIO — YASH VIJAY DATE
+   Professional A4 document, print-optimized.
+   Each .page div = exactly one printed page (A4).
+============================================================= */
+
+@page { size: A4; margin: 0; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #1c2430;
+  background: #e8eaed;
+  -webkit-font-smoothing: antialiased;
+}
+
+:root {
+  --ink:        #0a1628;
+  --navy:       #0a1628;
+  --steel:      #c8a44e;
+  --steel-dk:   #a8863a;
+  --line:       #d4d0c8;
+  --paper:      #ffffff;
+  --muted:      #5b6570;
+  --tag-bg:     #f5f3ee;
+  --code:       'Courier New', Courier, monospace;
+  --accent-grad: linear-gradient(135deg, #c8a44e 0%, #0a1628 100%);
+}
+
+.page {
+  width: 210mm;
+  height: 297mm;
+  background: var(--paper);
+  position: relative;
+  page-break-after: always;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+/* ---------- shared header / footer ---------- */
+.hdr {
+  height: 16mm;
+  background: var(--navy);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14mm;
+  font-size: 9.5pt;
+  letter-spacing: 0.5px;
+}
+.hdr .tag { color: #9db4cc; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 1.5px; }
+.hdr .name { font-weight: 600; }
+.hdr-accent { height: 2mm; background: var(--steel); }
+
+.ftr {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 12mm;
+  border-top: 0.6pt solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14mm;
+  font-size: 8pt;
+  color: var(--muted);
+}
+.ftr .pnum:before { content: "Page "; }
+
+.body-area {
+  padding: 12mm 14mm 4mm 14mm;
+  height: calc(297mm - 16mm - 12mm - 2mm);
+  overflow: hidden;
+}
+.body-area.flex-center-vert {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h1.section-title {
+  font-size: 20pt;
+  color: var(--ink);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+.section-kicker {
+  font-size: 9pt;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--steel);
+  font-weight: 700;
+  margin-bottom: 3mm;
+}
+.rule {
+  height: 2.4pt;
+  width: 26mm;
+  background: var(--steel);
+  margin: 4mm 0 7mm 0;
+}
+h2.sub {
+  font-size: 12.5pt;
+  color: var(--ink);
+  font-weight: 700;
+  margin: 6mm 0 3mm 0;
+  border-left: 3pt solid var(--steel);
+  padding-left: 3mm;
+}
+p.copy {
+  font-size: 10pt;
+  line-height: 1.65;
+  color: #2b333d;
+  text-align: justify;
+}
+ul.bullets { margin: 2mm 0 0 0; padding-left: 4.5mm; }
+ul.bullets li {
+  font-size: 10pt;
+  line-height: 1.6;
+  color: #2b333d;
+  margin-bottom: 1.6mm;
+}
+ul.bullets li::marker { color: var(--steel); }
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 2mm; margin-top: 2mm; }
+.tag {
+  background: var(--tag-bg);
+  border: 0.6pt solid var(--line);
+  color: var(--navy);
+  font-family: var(--code);
+  font-size: 8pt;
+  padding: 1.4mm 3mm;
+  border-radius: 1mm;
+}
+
+/* ---------- screenshot placeholder ---------- */
+.shot-frame {
+  border: 1pt dashed #9aa5b1;
+  background: #f4f6f8;
+  border-radius: 1.5mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.shot-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.shot-frame .inner-label {
+  text-align: center;
+  color: #7c8794;
+}
+.shot-frame .inner-label .lbl-main {
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #5b6570;
+}
+.shot-frame .inner-label .lbl-sub {
+  font-size: 8pt;
+  margin-top: 1.5mm;
+  font-family: var(--code);
+}
+.shot-frame .corner {
+  position: absolute;
+  width: 4mm; height: 4mm;
+  border: 1.4pt solid var(--steel);
+}
+.corner.tl { top: -0.7pt; left: -0.7pt; border-right: none; border-bottom: none; }
+.corner.tr { top: -0.7pt; right: -0.7pt; border-left: none; border-bottom: none; }
+.corner.bl { bottom: -0.7pt; left: -0.7pt; border-right: none; border-top: none; }
+.corner.br { bottom: -0.7pt; right: -0.7pt; border-left: none; border-top: none; }
+
+.caption {
+  font-size: 8.5pt;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 2.5mm;
+  font-style: italic;
+}
+
+/* ---------- cover page ---------- */
+.cover { background: var(--navy); color: #fff; }
+.cover-accent-bar { height: 4mm; background: var(--steel); }
+.cover-inner {
+  height: calc(297mm - 4mm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20mm 20mm 16mm 20mm;
+}
+.cover-top .kicker {
+  font-size: 10.5pt;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #9db4cc;
+  font-weight: 600;
+}
+.cover-top .title {
+  font-size: 34pt;
+  font-weight: 800;
+  margin-top: 6mm;
+  line-height: 1.15;
+  max-width: 130mm;
+}
+.cover-top .subtitle {
+  font-size: 12pt;
+  color: #c3d0de;
+  margin-top: 5mm;
+  max-width: 120mm;
+  line-height: 1.5;
+}
+.cover-mid { display: flex; gap: 10mm; margin-top: 10mm; }
+.cover-mid .mini-project {
+  flex: 1;
+  border-top: 1pt solid #33455e;
+  padding-top: 4mm;
+}
+.cover-mid .mini-project .num { font-family: var(--code); color: var(--steel); font-size: 9pt; }
+.cover-mid .mini-project .lbl { font-size: 9.5pt; margin-top: 1.5mm; color: #e6ebf1; font-weight: 600; }
+
+.cover-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 0.6pt solid #33455e;
+  padding-top: 6mm;
+}
+.cover-bottom .field { margin-right: 12mm; }
+.cover-bottom .field .k {
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #8493a6;
+}
+.cover-bottom .field .v {
+  font-size: 11pt;
+  color: #fff;
+  font-weight: 600;
+  margin-top: 1.5mm;
+}
+
+/* ---------- project divider page ---------- */
+.divider { background: var(--navy); color: #fff; }
+.divider-inner {
+  height: 297mm;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 25mm;
+}
+.divider-inner .divider-num {
+  font-family: var(--code);
+  font-size: 72pt;
+  font-weight: 800;
+  color: var(--steel);
+  opacity: 0.35;
+  line-height: 1;
+}
+.divider-inner .divider-kicker {
+  font-size: 10pt;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--steel);
+  font-weight: 700;
+  margin-top: 8mm;
+}
+.divider-inner .divider-title {
+  font-size: 30pt;
+  font-weight: 800;
+  margin-top: 5mm;
+  line-height: 1.2;
+  max-width: 140mm;
+}
+.divider-inner .divider-desc {
+  font-size: 11pt;
+  color: #c3d0de;
+  margin-top: 6mm;
+  max-width: 130mm;
+  line-height: 1.6;
+}
+.divider-inner .divider-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3mm;
+  margin-top: 8mm;
+}
+.divider-inner .divider-tags .dtag {
+  border: 1pt solid #33455e;
+  color: #c3d0de;
+  font-family: var(--code);
+  font-size: 8.5pt;
+  padding: 2mm 4mm;
+  border-radius: 1mm;
+}
+.divider-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 6mm;
+  height: 297mm;
+  background: var(--steel);
+}
+
+/* ---------- table of contents ---------- */
+.toc-row {
+  display: flex;
+  align-items: baseline;
+  padding: 3.2mm 0;
+  border-bottom: 0.5pt solid var(--line);
+}
+.toc-row .toc-num {
+  font-family: var(--code);
+  color: var(--steel);
+  font-size: 9.5pt;
+  width: 12mm;
+}
+.toc-row .toc-title { font-size: 10.5pt; font-weight: 600; color: var(--ink); flex: 1; }
+.toc-row .toc-sub { font-size: 8.5pt; color: var(--muted); }
+.toc-row .toc-page { font-family: var(--code); font-size: 9.5pt; color: var(--muted); width: 14mm; text-align: right; }
+.toc-group-label {
+  margin-top: 6mm;
+  font-size: 8.5pt;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--steel);
+  font-weight: 700;
+}
+
+/* ---------- info grid (project meta) ---------- */
+.meta-grid {
+  display: flex;
+  gap: 8mm;
+  margin: 5mm 0 6mm 0;
+  padding: 5mm 0;
+  border-top: 0.6pt solid var(--line);
+  border-bottom: 0.6pt solid var(--line);
+}
+.meta-grid .cell { flex: 1; }
+.meta-grid .cell .k {
+  font-size: 7.5pt;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+}
+.meta-grid .cell .v {
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--ink);
+  margin-top: 1.5mm;
+}
+
+/* ---------- two column layout ---------- */
+.cols-2 { display: flex; gap: 8mm; }
+.cols-2 .col { flex: 1; }
+
+/* ---------- grid of small shots ---------- */
+.shot-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5mm;
+  margin-top: 4mm;
+}
+.shot-grid .cell { width: calc(50% - 2.5mm); }
+
+/* ---------- flowchart ---------- */
+.flow-wrap { margin-top: 4mm; }
+.flow-row { display: flex; justify-content: center; gap: 6mm; align-items: stretch; }
+.flow-box {
+  border: 1pt solid var(--navy);
+  background: #f4f6f8;
+  border-radius: 1.5mm;
+  padding: 3.5mm 4mm;
+  min-width: 34mm;
+  text-align: center;
+}
+.flow-box.accent { background: var(--navy); color: #fff; border-color: var(--navy); }
+.flow-box.steel { background: var(--steel); color: #fff; border-color: var(--steel); }
+.flow-box .t { font-size: 9pt; font-weight: 700; }
+.flow-box .s { font-size: 7.3pt; margin-top: 1mm; opacity: 0.85; font-family: var(--code); }
+.flow-arrow-down {
+  text-align: center;
+  font-size: 12pt;
+  color: var(--steel);
+  line-height: 1;
+  margin: 2.5mm 0;
+}
+.flow-arrow-row {
+  display: flex;
+  justify-content: center;
+  gap: 6mm;
+  margin: 2.5mm 0;
+}
+.flow-arrow-row span { width: 34mm; text-align: center; font-size: 12pt; color: var(--steel); }
+
+/* ---------- numbered step list ---------- */
+.step {
+  display: flex;
+  gap: 4mm;
+  margin-bottom: 4mm;
+}
+.step .step-num {
+  width: 8mm; height: 8mm;
+  min-width: 8mm;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  font-size: 9pt;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.step .step-body .t { font-size: 10pt; font-weight: 700; color: var(--ink); }
+.step .step-body .d { font-size: 9pt; color: var(--muted); margin-top: 0.8mm; line-height: 1.5; }
+
+/* ---------- link block ---------- */
+.link-block {
+  background: var(--tag-bg);
+  border: 0.6pt solid var(--line);
+  border-radius: 1.5mm;
+  padding: 4mm 5mm;
+  margin-top: 4mm;
+}
+.link-block .link-label {
+  font-size: 7.5pt;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  font-weight: 700;
+}
+.link-block .link-url {
+  font-size: 9pt;
+  font-family: var(--code);
+  color: var(--steel-dk);
+  margin-top: 1.5mm;
+  word-break: break-all;
+}
+
+/* ---------- closing page ---------- */
+.closing { background: var(--navy); color: #fff; }
+.closing-inner {
+  height: 297mm;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 25mm;
+}
+.closing-inner .k { color: var(--steel); font-size: 9.5pt; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; }
+.closing-inner .t { font-size: 24pt; font-weight: 800; margin-top: 5mm; }
+.closing-inner .d { font-size: 10.5pt; color: #c3d0de; margin-top: 5mm; line-height: 1.7; max-width: 130mm; }
+.closing-inner .contact { margin-top: 12mm; display: flex; gap: 12mm; }
+.closing-inner .contact .c-k { font-size: 7.5pt; text-transform: uppercase; letter-spacing: 1px; color: #8493a6; }
+.closing-inner .contact .c-v { font-size: 10pt; margin-top: 1.5mm; font-weight: 600; }
+
+@media print {
+  body { background: #fff; }
+  .page { margin: 0; box-shadow: none; }
+}
+
+@media screen {
+  .page { margin: 12mm auto; box-shadow: 0 2px 12px rgba(0,0,0,0.12); }
+}
+
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     PAGE 1 — COVER
+========================================================== -->
+<div class="page cover">
+  <div class="cover-accent-bar"></div>
+  <div class="cover-inner">
+    <div class="cover-top">
+      <div class="kicker">Internship Project Portfolio</div>
+      <div class="title">Yash Vijay Date</div>
+      <div class="subtitle">
+        A consolidated record of internship project work, covering front-end
+        e-commerce development, data analytics with Power BI, and full-stack application
+        development with AI integration.
+      </div>
+    </div>
+
+    <div class="cover-mid">
+      <div class="mini-project">
+        <div class="num">01</div>
+        <div class="lbl">Amazon : The Shopping King — E-Commerce Website</div>
+      </div>
+      <div class="mini-project">
+        <div class="num">02</div>
+        <div class="lbl">Hospital ER Dashboard — Power BI Analytics</div>
+      </div>
+      <div class="mini-project">
+        <div class="num">03</div>
+        <div class="lbl">College Sahayak — Full-Stack Web Application</div>
+      </div>
+    </div>
+
+    <div class="cover-bottom">
+      <div style="display:flex;">
+        <div class="field">
+          <div class="k">Intern</div>
+          <div class="v">Yash Vijay Date</div>
+        </div>
+        <div class="field">
+          <div class="k">Role</div>
+          <div class="v">Software Development Intern</div>
+        </div>
+        <div class="field">
+          <div class="k">Organization</div>
+          <div class="v">Somayu Infotech</div>
+        </div>
+        <div class="field">
+          <div class="k">Duration</div>
+          <div class="v">June 2026 – August 2026</div>
+        </div>
+        <div class="field">
+          <div class="k">Mentor</div>
+          <div class="v">Mrs. Sangita Chavan Mam</div>
+        </div>
+      </div>
+      <div class="field" style="margin-right:0;">
+        <div class="k">Date</div>
+        <div class="v">06 August 2026</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     PAGE 2 — TABLE OF CONTENTS
+========================================================== -->
+<div class="page">
+  <div class="hdr">
+    <div class="name">Yash Vijay Date</div>
+    <div class="tag">Internship Project Portfolio</div>
+  </div>
+  <div class="hdr-accent"></div>
+  <div class="body-area">
+    <div class="section-kicker">Contents</div>
+    <h1 class="section-title">Table of Contents</h1>
+    <div class="rule"></div>
+
+    <div class="toc-group-label">Candidate Information</div>
+    <div class="toc-row"><div class="toc-num">01</div><div class="toc-title">Cover &amp; Candidate Details</div><div class="toc-page">Pg. 01</div></div>
+
+    <div class="toc-group-label">Project 01 — Amazon : The Shopping King</div>
+    <div class="toc-row"><div class="toc-num">02</div><div class="toc-title">Project Divider</div><div class="toc-page">Pg. 03</div></div>
+    <div class="toc-row"><div class="toc-num">03</div><div class="toc-title">Project Overview &amp; Tech Stack</div><div class="toc-page">Pg. 04</div></div>
+    <div class="toc-row"><div class="toc-num">04</div><div class="toc-title">Interface Showcase — Desktop View</div><div class="toc-page">Pg. 05</div></div>
+    <div class="toc-row"><div class="toc-num">05</div><div class="toc-title">Interface Showcase — Additional Views</div><div class="toc-page">Pg. 06</div></div>
+
+    <div class="toc-group-label">Project 02 — Hospital ER Analytics (Power BI)</div>
+    <div class="toc-row"><div class="toc-num">06</div><div class="toc-title">Project Divider</div><div class="toc-page">Pg. 07</div></div>
+    <div class="toc-row"><div class="toc-num">07</div><div class="toc-title">Project Overview &amp; Methodology</div><div class="toc-page">Pg. 08</div></div>
+    <div class="toc-row"><div class="toc-num">08</div><div class="toc-title">Dashboard — Monthly View</div><div class="toc-page">Pg. 09</div></div>
+    <div class="toc-row"><div class="toc-num">09</div><div class="toc-title">Dashboard — Consolidated View</div><div class="toc-page">Pg. 10</div></div>
+
+    <div class="toc-group-label">Project 03 — College Sahayak Full-Stack Application</div>
+    <div class="toc-row"><div class="toc-num">10</div><div class="toc-title">Project Divider</div><div class="toc-page">Pg. 11</div></div>
+    <div class="toc-row"><div class="toc-num">11</div><div class="toc-title">Project Overview &amp; Objectives</div><div class="toc-page">Pg. 12</div></div>
+    <div class="toc-row"><div class="toc-num">12</div><div class="toc-title">Technology Stack</div><div class="toc-page">Pg. 13</div></div>
+    <div class="toc-row"><div class="toc-num">13</div><div class="toc-title">System Architecture &amp; Flow</div><div class="toc-page">Pg. 14</div></div>
+    <div class="toc-row"><div class="toc-num">14</div><div class="toc-title">Interface Showcase — Authentication</div><div class="toc-page">Pg. 15</div></div>
+    <div class="toc-row"><div class="toc-num">15</div><div class="toc-title">Interface Showcase — Home &amp; Resources</div><div class="toc-page">Pg. 16</div></div>
+    <div class="toc-row"><div class="toc-num">16</div><div class="toc-title">Interface Showcase — Admin Panel</div><div class="toc-page">Pg. 17</div></div>
+    <div class="toc-row"><div class="toc-num">17</div><div class="toc-title">Interface Showcase — Additional Modules</div><div class="toc-page">Pg. 18</div></div>
+    <div class="toc-row"><div class="toc-num">18</div><div class="toc-title">AI Chatbot &amp; Deployment</div><div class="toc-page">Pg. 19</div></div>
+    <div class="toc-row"><div class="toc-num">19</div><div class="toc-title">Closing Note</div><div class="toc-page">Pg. 20</div></div>
+  </div>
+  <div class="ftr"><div>Internship Project Portfolio</div><div class="pnum">02</div></div>
+</div>
+
+<!-- =========================================================
+     PAGE 3 — PROJECT 1 DIVIDER (AMAZON)
+========================================================== -->
+<div class="page divider">
+  <div class="divider-bar"></div>
+  <div class="divider-inner">
+    <div class="divider-num">01</div>
+    <div class="divider-kicker">Project One</div>
+    <div class="divider-title">Amazon : The Shopping King<br>E-Commerce Website</div>
+    <div class="divider-desc">
+      A modern, responsive e-commerce web platform built with a dark premium aesthetic,
+      featuring dynamic categories, hot deals product catalog, cart interaction, user authentication, and profile management.
+    </div>
+    <div class="divider-tags">
+      <div class="dtag">HTML5</div>
+      <div class="dtag">CSS3 / Inter Font</div>
+      <div class="dtag">JavaScript (ES6)</div>
+      <div class="dtag">Firebase Auth</div>
+      <div class="dtag">Glassmorphism UI</div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     PAGE 4 — PROJECT 1 OVERVIEW (AMAZON)
+========================================================== -->
+<div class="page">
+  <div class="hdr"><div class="name">Yash Vijay Date</div><div class="tag">Project 01 · E-Commerce Website</div></div>
+  <div class="hdr-accent"></div>
+  <div class="body-area">
+    <div class="section-kicker">Project 01 of 03</div>
+    <h1 class="section-title">Amazon : The Shopping King</h1>
+    <div class="rule"></div>
+
+    <div class="meta-grid">
+      <div class="cell"><div class="k">Category</div><div class="v">Front-End E-Commerce</div></div>
+      <div class="cell"><div class="k">Type</div><div class="v">Multi-Page Web Platform</div></div>
+      <div class="cell"><div class="k">Duration</div><div class="v">2 Weeks</div></div>
+      <div class="cell"><div class="k">Status</div><div class="v">Completed &amp; Redesigned</div></div>
+    </div>
+
+    <h2 class="sub">Overview</h2>
+    <p class="copy">
+      Amazon : The Shopping King is a comprehensive, multi-page front-end e-commerce application designed to deliver an intuitive and visually striking shopping experience. Featuring a modern dark-themed aesthetic with signature Amazon orange accents, the site showcases a curated product catalog across multiple categories, interactive deal banners, smooth scroll animations, and user account flows.
+    </p>
+
+    <h2 class="sub">Key Features</h2>
+    <ul class="bullets">
+      <li><strong>Responsive Navigation &amp; Glassmorphism Navbar:</strong> Sticky, blur-effect header with brand identity, search navigation, and mobile hamburger menu.</li>
+      <li><strong>Dynamic Hero &amp; Hot Deals Section:</strong> Animated floating badges, real-time product cards with discount tags, star ratings, and interactive "Add to Cart" state management.</li>
+      <li><strong>Category Discovery:</strong> 6 core categories (Electronics, Fashion, Home &amp; Living, Sports, Books, Beauty) with custom hover gradient accents.</li>
+      <li><strong>User Management &amp; Privacy:</strong> Complete account portal containing login forms, registration, user profile, contact desk, and privacy policy sections.</li>
+      <li><strong>Firebase Integration:</strong> Firebase authentication setup for secure sign-in and user state persistence.</li>
+    </ul>
+
+    <h2 class="sub">Technology Stack</h2>
+    <div class="tag-row">
+      <div class="tag">HTML5</div>
+      <div class="tag">CSS3 (Modern Variables &amp; Flexbox/Grid)</div>
+      <div class="tag">JavaScript (ES6 Modules)</div>
+      <div class="tag">Firebase Auth</div>
+      <div class="tag">Google Fonts (Inter)</div>
+      <div class="tag">Unsplash API</div>
+    </div>
+
+    <div class="link-block">
+      <div class="link-label">Live Deployment (Vercel)</div>
+      <div class="link-url">https://amazon-shoping-king.vercel.app</div>
+    </div>
+  </div>
+  <div class="ftr"><div>Project 01 · E-Commerce Website</div><div class="pnum">04</div></div>
+</div>
+
+<!-- PAGE 5 — Project 1 Desktop Screenshot -->
+<div class="page">
+  <div class="hdr"><div class="name">Yash Vijay Date</div><div class="tag">Project 01 · E-Commerce Website</div></div>
+  <div class="hdr-accent"></div>
+  <div class="body-area">
+    <div class="section-kicker">Interface Showcase</div>
+    <h1 class="section-title">Desktop View — Homepage</h1>
+    <div class="rule"></div>
+    <p class="copy" style="margin-bottom:5mm;">
+      Full-page capture of the redesigned Amazon : The Shopping King homepage on a desktop viewport, showcasing the hero banner, stats bar, category cards, and deal showcase.
+    </p>
+    <div class="shot-frame" style="height:190mm;">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <div class="inner-label">
+        <div class="lbl-main">SCREENSHOT PLACEHOLDER</div>
+        <div class="lbl-sub">Amazon : The Shopping King — Homepage View (1440 × 900)</div>
+      </div>
+    </div>
+    <div class="caption">Fig. 1.1 — Homepage, Dark Amazon UI Theme</div>
+  </div>
+  <div class="ftr"><div>Project 01 · E-Commerce Website</div><div class="pnum">05</div></div>
+</div>
+
+<!-- PAGE 6 — Project 1 Additional Views -->
+<div class="page">
+  <div class="hdr"><div class="name">Yash Vijay Date</div><div class="tag">Project 01 · E-Commerce Website</div></div>
+  <div class="hdr-accent"></div>
+  <div class="body-area">
+    <div class="section-kicker">Interface Showcase</div>
+    <h1 class="section-title">Additional Views</h1>
+    <div class="rule"></div>
+    <p class="copy" style="margin-bottom:4mm;">
+      Supporting screens covering key modules of the e-commerce platform — product listing, user authentication, customer profile, and contact support.
+    </p>
+    <div class="shot-grid">
+      <div class="cell">
+        <div class="shot-frame" style="height:78mm;">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">shopping catalog page</div></div>
+        </div>
+        <div class="caption">Fig. 1.2 — Shopping Catalog Page</div>
+      </div>
+      <div class="cell">
+        <div class="shot-frame" style="height:78mm;">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">login / authentication page</div></div>
+        </div>
+        <div class="caption">Fig. 1.3 — Login &amp; Authentication Portal</div>
+      </div>
+      <div class="cell">
+        <div class="shot-frame" style="height:78mm;">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">user profile dashboard</div></div>
+        </div>
+        <div class="caption">Fig. 1.4 — User Profile Dashboard</div>
+      </div>
+      <div class="cell">
+        <div class="shot-frame" style="height:78mm;">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">contact &amp; support desk</div></div>
+        </div>
+        <div class="caption">Fig. 1.5 — Contact &amp; Support Desk</div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr"><div>Project 01 · E-Commerce Website</div><div class="pnum">06</div></div>
+</div>
+
+<!-- =========================================================
+     PAGE 7 — PROJECT 2 DIVIDER (POWER BI)
+========================================================== -->
+<div class="page divider">
+  <div class="divider-bar"></div>
+  <div class="divider-inner">
+    <div class="divider-num">02</div>
+    <div class="divider-kicker">Project Two</div>
+    <div class="divider-title">Hospital ER Dashboard<br>Power BI Analytics</div>
+    <div class="divider-desc">
+      An interactive analytics dashboard for Hospital Emergency Room data with
+      9,200+ patient records — providing real-time insights into wait times,
+      satisfaction scores, demographics, and department referrals.
+    </div>
+    <div class="divider-tags">
+      <div class="dtag">Power BI</div>
+      <div class="dtag">Power Query</div>
+      <div class="dtag">DAX</div>
+      <div class="dtag">Data Modeling</div>
+      <div class="dtag">CSV / Excel</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 8 — Project 2 Overview -->
+<div class="page">
+  <div class="hdr"><div class="name">Yash Vijay Date</div><div class="tag">Project 02 · Data Analytics</div></div>
+  <div class="hdr-accent"></div>
+  <div class="body-area">
+    <div class="section-kicker">Project 02 of 03</div>
+    <h1 class="section-title">Hospital ER Dashboard — Power BI</h1>
+    <div class="rule"></div>
+
+    <div class="meta-grid">
+      <div class="cell"><div class="k">Category</div><div class="v">Data Analytics &amp; BI</div></div>
+      <div class="cell"><div class="k">Tool</div><div class="v">Microsoft Power BI</div></div>
+      <div class="cell"><div class="k">Dataset</div><div class="v">9,200+ Patient Records</div></div>
+      <div class="cell"><div class="k">Status</div><div class="v">Completed</div></div>
+    </div>
+
+    <h2 class="sub">Overview</h2>
+    <p class="copy">
+      This project involved building an interactive analytics dashboard for a
+      Hospital Emergency Room dataset containing over 9,200 patient records. The
+      dashboard provides real-time insights into patient demographics, wait times,
+      satisfaction scores, department referrals, and admission patterns — enabling
+      hospital administrators to identify bottlenecks and improve patient care
+      efficiency.
+    </p>
+
+    <h2 class="sub">Methodology</h2>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><div class="t">Data Collection &amp; Cleaning</div><div class="d">Imported the Hospital ER CSV dataset (9,217 rows × 12 columns) into Power Query. Cleaned inconsistencies in date formats, handled missing satisfaction scores, and standardized patient race and gender categories.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><div class="t">Data Modeling</div><div class="d">Structured the dataset with calculated columns for age groups, wait-time brackets, and admission flags. Defined relationships for cross-filtering across demographics, departments, and time periods.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><div class="t">DAX Measures &amp; KPIs</div><div class="d">Built calculated measures for average wait time, patient satisfaction score, admission rate percentage, and department-wise referral counts. Created KPI cards for at-a-glance performance monitoring.</div></div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body"><div class="t">Dashboard Design</div><div class="d">Assembled an interactive report with slicers for gender, age group, and department. Included trend charts, bar graphs, KPI cards, and drill-down capabilities for detailed analysis.</div></div>
+    </div>
+
+    <h2 class="sub">Tools &amp; Techniques</h2>
+    <div class="tag-row">
+      <div class="tag">Power BI Desktop</div>
+      <div class="tag">Power Query</div>
+      <div class="tag">DAX</div>
+      <div class="tag">Data Modeling</div>
+      <div class="tag">CSV / Excel</div>
+      <div class="tag">KPI Design</div>
+    </div>
+  </div>
+  <div class="ftr"><div>Project 02 · Data Analytics</div><div class="pnum">08</div></div>
+</div>
+
+<!-- PAGE 9 — Power BI Dashboard Monthly View -->
+<div class="page">
+  <div class="hdr"><div class="name">Yash Vijay Date</div><div class="tag">Project 02 · Data Analytics</div></div>
+  <div class="hdr-accent"></div>
+  <div class="body-area flex-center-vert">
+    <div class="section-kicker">Dashboard Showcase</div>
+    <h1 class="section-title">Monthly View Dashboard</h1>
+    <div class="rule"></div>
+    <p class="copy" style="margin-bottom:5mm;">
+      Monthly view of the Hospital ER Dashboard showing KPI cards for total patients
+      (4,878), average wait time (35.5 min), satisfaction score (4.96), and patients
+      referred (1,992). Includes age group distribution, gender split, department referral
+      breakdown, admission status, patients seen within 30-minute target, and a
+      day-hour heatmap for staffing optimization.
+    </p>
+    <div class="shot-frame" style="height:112mm;">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <img src="powerbi-dashboard-1.png" alt="Hospital ER Dashboard - Monthly View">
+    </div>
+    <div class="caption">Fig. 2.1 — Power BI Dashboard, Monthly View (Year 2024)</div>
+  </div>
+  <div class="ftr"><div>Project 02 · Data Analytics</div><div class="pnum">09</div></div>
+</div>
+
+<!-- PAGE 10 — Power BI Dashboard Consolidated View -->
+<div class="page">
+  <div class="hdr"><div class="name">Yash Vijay Date</div><div class="tag">Project 02 · Data Analytics</div></div>
+  <div class="hdr-accent"></div>
+  <div class="body-area flex-center-vert">
+    <div class="section-kicker">Dashboard Showcase</div>
+    <h1 class="section-title">Consolidated View Dashboard</h1>
+    <div class="rule"></div>
+    <p class="copy" style="margin-bottom:5mm;">
+      Consolidated view across the full date range (April 2023 – October 2024) showing
+      aggregate KPIs: 9,216 total patients, 35.3 min average wait time, 4.99 satisfaction
+      score, and 3,816 referrals. This view enables trend analysis across the complete
+      dataset for long-term strategic planning and resource allocation.
+    </p>
+    <div class="shot-frame" style="height:112mm;">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <img src="powerbi-dashboard-2.png" alt="Hospital ER Dashboard - Consolidated View">
+    </div>
+    <div class="caption">Fig. 2.2 — Power BI Dashboard, Consolidated View (Apr 2023 – Oct 2024)</div>
+  </div>
+  <div class="ftr"><div>Project 02 · Data Analytics</div><div class="pnum">10</div></div>
+</div>
+
+<!-- =========================================================
+     PAGE 11 — PROJECT 3 DIVIDER (COLLEGE SAHAYAK FULL-STACK)
+========================================================== -->
+<div class="page divider">
+  <div class="divider-bar"></div>
+  <div class="divider-inner">
+    <div class="divider-num">03</div>
+    <div class="divider-kicker">Project Three — Primary Project</div>
+    <div class="divider-title">College Sahayak<br>Full-Stack Web Application</div>
+    <div class="divider-desc">
+      A production-grade, full-stack study resource platform for MSBTE diploma
+      students — featuring secure authentication, role-based admin panel, 10 resource
+      categories, MSBTE curriculum browser, and an AI chatbot powered by Gemini.
+    </div>
+    <div class="divider-tags">
+      <div class="dtag">React 19</div>
+      <div class="dtag">TypeScript</div>
+      <div class="dtag">Node.js</div>
+      <div class="dtag">Express 5</div>
+      <div class="dtag">Supabase</div>
+      <div class="dtag">Firebase</div>
+      <div class="dtag">Gemini API</div>
+      <div class="dtag">Vercel</div>
+      <div class="dtag">Render</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 12 — Project 3 Overview -->
+<div class="page">
+  <div class="hdr"><div class="name">Yash Vijay Date</div><div class="tag">Project 03 · Full-Stack Application</div></div>
+  <div class="hdr-accent"></div>
+  <div class="body-area">
+    <div class="section-kicker">Project 03 of 03 — Primary Project</div>
+    <h1 class="section-title">College Sahayak — Full-Stack Application</h1>
+    <div class="rule"></div>
+
+    <div class="meta-grid">
+      <div class="cell"><div class="k">Category</div><div class="v">Full-Stack Development</div></div>
+      <div class="cell"><div class="k">Type</div><div class="v">Web Application (SPA)</div></div>
+      <div class="cell"><div class="k">Duration</div><div class="v">6 Weeks</div></div>
+      <div class="cell"><div class="k">Status</div><div class="v">Completed &amp; Deployed</div></div>
+    </div>
+
+    <h2 class="sub">Overview</h2>
+    <p class="copy">
+      College Sahayak is a production-grade, full-stack web application designed
+      to serve as a centralized study resource platform for MSBTE diploma students.
+      The application provides organized access to study materials — lab manuals,
+      notes, assignments, question papers, micro-projects, MSBTE important questions,
+      lecture videos, and curriculum data — categorized by branch, semester, and subject.
+      It features secure authentication (email/password with OTP verification + Google
+      OAuth), role-based access control, a full admin dashboard, an integrated
+      AI chatbot powered by the Gemini API, and is deployed on Vercel (frontend)
+      and Render (backend) for production use.
+    </p>
+
+    <h2 class="sub">Objectives</h2>
+    <ul class="bullets">
+      <li>Build a scalable full-stack architecture with a clean separation between React SPA client, Express API server, and Supabase (PostgreSQL) data layer.</li>
+      <li>Implement secure authentication with email + OTP verification via Brevo, Google OAuth via Firebase, and JWT-based session management.</li>
+      <li>Develop a role-based admin panel for managing users, materials, feedback, and application data in real time.</li>
+      <li>Integrate a Gemini-powered AI chatbot to provide in-app study assistance for students.</li>
+      <li>Ensure the application is fully responsive, SEO-optimized, and deployment-ready on cloud platforms.</li>
+    </ul>
+
+    <h2 class="sub">Core Modules</h2>
+    <ul class="bullets">
+      <li><strong>Authentication:</strong> Email/Password login with OTP verification, Google OAuth sync, forgot/reset password flow, and protected routes.</li>
+      <li><strong>Materials Hub:</strong> 10 resource categories (Notes, Lab Manuals, Assignments, etc.) with branch/semester/subject filtering and Google Drive integration.</li>
+      <li><strong>Admin Panel:</strong> Centralized dashboard with user management, material CRUD, feedback review, and bulk operations.</li>
+      <li><strong>AI Chatbot:</strong> Gemini API-powered conversational assistant with markdown rendering and context-aware responses.</li>
+      <li><strong>MSBTE Curriculum:</strong> Complete curriculum browser with branch, semester, and subject-level navigation.</li>
+    </ul>
+  </div>
+  <div class="ftr"><div>Project 03 · Full-Stack Application</div><div class="pnum">12</div></div>
+</div>
+
+<!-- PAGE 13 — Technology Stack -->
+<div class="page">
+  <div class="hdr"><div class="name">Yash Vijay Date</div><div class="tag">Project 03 · Full-Stack Application</div></div>
+  <div class="hdr-accent"></div>
+  <div class="body-area">
+    <div class="section-kicker">Engineering Details</div>
+    <h1 class="section-title">Technology Stack</h1>
+    <div class="rule"></div>
+
+    <div class="cols-2">
+      <div class="col">
+        <h2 class="sub" style="margin-top:0;">Front End</h2>
+        <ul class="bullets">
+          <li><strong>React 19</strong> with TypeScript for building a component-based, single-page interface using Vite as the build tool.</li>
+          <li><strong>React Router v7</strong> for client-side routing with protected route guards.</li>
+          <li>Custom CSS3 styling with responsive design across all breakpoints.</li>
+          <li><strong>Lucide React</strong> for consistent iconography throughout the UI.</li>
+          <li><strong>React Helmet Async</strong> for SEO meta tags and dynamic page titles.</li>
+          <li><strong>React Markdown</strong> with GFM support for AI chatbot response rendering.</li>
+        </ul>
+
+        <h2 class="sub">Back End</h2>
+        <ul class="bullets">
+          <li><strong>Node.js</strong> with <strong>Express 5</strong> REST API layer serving 5 route modules (auth, users, materials, feedback, chat).</li>
+          <li><strong>JWT</strong> authentication with role-based middleware (user/admin access control).</li>
+          <li><strong>Firebase Admin SDK</strong> for Google OAuth token verification.</li>
+          <li><strong>bcrypt.js</strong> for secure password hashing.</li>
+          <li><strong>Express Rate Limiter</strong> for API abuse prevention.</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h2 class="sub" style="margin-top:0;">Database</h2>
+        <ul class="bullets">
+          <li><strong>Supabase</strong> (PostgreSQL) for persistent storage with real-time capabilities.</li>
+          <li>Schema: <code>users</code>, <code>materials</code>, <code>feedback</code>, <code>curriculum</code> tables with role, verification, and OTP fields.</li>
+        </ul>
+
+        <h2 class="sub">AI &amp; Email Services</h2>
+        <ul class="bullets">
+          <li><strong>Google Gemini API</strong> integration for conversational AI chatbot assistance.</li>
+          <li><strong>Brevo (Sendinblue)</strong> transactional email API for OTP delivery and verification emails.</li>
+          <li><strong>Firebase Authentication</strong> for Google OAuth sign-in flow.</li>
+        </ul>
+
+        <h2 class="sub">Deployment &amp; DevOps</h2>
+        <ul class="bullets">
+          <li><strong>Vercel</strong> — Frontend SPA deployment with automatic CI/CD from GitHub.</li>
+          <li><strong>Render</strong> — Backend API deployment with environment variable management.</li>
+          <li><strong>Git &amp; GitHub</strong> — Version control with feature branching.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tag-row" style="margin-top:6mm;">
+      <div class="tag">React 19</div>
+      <div class="tag">TypeScript</div>
+      <div class="tag">Vite</div>
+      <div class="tag">Node.js</div>
+      <div class="tag">Express 5</div>
+      <div class="tag">Supabase</div>
+      <div class="tag">PostgreSQL</div>
+      <div class="tag">JWT</div>
+      <div class="tag">Firebase</div>
+      <div class="tag">Gemini API</div>
+      <div class="tag">Brevo</div>
+      <div class="tag">Vercel</div>
+      <div class="tag">Render</div>
+    </div>
+
+    <div style="display:flex; gap:5mm; margin-top:5mm;">
+      <div class="link-block" style="flex:1;">
+        <div class="link-label">Frontend (Vercel)</div>
+        <div class="link-url">https://internship-2k26.vercel.app</div>
+      </div>
+      <div class="link-block" style="flex:1;">
+        <div class="link-label">Backend API (Render)</div>
+        <div class="link-url">https://college-sahayak.onrender.com</div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr"><div>Project 03 · Full-Stack Application</div><div class="pnum">13</div></div>
+</div>
+
+<!-- PAGE 14 — Architecture Flow -->
+<div class="page">
+  <div class="hdr"><div class="name">Yash Vijay Date</div><div class="tag">Project 03 · Full-Stack Application</div></div>
+  <div class="hdr-accent"></div>
+  <div class="body-area">
+    <div class="section-kicker">System Design</div>
+    <h1 class="section-title">Architecture &amp; Flow</h1>
+    <div class="rule"></div>
+    <p class="copy" style="margin-bottom:6mm;">
+      High-level flow of a request through the College Sahayak application, from
+      the client interface through authentication to the database and external services.
+    </p>
+
+    <div class="flow-wrap">
+      <div class="flow-row">
+        <div class="flow-box"><div class="t">Student / Admin</div><div class="s">client browser</div></div>
+      </div>
+      <div class="flow-arrow-row"><span>&#8595;</span></div>
+      <div class="flow-row">
+        <div class="flow-box steel"><div class="t">React SPA</div><div class="s">Vite + TypeScript</div></div>
+      </div>
+      <div class="flow-arrow-row"><span>&#8595;</span></div>
+      <div class="flow-row">
+        <div class="flow-box accent"><div class="t">Express REST API</div><div class="s">Node.js server</div></div>
+      </div>
+      <div class="flow-arrow-row"><span>&#8595;</span></div>
+      <div class="flow-row">
+        <div class="flow-box"><div class="t">JWT Auth</div><div class="s">token verification</div></div>
+        <div class="flow-box"><div class="t">Firebase Admin</div><div class="s">Google OAuth verify</div></div>
+        <div class="flow-box"><div class="t">Role Middleware</div><div class="s">user / admin</div></div>
+      </div>
+      <div class="flow-arrow-row"><span>&#8595;</span><span>&#8595;</span><span>&#8595;</span></div>
+      <div class="flow-row">
+        <div class="flow-box"><div class="t">Materials API</div><div class="s">CRUD operations</div></div>
+        <div class="flow-box"><div class="t">Auth API</div><div class="s">register / login / OTP</div></div>
+        <div class="flow-box"><div class="t">Chat API</div><div class="s">Gemini AI proxy</div></div>
+        <div class="flow-box"><div class="t">Admin API</div><div class="s">user mgmt / feedback</div></div>
+      </div>
+      <div class="flow-arrow-row"><span>&#8595;</span><span>&#8595;</span><span>&#8595;</span><span>&#8595;</span></div>
+      <div class="flow-row">
+        <div class="flow-box accent"><div class="t">Supabase</div><div class="s">PostgreSQL database</div></div>
+        <div class="flow-box steel"><div class="t">Brevo</div><div class="s">email service</div></div>
+        <div class="flow-box steel"><div class="t">Gemini API</div><div class="s">AI responses</div></div>
+      </div>
+    </div>
+
+    <h2 class="sub" style="margin-top:8mm;">Database Schema</h2>
+    <ul class="bullets">
+      <li><strong>users</strong> — id, firebase_uid, email, name, password_hash, role, is_verified, otp_code, otp_expiry, created_at</li>
+      <li><strong>materials</strong> — id, title, description, category, branch, semester, subject_code, drive_link, image_link, is_trending, created_at</li>
+      <li><strong>feedback</strong> — id, user_id, message, rating, created_at</li>
+      <li><strong>curriculum</strong> — id, branch, semester, subject_name, subject_code, type, abbreviation</li>
+    </ul>
+  </div>
+  <div class="ftr"><div>Project 03 · Full-Stack Application</div><div class="pnum">14</div></div>
+</div>
+
+<!-- PAGE 15 — Authentication Screenshots -->
+<div class="page">
+  <div class="hdr"><div class="name">Yash Vijay Date</div><div class="tag">Project 03 · Full-Stack Application</div></div>
+  <div class="hdr-accent"></div>
+  <div class="body-area">
+    <div class="section-kicker">Interface Showcase</div>
+    <h1 class="section-title">Authentication Flow</h1>
+    <div class="rule"></div>
+    <p class="copy" style="margin-bottom:4mm;">
+      Secure authentication screens supporting both email/password login with OTP
+      verification and Google OAuth sign-in.
+    </p>
+    <div class="shot-grid">
+      <div class="cell">
+        <div class="shot-frame" style="height:100mm;">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">login page</div></div>
+        </div>
+        <div class="caption">Fig. 3.1 — Login with email &amp; Google OAuth</div>
+      </div>
+      <div class="cell">
+        <div class="shot-frame" style="height:100mm;">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">registration page</div></div>
+        </div>
+        <div class="caption">Fig. 3.2 — Registration with form validation</div>
+      </div>
+      <div class="cell">
+        <div class="shot-frame" style="height:78mm;">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">OTP verification</div></div>
+        </div>
+        <div class="caption">Fig. 3.3 — OTP verification screen</div>
+      </div>
+      <div class="cell">
+        <div class="shot-frame" style="height:78mm;">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">forgot / reset password</div></div>
+        </div>
+        <div class="caption">Fig. 3.4 — Forgot / Reset password flow</div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr"><div>Project 03 · Full-Stack Application</div><div class="pnum">15</div></div>
+</div>
+
+<!-- PAGE 16 — Home & Resources -->
+<div class="page">
+  <div class="hdr"><div class="name">Yash Vijay Date</div><div class="tag">Project 03 · Full-Stack Application</div></div>
+  <div class="hdr-accent"></div>
+  <div class="body-area">
+    <div class="section-kicker">Interface Showcase</div>
+    <h1 class="section-title">Home &amp; Resource Pages</h1>
+    <div class="rule"></div>
+    <p class="copy" style="margin-bottom:4mm;">
+      The main student-facing pages — homepage with trending materials, branch/semester
+      selection, and individual resource category pages with search and filtering.
+    </p>
+    <div class="shot-grid">
+      <div class="cell">
+        <div class="shot-frame" style="height:78mm;">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">homepage — hero section</div></div>
+        </div>
+        <div class="caption">Fig. 3.5 — Homepage with hero &amp; quick access</div>
+      </div>
+      <div class="cell">
+        <div class="shot-frame" style="height:78mm;">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">materials hub / resources</div></div>
+        </div>
+        <div class="caption">Fig. 3.6 — Materials Hub with filters</div>
+      </div>
+      <div class="cell">
+        <div class="shot-frame" style="height:78mm;">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">curriculum browser</div></div>
+        </div>
+        <div class="caption">Fig. 3.7 — MSBTE Curriculum browser</div>
+      </div>
+      <div class="cell">
+        <div class="shot-frame" style="height:78mm;">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">profile / about page</div></div>
+        </div>
+        <div class="caption">Fig. 3.8 — User profile &amp; About page</div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr"><div>Project 03 · Full-Stack Application</div><div class="pnum">16</div></div>
+</div>
+
+<!-- PAGE 17 — Admin Panel -->
+<div class="page">
+  <div class="hdr"><div class="name">Yash Vijay Date</div><div class="tag">Project 03 · Full-Stack Application</div></div>
+  <div class="hdr-accent"></div>
+  <div class="body-area">
+    <div class="section-kicker">Interface Showcase</div>
+    <h1 class="section-title">Admin Panel</h1>
+    <div class="rule"></div>
+    <p class="copy" style="margin-bottom:5mm;">
+      Role-protected administrative dashboard accessible only to admin users.
+      Features real-time statistics, material management with full CRUD operations,
+      user management, and feedback review — all within a unified control panel.
+    </p>
+    <div class="shot-frame" style="height:190mm;">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <div class="inner-label">
+        <div class="lbl-main">SCREENSHOT PLACEHOLDER</div>
+        <div class="lbl-sub">admin panel — full dashboard view</div>
+      </div>
+    </div>
+    <div class="caption">Fig. 3.9 — Admin panel dashboard with material management</div>
+  </div>
+  <div class="ftr"><div>Project 03 · Full-Stack Application</div><div class="pnum">17</div></div>
+</div>
+
+<!-- PAGE 18 — Additional Modules -->
+<div class="page">
+  <div class="hdr"><div class="name">Yash Vijay Date</div><div class="tag">Project 03 · Full-Stack Application</div></div>
+  <div class="hdr-accent"></div>
+  <div class="body-area">
+    <div class="section-kicker">Interface Showcase</div>
+    <h1 class="section-title">Additional Modules</h1>
+    <div class="rule"></div>
+    <p class="copy" style="margin-bottom:4mm;">
+      Supplementary screens covering feedback, question papers with model answers,
+      and the notes/lab manual resource pages.
+    </p>
+    <div class="shot-grid">
+      <div class="cell">
+        <div class="shot-frame" style="height:78mm;">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">notes page</div></div>
+        </div>
+        <div class="caption">Fig. 3.10 — Notes resource page</div>
+      </div>
+      <div class="cell">
+        <div class="shot-frame" style="height:78mm;">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">question papers</div></div>
+        </div>
+        <div class="caption">Fig. 3.11 — Question papers &amp; model answers</div>
+      </div>
+      <div class="cell">
+        <div class="shot-frame" style="height:78mm;">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">feedback page</div></div>
+        </div>
+        <div class="caption">Fig. 3.12 — User feedback submission</div>
+      </div>
+      <div class="cell">
+        <div class="shot-frame" style="height:78mm;">
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">lab manuals page</div></div>
+        </div>
+        <div class="caption">Fig. 3.13 — Lab Manuals resource page</div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr"><div>Project 03 · Full-Stack Application</div><div class="pnum">18</div></div>
+</div>
+
+<!-- PAGE 19 — AI Chatbot & Deployment -->
+<div class="page">
+  <div class="hdr"><div class="name">Yash Vijay Date</div><div class="tag">Project 03 · Full-Stack Application</div></div>
+  <div class="hdr-accent"></div>
+  <div class="body-area">
+    <div class="section-kicker">Interface Showcase</div>
+    <h1 class="section-title">AI Chatbot &amp; Deployment</h1>
+    <div class="rule"></div>
+    <p class="copy" style="margin-bottom:4mm;">
+      An integrated AI chatbot powered by the Google Gemini API, providing
+      contextual study assistance to students — answering academic queries,
+      explaining concepts, and guiding them to relevant resources within the platform.
+    </p>
+    <div class="shot-frame" style="height:130mm;">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <div class="inner-label">
+        <div class="lbl-main">SCREENSHOT PLACEHOLDER</div>
+        <div class="lbl-sub">AI chatbot interface with markdown responses</div>
+      </div>
+    </div>
+    <div class="caption">Fig. 3.14 — AI Chatbot (Gemini API) with markdown rendering</div>
+
+    <h2 class="sub">AI Chatbot Highlights</h2>
+    <ul class="bullets">
+      <li>Natural-language conversational interface embedded directly into the application.</li>
+      <li>Responses rendered with full Markdown support including code blocks, tables, and lists.</li>
+      <li>Backend proxy architecture keeps the Gemini API key secure on the server side.</li>
+      <li>Designed to assist students with academic queries, reducing support overhead.</li>
+    </ul>
+
+    <h2 class="sub">Deployment Details</h2>
+    <ul class="bullets">
+      <li><strong>Frontend:</strong> Deployed on Vercel with automatic GitHub CI/CD pipeline.</li>
+      <li><strong>Backend:</strong> Deployed on Render with managed environment variables and auto-scaling.</li>
+      <li><strong>Database:</strong> Hosted on Supabase cloud with PostgreSQL and REST API access.</li>
+    </ul>
+  </div>
+  <div class="ftr"><div>Project 03 · Full-Stack Application</div><div class="pnum">19</div></div>
+</div>
+
+<!-- =========================================================
+     PAGE 20 — CLOSING
+========================================================== -->
+<div class="page closing">
+  <div class="closing-inner">
+    <div class="k">End of Portfolio</div>
+    <div class="t">Thank You</div>
+    <div class="d">
+      This document summarizes the three internship projects completed at
+      Somayu Infotech — Amazon : The Shopping King e-commerce platform, Power BI analytics
+      dashboard for Hospital ER data, and College Sahayak full-stack web application with
+      AI integration. Each project demonstrates progressive skill development
+      from front-end fundamentals to data analytics and production-grade full-stack engineering.
+    </div>
+    <div class="contact">
+      <div><div class="c-k">Name</div><div class="c-v">Yash Vijay Date</div></div>
+      <div><div class="c-k">Email</div><div class="c-v">yashdate31@gmail.com</div></div>
+      <div><div class="c-k">GitHub</div><div class="c-v">github.com/YashDate31</div></div>
+      <div><div class="c-k">Organization</div><div class="c-v">Somayu Infotech</div></div>
+      <div><div class="c-k">Mentor</div><div class="c-v">Mrs. Sangita Chavan Mam</div></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
