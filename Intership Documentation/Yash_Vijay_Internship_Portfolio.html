@@ -142,8 +142,8 @@ ul.bullets li::marker { color: var(--steel); }
 
 /* ---------- screenshot placeholder / frame ---------- */
 .shot-frame {
-  border: 1pt dashed #9aa5b1;
-  background: #f4f6f8;
+  border: 1pt solid #b8c4d0;
+  background: #ffffff;
   border-radius: 1.5mm;
   display: flex;
   align-items: center;
@@ -151,12 +151,14 @@ ul.bullets li::marker { color: var(--steel); }
   position: relative;
   overflow: hidden;
   width: 100%;
+  box-shadow: 0 1mm 2.5mm rgba(0,0,0,0.08);
 }
 .shot-frame img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   display: block;
+  border-radius: 1mm;
 }
 .shot-frame .inner-label {
   text-align: center;
@@ -653,7 +655,7 @@ ul.bullets li::marker { color: var(--steel); }
 
     <div class="link-block">
       <div class="link-label">Live Deployment (Vercel)</div>
-      <div class="link-url">https://amazon-shoping-king.vercel.app</div>
+      <div class="link-url">https://amazon-e-shop.vercel.app</div>
     </div>
   </div>
   <div class="ftr"><div>Project 01 · E-Commerce Website</div><div class="pnum">04</div></div>
@@ -673,10 +675,7 @@ ul.bullets li::marker { color: var(--steel); }
     <div class="shot-frame" style="height:190mm;">
       <div class="corner tl"></div><div class="corner tr"></div>
       <div class="corner bl"></div><div class="corner br"></div>
-      <div class="inner-label">
-        <div class="lbl-main">SCREENSHOT PLACEHOLDER</div>
-        <div class="lbl-sub">Amazon : The Shopping King — Homepage View (1440 × 900)</div>
-      </div>
+      <img src="p1-home.png" alt="Amazon Homepage View">
     </div>
     <div class="caption">Fig. 1.1 — Homepage, Dark E-Commerce UI Theme</div>
   </div>
@@ -698,14 +697,14 @@ ul.bullets li::marker { color: var(--steel); }
       <div class="shot-frame" style="height:95mm;">
         <div class="corner tl"></div><div class="corner tr"></div>
         <div class="corner bl"></div><div class="corner br"></div>
-        <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">shopping catalog page</div></div>
+        <img src="p1-shopping.png" alt="Shopping Catalog Page">
       </div>
       <div class="caption">Fig. 1.2 — Shopping Catalog Page</div>
 
       <div class="shot-frame" style="height:95mm;">
         <div class="corner tl"></div><div class="corner tr"></div>
         <div class="corner bl"></div><div class="corner br"></div>
-        <div class="inner-label"><div class="lbl-main">SCREENSHOT</div><div class="lbl-sub">login / authentication page</div></div>
+        <img src="p1-login.png" alt="Login & Authentication Portal">
       </div>
       <div class="caption">Fig. 1.3 — Login &amp; Authentication Portal</div>
     </div>
