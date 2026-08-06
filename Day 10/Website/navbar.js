@@ -5,8 +5,8 @@ const navbarHTML = `
   <nav id="shared-navbar">
     <div class="sn-inner">
       <a href="index.html" class="sn-brand">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkQZwfIF1UdjlMBtjg4fmlfdGU0suXMgG5qA&s" alt="Amazon Logo">
-        Amazon
+        <img src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=100&auto=format&fit=crop&q=80" alt="ShopKing Logo">
+        Shop<span>King</span>
       </a>
       
       <button class="sn-hamburger" id="sn-hamburger" aria-label="Open menu">&#9776;</button>
