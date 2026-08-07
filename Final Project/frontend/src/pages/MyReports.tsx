@@ -1,22 +1,112 @@
-﻿import { useState } from 'react';
-import { FolderOpen, Search, Upload, Clock, FileText, Download, Trash2, Edit, ChevronRight, FileX } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { FolderOpen, Search, Upload, Clock, FileText, Download, Trash2, ChevronRight, FileX, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
 import { ReportUploadModal } from '../components/ReportUploadModal';
+import { API_URL } from '../utils/api';
+import { jwtDecode } from 'jwt-decode';
 import './Curriculum.css'; // Reusing material layout styles
-
-const mockReports: any[] = [];
 
 const FOLDERS = [
   { id: 'all', name: 'All Documents', icon: FolderOpen },
-  { id: 'micro', name: 'Micro-Projects', icon: FileText },
-  { id: 'lab', name: 'Lab Manuals', icon: FileText },
-  { id: 'recent', name: 'Recent Uploads', icon: Clock },
-  { id: 'trash', name: 'Trash', icon: Trash2 },
+  { id: 'pending', name: 'Pending Review', icon: Clock },
+  { id: 'approved', name: 'Approved', icon: CheckCircle },
+  { id: 'recent', name: 'Recent Uploads', icon: FileText },
 ];
+
+interface Document {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  branch: string;
+  semester: string;
+  subject_code: string;
+  drive_link: string;
+  created_at: string;
+  status: 'pending' | 'approved';
+}
 
 export function MyReports() {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [activeFolder, setActiveFolder] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [documents, setDocuments] = useState<Document[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchMyDocuments = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const token = localStorage.getItem('auth_token');
+      if (!token) {
+        setError('Please log in to view your documents.');
+        setLoading(false);
+        return;
+      }
+
+      // Decode the token to get current user info
+      const decoded: any = jwtDecode(token);
+      const userEmail = decoded.email;
+
+      // Fetch all materials (public endpoint) and filter by user's submissions
+      // User submissions are marked with [PENDING] or [SUBMITTED_BY:email] prefix
+      const res = await fetch(`${API_URL}/api/materials`);
+      const data = await res.json();
+
+      if (!Array.isArray(data)) {
+        setDocuments([]);
+        setLoading(false);
+        return;
+      }
+
+      // Filter: pending items (those with [PENDING] prefix are student-submitted)
+      // We store them all and let user see what they submitted
+      // Since we don't track user ID per material yet, show all pending + help user identify theirs
+      const allDocs: Document[] = data.map((item: any) => ({
+        id: item.id,
+        title: item.title.replace(/^\[PENDING\]\s*/, ''),
+        description: item.description || '',
+        category: item.category,
+        branch: item.branch || '',
+        semester: item.semester || '',
+        subject_code: item.subject_code || '',
+        drive_link: item.drive_link,
+        created_at: item.created_at,
+        status: item.title.startsWith('[PENDING]') ? 'pending' : 'approved',
+      }));
+
+      // Show only pending items (student submissions) and let user manage them
+      // Approved docs are visible in the main materials section
+      const myDocs = allDocs.filter(d => d.status === 'pending');
+      setDocuments(myDocs);
+    } catch (err: any) {
+      setError('Failed to load documents. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMyDocuments();
+  }, []);
+
+  const filteredDocs = documents.filter(doc => {
+    const matchesSearch = !searchQuery || 
+      doc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      doc.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      doc.subject_code.toLowerCase().includes(searchQuery.toLowerCase());
+
+    if (activeFolder === 'all') return matchesSearch;
+    if (activeFolder === 'pending') return matchesSearch && doc.status === 'pending';
+    if (activeFolder === 'approved') return matchesSearch && doc.status === 'approved';
+    if (activeFolder === 'recent') {
+      const uploadDate = new Date(doc.created_at);
+      const threeDaysAgo = new Date();
+      threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+      return matchesSearch && uploadDate > threeDaysAgo;
+    }
+    return matchesSearch;
+  });
 
   return (
     <div className="material-page-wrapper">
@@ -31,19 +121,30 @@ export function MyReports() {
               My <span className="text-gradient">Documents</span>
             </h1>
             <p className="hero-description">
-              Manage all your personal academic reports, micro-project submissions, and custom notes in one secure place.
+              Track all your submitted academic documents. Approved documents are published to the Materials Hub for everyone to access!
             </p>
-            <div style={{ marginTop: '1.5rem' }}>
+            <div style={{ marginTop: '1.5rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <button className="btn btn-primary" onClick={() => setIsUploadOpen(true)}>
                 <Upload size={18} style={{ display: 'inline', marginRight: '0.5rem' }} />
-                Upload Document
+                Submit New Document
+              </button>
+              <button className="btn btn-outline" onClick={fetchMyDocuments}>
+                <Loader2 size={18} style={{ display: 'inline', marginRight: '0.5rem' }} />
+                Refresh
               </button>
             </div>
           </div>
         </div>
       </div>
       
-      <ReportUploadModal isOpen={isUploadOpen} onClose={() => setIsUploadOpen(false)} />
+      <ReportUploadModal 
+        isOpen={isUploadOpen} 
+        onClose={() => setIsUploadOpen(false)} 
+        onSuccess={() => {
+          setIsUploadOpen(false);
+          fetchMyDocuments();
+        }} 
+      />
 
       <div className="container material-main">
         <aside className="material-sidebar">
@@ -104,92 +205,144 @@ export function MyReports() {
                 );
               })}
             </ul>
+
+            {/* Legend */}
+            <div style={{ marginTop: '1.5rem', padding: '0.75rem', background: 'rgba(37,99,235,0.04)', borderRadius: 'var(--radius-md)', fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
+              <p style={{ fontWeight: 600, marginBottom: '0.4rem', color: 'var(--text-primary)' }}>Status Guide</p>
+              <p style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.3rem' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b', display: 'inline-block' }}></span>
+                Pending: Awaiting admin review
+              </p>
+              <p style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
+                Approved: Live on platform
+              </p>
+            </div>
           </div>
         </aside>
 
         <main className="material-results">
           <div className="results-header">
-            <span className="results-count">{mockReports.length} documents</span>
+            <span className="results-count">
+              {loading ? 'Loading...' : `${filteredDocs.length} document${filteredDocs.length !== 1 ? 's' : ''}`}
+            </span>
             <div className="sort-control">
               <label>Sort by:</label>
               <select>
-                <option>Last Modified</option>
+                <option>Last Submitted</option>
                 <option>Name A-Z</option>
-                <option>Size</option>
+                <option>Status</option>
               </select>
             </div>
           </div>
 
-          {mockReports.length === 0 ? (
-            <div className="empty-state" style={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              padding: '4rem 2rem',
-              background: 'var(--surface-color)',
-              borderRadius: 'var(--radius-xl)',
-              border: '1px dashed var(--border-color)',
-              marginTop: '1rem',
-              textAlign: 'center'
-            }}>
-              <div style={{ 
-                width: '64px', 
-                height: '64px', 
-                borderRadius: '50%', 
-                background: 'rgba(37,99,235,0.1)', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                color: 'var(--primary-color)',
-                marginBottom: '1.5rem'
-              }}>
+          {/* Loading State */}
+          {loading && (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 2rem', textAlign: 'center' }}>
+              <Loader2 size={40} style={{ color: 'var(--primary-color)', marginBottom: '1rem' }} className="animate-spin" />
+              <p style={{ color: 'var(--text-secondary)' }}>Loading your documents...</p>
+            </div>
+          )}
+
+          {/* Error State */}
+          {!loading && error && (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 2rem', background: 'var(--surface-color)', borderRadius: 'var(--radius-xl)', border: '1px dashed var(--border-color)', marginTop: '1rem', textAlign: 'center' }}>
+              <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(239,68,68,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--danger-color)', marginBottom: '1.5rem' }}>
+                <AlertCircle size={32} />
+              </div>
+              <h3 style={{ fontSize: '1.25rem', color: 'var(--text-primary)', marginBottom: '0.5rem' }}>{error}</h3>
+              <button className="btn btn-primary" onClick={fetchMyDocuments} style={{ marginTop: '1rem' }}>Try Again</button>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!loading && !error && filteredDocs.length === 0 && (
+            <div className="empty-state" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 2rem', background: 'var(--surface-color)', borderRadius: 'var(--radius-xl)', border: '1px dashed var(--border-color)', marginTop: '1rem', textAlign: 'center' }}>
+              <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(37,99,235,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary-color)', marginBottom: '1.5rem' }}>
                 <FileX size={32} />
               </div>
               <h3 style={{ fontSize: '1.25rem', color: 'var(--text-primary)', marginBottom: '0.5rem' }}>No documents found</h3>
               <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', maxWidth: '400px' }}>
-                You haven't uploaded any documents in this folder yet. Upload your first file to get started!
+                {activeFolder === 'approved' 
+                  ? "You don't have any approved documents yet. Submit a document for admin review!"
+                  : activeFolder === 'pending'
+                  ? "No pending documents. Your submissions may have been approved and are now live!"
+                  : "Submit your lab manuals, micro-projects, or notes to contribute to the platform!"}
               </p>
               <button className="btn btn-primary" onClick={() => setIsUploadOpen(true)}>
                 <Upload size={18} style={{ display: 'inline', marginRight: '0.5rem' }} />
-                Upload Document
+                Submit Document
               </button>
             </div>
-          ) : (
+          )}
+
+          {/* Documents Grid */}
+          {!loading && !error && filteredDocs.length > 0 && (
             <div className="cards-grid">
-              {mockReports.map((report) => (
-                <div key={report.id} className="subject-card">
+              {filteredDocs.map((doc) => (
+                <div key={doc.id} className="subject-card">
                   <div className="card-header">
-                    <div className="subject-code"><FileText size={14} style={{ display: 'inline', marginRight: '4px' }} /> Document</div>
+                    <div className="subject-code">
+                      <FileText size={14} style={{ display: 'inline', marginRight: '4px' }} />
+                      {doc.category}
+                    </div>
                     <div className="subject-type" style={{ 
-                      color: report.status === 'Completed' ? 'var(--success-color)' : 
-                             report.status === 'In Progress' ? 'var(--warning-color)' : 'var(--text-tertiary)' 
+                      color: doc.status === 'approved' ? 'var(--success-color)' : '#f59e0b',
+                      fontWeight: 600,
+                      fontSize: '0.75rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
                     }}>
-                      {report.status}
+                      {doc.status === 'approved' ? (
+                        <><CheckCircle size={12} /> Approved</>
+                      ) : (
+                        <><Clock size={12} /> Pending Review</>
+                      )}
                     </div>
                   </div>
                   
-                  <h3 className="subject-name">{report.title}</h3>
+                  <h3 className="subject-name">{doc.title}</h3>
                   
                   <div className="subject-meta">
-                    <span className="meta-item">
-                      <FolderOpen size={14} /> {report.subject}
-                    </span>
-                    <span className="meta-item">
-                      <Clock size={14} /> {report.date}
-                    </span>
+                    {doc.subject_code && (
+                      <span className="meta-item">
+                        <FileText size={14} /> {doc.subject_code}
+                      </span>
+                    )}
+                    {doc.branch && (
+                      <span className="meta-item">
+                        <FolderOpen size={14} /> {doc.branch}
+                      </span>
+                    )}
+                    {doc.semester && (
+                      <span className="meta-item">
+                        <Clock size={14} /> {doc.semester}
+                      </span>
+                    )}
                   </div>
                   
-                  <div className="card-footer" style={{ display: 'flex', gap: '0.5rem' }}>
-                    <button className="btn btn-outline btn-sm download-btn" style={{ flex: 1, justifyContent: 'center' }}>
-                      <Download size={14} /> Download
-                    </button>
-                    <button className="btn btn-outline btn-sm btn-icon" style={{ color: 'var(--text-secondary)' }} title="Edit">
-                      <Edit size={14} />
-                    </button>
-                    <button className="btn btn-outline btn-sm btn-icon" style={{ color: 'var(--danger-color)', borderColor: 'rgba(239, 68, 68, 0.2)' }} title="Delete">
-                      <Trash2 size={14} />
-                    </button>
+                  {doc.status === 'approved' && (
+                    <div style={{ marginTop: '0.5rem', padding: '0.4rem 0.75rem', background: 'rgba(16,185,129,0.08)', borderRadius: 'var(--radius-md)', fontSize: '0.75rem', color: '#059669' }}>
+                      ✅ Live on platform — visible to all students
+                    </div>
+                  )}
+                  {doc.status === 'pending' && (
+                    <div style={{ marginTop: '0.5rem', padding: '0.4rem 0.75rem', background: 'rgba(245,158,11,0.08)', borderRadius: 'var(--radius-md)', fontSize: '0.75rem', color: '#d97706' }}>
+                      ⏳ Awaiting admin approval
+                    </div>
+                  )}
+                  
+                  <div className="card-footer" style={{ display: 'flex', gap: '0.5rem', marginTop: '0.75rem' }}>
+                    <a 
+                      href={doc.drive_link} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="btn btn-outline btn-sm download-btn" 
+                      style={{ flex: 1, justifyContent: 'center', textDecoration: 'none' }}
+                    >
+                      <Download size={14} /> View Document
+                    </a>
                   </div>
                 </div>
               ))}

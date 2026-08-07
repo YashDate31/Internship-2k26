@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// POST /api/chat - Proxy request to Gemini API with math & academic fallbacks
+// POST /api/chat - Proxy request to Gemini API with academic fallbacks
 router.post('/', async (req, res) => {
   const { messages } = req.body;
 
@@ -13,19 +13,8 @@ router.post('/', async (req, res) => {
   const rawMsg = messages[messages.length - 1]?.content || '';
   const query = rawMsg.toLowerCase().trim();
 
-  // Smart Academic & Math Evaluator Fallback
+  // Academic Fallback (only used when Gemini API is unavailable)
   const getFallback = (q, raw) => {
-    // 1. Evaluate math expressions (e.g. 2+2, 10*5, 100/4, 50-20)
-    const mathMatch = raw.match(/(\d+\s*[\+\-\*\/]\s*\d+)/);
-    if (mathMatch) {
-      try {
-        const expr = mathMatch[1].replace(/\s+/g, '');
-        const result = Function('"use strict";return (' + expr + ')')();
-        return `The result of **${expr}** is **${result}**.`;
-      } catch (e) {}
-    }
-
-    // 2. Core Programming Concepts
     if (q.includes('variable')) {
       return "In programming (C, C++, Java, JS), a **variable** is a named storage location in memory holding a value that can be modified during program execution.\n\n**Example in C:**\n```c\nint count = 5;\nchar grade = 'A';\n```";
     }
@@ -59,10 +48,10 @@ router.post('/', async (req, res) => {
     }
 
     if (q.includes('hello') || q.includes('hi') || q.includes('hey')) {
-      return "Hello! 👋 I am College Mitra, your AI academic counselor. Ask me any question about programming, math (e.g. `2+2`), or MSBTE diploma study resources!";
+      return "Hello! 👋 I am College Mitra, your AI academic counselor. Ask me any question about programming, your subjects, or MSBTE diploma study resources!";
     }
 
-    return "College Mitra is here to assist with your studies! Ask me about variables, loops, math calculations (e.g. `2+2`), or explore MSBTE resources in the **Materials** section!";
+    return "College Mitra is here to assist with your studies! Ask me about programming concepts, your subject doubts, or explore MSBTE resources in the **Materials** section!";
   };
 
   if (!apiKey) {
@@ -76,7 +65,7 @@ router.post('/', async (req, res) => {
   }));
 
   if (contents.length > 0 && contents[0].role === 'user') {
-    contents[0].parts[0].text = `You are College Mitra, an encouraging AI academic counselor for polytechnic diploma students (MSBTE). Answer clearly: ${contents[0].parts[0].text}`;
+    contents[0].parts[0].text = `You are College Mitra, an encouraging and knowledgeable AI academic counselor for polytechnic diploma students (MSBTE curriculum). You are helpful, friendly, and answer clearly with examples when relevant. Answer this student's question: ${contents[0].parts[0].text}`;
   }
 
   try {

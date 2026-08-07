@@ -13,7 +13,7 @@ interface Message {
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: 'Hi there! I am your AI academic and career counselor. How can I help you with your studies or MSBTE curriculum today?' }
+    { role: 'assistant', content: 'Hi there! I am College Mitra, your AI academic and career counselor. How can I help you with your studies or MSBTE curriculum today?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);

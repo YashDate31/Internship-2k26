@@ -9,6 +9,7 @@ import {
   LayoutDashboard, ExternalLink, AlertCircle, GraduationCap,
   BookMarked, Flame, Star, Table2, Eye, EyeOff
 } from 'lucide-react';
+import { API_URL } from '../utils/api';
 import './AdminDashboard.css';
 
 interface Material {
@@ -52,10 +53,15 @@ export function AdminDashboard() {
     imageLink: ''
   });
 
+  // Helper to get the admin's auth token (custom JWT from email/password login)
+  const getAuthToken = (): string => {
+    return localStorage.getItem('auth_token') || '';
+  };
+
   const fetchAllMaterials = async () => {
     setFetchingPending(true);
     try {
-      const res = await fetch('http://localhost:5000/api/materials');
+      const res = await fetch(`${API_URL}/api/materials`);
       const data = await res.json();
       if (Array.isArray(data)) {
         const pending = data.filter((item: Material) => item.title.startsWith('[PENDING]'));
@@ -86,9 +92,8 @@ export function AdminDashboard() {
     setSuccess(false);
 
     try {
-      const user = auth.currentUser;
-      if (!user) throw new Error('Not authenticated');
-      const token = await user.getIdToken();
+      const token = getAuthToken();
+      if (!token) throw new Error('Not authenticated. Please log in again.');
 
       let finalSemester = formData.semester;
       if (formData.category === 'Question Paper' || formData.category === 'Model Answer') {
@@ -106,7 +111,7 @@ export function AdminDashboard() {
         imageLink: formData.imageLink
       };
 
-      const response = await fetch('http://localhost:5000/api/materials', {
+      const response = await fetch(`${API_URL}/api/materials`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(payload)
@@ -129,10 +134,9 @@ export function AdminDashboard() {
 
   const handleApprove = async (id: string, currentTitle: string) => {
     try {
-      const user = auth.currentUser;
-      if (!user) throw new Error('Not authenticated');
-      const token = await user.getIdToken();
-      const response = await fetch(`http://localhost:5000/api/materials/${id}/approve`, {
+      const token = getAuthToken();
+      if (!token) throw new Error('Not authenticated');
+      const response = await fetch(`${API_URL}/api/materials/${id}/approve`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ title: currentTitle })
@@ -145,10 +149,9 @@ export function AdminDashboard() {
   const handleReject = async (id: string) => {
     if (!window.confirm('Are you sure you want to reject and delete this material?')) return;
     try {
-      const user = auth.currentUser;
-      if (!user) throw new Error('Not authenticated');
-      const token = await user.getIdToken();
-      const response = await fetch(`http://localhost:5000/api/materials/${id}`, {
+      const token = getAuthToken();
+      if (!token) throw new Error('Not authenticated');
+      const response = await fetch(`${API_URL}/api/materials/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -160,10 +163,9 @@ export function AdminDashboard() {
   const handleDelete = async (id: string, title: string) => {
     if (!window.confirm(`Delete "${title}"? This cannot be undone.`)) return;
     try {
-      const user = auth.currentUser;
-      if (!user) throw new Error('Not authenticated');
-      const token = await user.getIdToken();
-      await fetch(`http://localhost:5000/api/materials/${id}`, {
+      const token = getAuthToken();
+      if (!token) throw new Error('Not authenticated');
+      await fetch(`${API_URL}/api/materials/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -173,10 +175,9 @@ export function AdminDashboard() {
 
   const handleToggleTrending = async (id: string, current: boolean) => {
     try {
-      const user = auth.currentUser;
-      if (!user) throw new Error('Not authenticated');
-      const token = await user.getIdToken(/* forceRefresh */ true);
-      const response = await fetch(`http://localhost:5000/api/materials/${id}/trending`, {
+      const token = getAuthToken();
+      if (!token) throw new Error('Not authenticated');
+      const response = await fetch(`${API_URL}/api/materials/${id}/trending`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ is_trending: !current })
@@ -189,9 +190,11 @@ export function AdminDashboard() {
     } catch (err) { alert(err); }
   };
 
-  const handleLogout = async () => {
-    try { await signOut(auth); navigate('/login'); }
-    catch (error) { console.error('Logout error:', error); }
+  const handleLogout = () => {
+    localStorage.removeItem('auth_token');
+    // Also sign out Firebase if user had Google-login session
+    signOut(auth).catch(() => {});
+    navigate('/login');
   };
 
   const navItems = [
