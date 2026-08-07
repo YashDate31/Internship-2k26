@@ -15,6 +15,15 @@ router.post('/', async (req, res) => {
 
   // Academic Fallback (only used when Gemini API is unavailable)
   const getFallback = (q, raw) => {
+    // Silently evaluate basic math expressions (e.g. 2+2, 10*5, 100/4, 50-20)
+    const mathMatch = raw.match(/(\d+\s*[\+\-\*\/]\s*\d+)/);
+    if (mathMatch) {
+      try {
+        const expr = mathMatch[1].replace(/\s+/g, '');
+        const result = Function('"use strict";return (' + expr + ')')();
+        return `The result of **${expr}** is **${result}**.`;
+      } catch (e) {}
+    }
     if (q.includes('variable')) {
       return "In programming (C, C++, Java, JS), a **variable** is a named storage location in memory holding a value that can be modified during program execution.\n\n**Example in C:**\n```c\nint count = 5;\nchar grade = 'A';\n```";
     }

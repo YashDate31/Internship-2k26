@@ -359,6 +359,77 @@ router.post('/reset-password', async (req, res) => {
   }
 });
 
+// GET /api/auth/check-role - Debug: Check the role in a JWT token
+router.get('/check-role', async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'No token provided' });
+  }
+  const token = authHeader.split('Bearer ')[1];
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    return res.status(200).json({ 
+      id: decoded.id,
+      email: decoded.email,
+      role: decoded.role,
+      message: decoded.role === 'admin' ? '✅ Admin role confirmed' : '❌ NOT admin - role is: ' + decoded.role
+    });
+  } catch (err) {
+    return res.status(401).json({ error: 'Invalid token: ' + err.message });
+  }
+});
+
+// POST /api/auth/make-admin - Set a user as admin (requires secret key)
+router.post('/make-admin', async (req, res) => {
+  const { email, secretKey } = req.body;
+  const ADMIN_SECRET = process.env.ADMIN_SECRET_KEY || 'college-sahayak-admin-2026';
+
+  if (secretKey !== ADMIN_SECRET) {
+    return res.status(403).json({ error: 'Invalid secret key' });
+  }
+
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required' });
+  }
+
+  if (!supabase) {
+    return res.status(500).json({ error: 'Supabase not initialized' });
+  }
+
+  try {
+    const { data: user, error: findError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .single();
+
+    if (findError || !user) {
+      return res.status(404).json({ error: 'User not found with that email' });
+    }
+
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({ role: 'admin' })
+      .eq('email', email);
+
+    if (updateError) {
+      return res.status(500).json({ error: 'Failed to update role: ' + updateError.message });
+    }
+
+    // Generate new JWT with admin role
+    const token = jwt.sign(
+      { id: user.id, email: user.email, name: user.name, role: 'admin' },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    return res.status(200).json({
+      message: `✅ User ${email} is now an admin! Use the token to login.`,
+      token
+    });
+  } catch (err) {
+    return res.status(500).json({ error: 'Internal server error: ' + err.message });
+  }
+});
+
 module.exports = router;
-
-
