@@ -1,7 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-// POST /api/chat — Powered entirely by Google Gemini AI
+// Helper to clean API Key string
+function cleanKey(key) {
+  return (key || '').replace(/^[ '"\r\n]+|[ '"\r\n]+$/g, '').trim();
+}
+
+// POST /api/chat — Powered by Groq AI (LLaMA 3) with Gemini fallback
 router.post('/', async (req, res) => {
   const { messages } = req.body;
 
@@ -9,43 +14,78 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ error: 'Messages array is required' });
   }
 
-  const apiKey = (process.env.GEMINI_API_KEY || '').replace(/^[ '"\r\n]+|[ '"\r\n]+$/g, '').trim();
+  const groqKey = cleanKey(process.env.GROQ_API_KEY);
+  const geminiKey = cleanKey(process.env.GEMINI_API_KEY);
 
-  // Format conversation history for Gemini
-  const contents = messages.map(msg => ({
-    role: msg.role === 'assistant' ? 'model' : 'user',
-    parts: [{ text: msg.content }]
-  }));
+  // System persona for College Mitra
+  const systemPrompt = 'You are College Mitra, a helpful and intelligent AI academic counselor for polytechnic diploma students (MSBTE curriculum). Answer clearly and accurately. Write code with examples when asked. Explain concepts in simple terms.';
 
-  // System instruction — College Mitra persona
-  if (contents.length > 0 && contents[0].role === 'user') {
-    contents[0].parts[0].text =
-      'You are College Mitra, a helpful and intelligent AI academic counselor for polytechnic diploma students (MSBTE curriculum). Answer clearly and accurately. Write code when asked. Explain concepts with examples:\n\n' +
-      contents[0].parts[0].text;
-  }
-
-  // Try stable production endpoints in order
-  const endpoints = [
-    `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-  ];
-
-  for (const url of endpoints) {
+  // ── 1. Try Groq AI (LLaMA 3, Free, No Quota Issues) ──────────────────────
+  if (groqKey) {
     try {
-      const response = await fetch(url, {
+      const groqMessages = [
+        { role: 'system', content: systemPrompt },
+        ...messages
+      ];
+
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${groqKey}`
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: groqMessages,
+          max_tokens: 1024,
+          temperature: 0.7,
+        }),
       });
+
       const data = await response.json();
 
-      if (response.ok && data.candidates?.[0]?.content?.parts?.[0]?.text) {
-        return res.status(200).json({ reply: data.candidates[0].content.parts[0].text });
+      if (response.ok && data.choices?.[0]?.message?.content) {
+        return res.status(200).json({ reply: data.choices[0].message.content });
       }
 
-      console.error('Gemini error:', data.error?.code, data.error?.message);
+      console.error('Groq error:', data.error?.message);
     } catch (err) {
-      console.error('Fetch error:', err.message);
+      console.error('Groq fetch error:', err.message);
+    }
+  }
+
+  // ── 2. Try Google Gemini AI ───────────────────────────────────────────────
+  if (geminiKey) {
+    const contents = messages.map(msg => ({
+      role: msg.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: msg.content }]
+    }));
+
+    if (contents.length > 0 && contents[0].role === 'user') {
+      contents[0].parts[0].text = systemPrompt + '\n\n' + contents[0].parts[0].text;
+    }
+
+    const geminiUrls = [
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`,
+    ];
+
+    for (const url of geminiUrls) {
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contents }),
+        });
+        const data = await response.json();
+
+        if (response.ok && data.candidates?.[0]?.content?.parts?.[0]?.text) {
+          return res.status(200).json({ reply: data.candidates[0].content.parts[0].text });
+        }
+        console.error('Gemini error:', data.error?.code, data.error?.message?.substring(0, 100));
+      } catch (err) {
+        console.error('Gemini fetch error:', err.message);
+      }
     }
   }
 
