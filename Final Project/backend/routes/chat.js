@@ -1,6 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
+// Helper to clean API Key string (remove surrounding quotes, spaces, newlines)
+function cleanApiKey(key) {
+  if (!key) return '';
+  return key.replace(/^[ '\x22\r\n]+|[ '\x22\r\n]+$/g, '').trim();
+}
+
 // POST /api/chat - Dynamic AI Chatbot powered by Google Gemini API
 router.post('/', async (req, res) => {
   const { messages } = req.body;
@@ -10,12 +16,12 @@ router.post('/', async (req, res) => {
   }
 
   const rawMsg = messages[messages.length - 1]?.content || '';
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = cleanApiKey(process.env.GEMINI_API_KEY);
 
-  // Check if API Key is configured on Render
-  if (!apiKey || apiKey.trim() === '' || apiKey.startsWith('AQ.')) {
+  // Check if API Key is provided
+  if (!apiKey || apiKey === '') {
     return res.status(200).json({ 
-      reply: "⚠️ **AI Chatbot Setup Required**\n\nThe `GEMINI_API_KEY` is not configured or is invalid on Render.\n\n**Quick Fix (1 Minute):**\n1. Get a free API Key from [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)\n2. Add `GEMINI_API_KEY` to Render Dashboard -> Environment Variables.\n3. Save & Restart service!" 
+      reply: "⚠️ **AI Chatbot Key Missing**\n\nPlease ensure `GEMINI_API_KEY` is added to Render Environment Variables and click **Manual Deploy -> Deploy latest commit**." 
     });
   }
 
@@ -30,33 +36,39 @@ router.post('/', async (req, res) => {
     contents[0].parts[0].text = `You are College Mitra, a helpful, friendly, and highly intelligent AI academic counselor for polytechnic diploma students (MSBTE curriculum). Answer clearly, write code when asked, explain concepts thoroughly, and provide accurate assistance: ${contents[0].parts[0].text}`;
   }
 
-  try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey.trim()}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents }),
-    });
+  // Model list to try sequentially
+  const models = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'];
+  let lastError = null;
 
-    const data = await response.json();
-
-    if (response.ok && data.candidates?.[0]?.content?.parts?.[0]?.text) {
-      const reply = data.candidates[0].content.parts[0].text;
-      return res.status(200).json({ reply });
-    }
-
-    if (data.error) {
-      console.error('Gemini API Error:', data.error);
-      return res.status(200).json({ 
-        reply: `⚠️ **Gemini API Error:** ${data.error.message || 'Invalid API Key or Quota Limit Exceeded. Please check key at aistudio.google.com.'}` 
+  for (const model of models) {
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents }),
       });
+
+      const data = await response.json();
+
+      if (response.ok && data.candidates?.[0]?.content?.parts?.[0]?.text) {
+        const reply = data.candidates[0].content.parts[0].text;
+        return res.status(200).json({ reply });
+      }
+
+      if (data.error) {
+        lastError = data.error.message || JSON.stringify(data.error);
+        console.error(`Gemini model ${model} error:`, data.error);
+      }
+    } catch (err) {
+      lastError = err.message;
+      console.error(`Fetch error for model ${model}:`, err);
     }
-
-    return res.status(200).json({ reply: "Sorry, I couldn't process your request right now." });
-
-  } catch (err) {
-    console.error('Chat endpoint error:', err);
-    return res.status(200).json({ reply: "Network error connecting to Google Gemini API. Please check internet connection." });
   }
+
+  // If Gemini calls failed, return clear diagnostic reply
+  return res.status(200).json({ 
+    reply: `⚠️ **Gemini API Error:** ${lastError || 'Failed to fetch AI response.'}\n\nPlease check your key at [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey).` 
+  });
 });
 
 module.exports = router;
