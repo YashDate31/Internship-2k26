@@ -46,13 +46,18 @@ export function Chatbot() {
         body: JSON.stringify({ messages: newMessages })
       });
 
-      if (!response.ok) throw new Error('Network response was not ok');
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        const errReply = errData.reply || errData.error || "Sorry, I'm having trouble connecting to my servers right now. Please try again later.";
+        setMessages([...newMessages, { role: 'assistant', content: errReply }]);
+        return;
+      }
+
       const data = await response.json();
-      
       setMessages([...newMessages, { role: 'assistant', content: data.reply }]);
     } catch (error) {
       console.error('Chat error:', error);
-      setMessages([...newMessages, { role: 'assistant', content: "Sorry, I'm having trouble connecting to my servers right now. Please try again later." }]);
+      setMessages([...newMessages, { role: 'assistant', content: "Sorry, I'm having trouble connecting to my servers right now. Please check your network." }]);
     } finally {
       setIsLoading(false);
     }

@@ -12,9 +12,10 @@ router.post('/', async (req, res) => {
   const rawMsg = messages[messages.length - 1]?.content || '';
   const apiKey = process.env.GEMINI_API_KEY;
 
-  if (!apiKey) {
-    return res.status(500).json({ 
-      reply: "AI Chatbot key is not configured. Please set the GEMINI_API_KEY environment variable in Render backend settings." 
+  // Check if API Key is configured on Render
+  if (!apiKey || apiKey.trim() === '' || apiKey.startsWith('AQ.')) {
+    return res.status(200).json({ 
+      reply: "⚠️ **AI Chatbot Setup Required**\n\nThe `GEMINI_API_KEY` is not configured or is invalid on Render.\n\n**Quick Fix (1 Minute):**\n1. Get a free API Key from [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)\n2. Add `GEMINI_API_KEY` to Render Dashboard -> Environment Variables.\n3. Save & Restart service!" 
     });
   }
 
@@ -30,7 +31,7 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey.trim()}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contents }),
@@ -45,16 +46,16 @@ router.post('/', async (req, res) => {
 
     if (data.error) {
       console.error('Gemini API Error:', data.error);
-      return res.status(500).json({ 
-        reply: `AI API Error: ${data.error.message || 'Failed to fetch response from Gemini API.'}` 
+      return res.status(200).json({ 
+        reply: `⚠️ **Gemini API Error:** ${data.error.message || 'Invalid API Key or Quota Limit Exceeded. Please check key at aistudio.google.com.'}` 
       });
     }
 
-    return res.status(500).json({ reply: "Sorry, I couldn't process your request right now." });
+    return res.status(200).json({ reply: "Sorry, I couldn't process your request right now." });
 
   } catch (err) {
     console.error('Chat endpoint error:', err);
-    return res.status(500).json({ reply: "Network error connecting to AI server. Please try again." });
+    return res.status(200).json({ reply: "Network error connecting to Google Gemini API. Please check internet connection." });
   }
 });
 
