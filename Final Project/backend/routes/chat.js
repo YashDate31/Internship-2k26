@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-// Helper: Smart Knowledge Engine (DuckDuckGo + Wikipedia + Math + Academic Fallbacks)
-async function getSmartReply(rawMsg) {
-  const q = rawMsg.toLowerCase().trim();
+// Dynamic AI Knowledge & Search Engine
+async function getDynamicResponse(prompt) {
+  const rawMsg = (prompt || '').trim();
+  const q = rawMsg.toLowerCase();
 
-  // 1. Math evaluation (e.g. 2+2, 10*5, 100/4, 50-20)
+  // 1. Instant Math & Expression Evaluator (e.g. 2+2, 2*2, 100/5, 50*12)
   const mathMatch = rawMsg.match(/(\d+\s*[\+\-\*\/]\s*\d+)/);
   if (mathMatch) {
     try {
@@ -15,77 +16,44 @@ async function getSmartReply(rawMsg) {
     } catch (e) {}
   }
 
-  // 2. DuckDuckGo Instant Knowledge Lookup (handles general knowledge, people like "who is virat kohli", events, terms)
+  // 2. Dynamic Real-Time Knowledge & Entity Search Engine (Wikipedia API)
   try {
-    const ddgRes = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(rawMsg)}&format=json`);
-    if (ddgRes.ok) {
-      const ddgData = await ddgRes.json();
-      if (ddgData.AbstractText && ddgData.AbstractText.length > 25) {
-        return `**${ddgData.Heading || rawMsg}**\n\n${ddgData.AbstractText}`;
-      }
-    }
-  } catch (e) {}
+    const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(rawMsg)}&format=json&origin=*`;
+    const sRes = await fetch(searchUrl);
+    if (sRes.ok) {
+      const sData = await sRes.json();
+      if (sData.query && sData.query.search && sData.query.search.length > 0) {
+        let bestItem = sData.query.search[0];
+        
+        // Smart entity filtering for person/creator/founder queries
+        if (q.includes('founder') || q.includes('who is') || q.includes('creator') || q.includes('inventor')) {
+          for (const item of sData.query.search.slice(0, 5)) {
+            const t = item.title.toLowerCase();
+            if (!t.includes('office') && !t.includes('software') && !t.includes('list of') && !t.includes('history of')) {
+              bestItem = item;
+              break;
+            }
+          }
+        }
 
-  // 3. Wikipedia REST API Fallback
-  try {
-    const searchTerm = rawMsg
-      .replace(/^(who|what|where|why|how|tell me about|explain)\s+(is|are|was|were|about)?\s*/i, '')
-      .trim();
-    if (searchTerm.length >= 2) {
-      const wikiRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(searchTerm)}`);
-      if (wikiRes.ok) {
-        const wikiData = await wikiRes.json();
-        if (wikiData.extract && wikiData.extract.length > 30) {
-          return `**${wikiData.title || searchTerm}**\n\n${wikiData.extract}`;
+        const sumUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(bestItem.title)}`;
+        const sumRes = await fetch(sumUrl);
+        if (sumRes.ok) {
+          const sumData = await sumRes.json();
+          if (sumData.extract && sumData.extract.length > 20) {
+            return `### **${sumData.title}**\n\n${sumData.extract}`;
+          }
         }
       }
     }
   } catch (e) {}
 
-  // 4. Core Programming & Academic Concept Bank
-  if (q.includes('variable')) {
-    return "In programming (C, C++, Java, JS), a **variable** is a named storage location in memory holding a value that can be modified during program execution.\n\n**Example in C:**\n```c\nint count = 5;\nchar grade = 'A';\n```";
-  }
-  if (q.includes('loop') || q.includes('for') || q.includes('while')) {
-    return "A **loop** repeats a block of code while a specified condition is true.\n\n**Types in C/C++:**\n- `for` loop (fixed iterations)\n- `while` loop (entry-controlled)\n- `do-while` loop (exit-controlled)";
-  }
-  if (q.includes('array')) {
-    return "An **array** is a fixed-size collection of elements of the same data type stored in contiguous memory locations.\n\n**Example in C:**\n```c\nint numbers[5] = {10, 20, 30, 40, 50};\n```";
-  }
-  if (q.includes('function') || q.includes('method')) {
-    return "A **function** is a reusable block of code designed to perform a specific task.\n\n**Example in C:**\n```c\nint add(int a, int b) {\n    return a + b;\n}\n```";
-  }
-  if (q.includes('pointer')) {
-    return "A **pointer** is a variable that stores the memory address of another variable.\n\n**Example in C:**\n```c\nint val = 100;\nint *ptr = &val;\n```";
+  // 3. Conversational greeting check
+  if (q === 'hi' || q === 'hello' || q === 'hey' || q === 'namaste') {
+    return "Hello! 👋 I am **College Mitra**, your AI academic counselor. Ask me any question about programming, computer science, general knowledge, or MSBTE diploma courses!";
   }
 
-  // Web Development
-  if (q.includes('html')) {
-    return "**HTML (HyperText Markup Language)** is the standard markup language used to create and structure pages on the Web.";
-  }
-  if (q.includes('css')) {
-    return "**CSS (Cascading Style Sheets)** describes how HTML elements are to be displayed on screen, paper, or in other media.";
-  }
-  if (q.includes('javascript') || q.includes('js')) {
-    return "**JavaScript** is a high-level programming language that adds dynamic interactivity, logic, and API communication to web pages.";
-  }
-  if (q.includes('react')) {
-    return "**React.js** is a popular component-based JavaScript library developed by Meta for building user interfaces.";
-  }
-  if (q.includes('node') || q.includes('express')) {
-    return "**Node.js & Express.js** provide a lightweight JavaScript backend runtime and web application framework for building scalable REST APIs.";
-  }
-
-  // MSBTE & College Sahayak Guidance
-  if (q.includes('msbte') || q.includes('curriculum') || q.includes('syllabus') || q.includes('notes') || q.includes('manual')) {
-    return "College Sahayak provides complete MSBTE diploma study resources including lab manuals, notes, question papers, and assignments in our **Curriculum** and **Resources** sections!";
-  }
-
-  if (q.includes('hello') || q.includes('hi') || q.includes('hey')) {
-    return "Hello! 👋 I am College Mitra, your AI academic counselor. Ask me any question about programming, your subjects, general knowledge, or MSBTE diploma study resources!";
-  }
-
-  return `College Mitra is here to assist with your studies! Ask me about programming concepts, general knowledge, math calculations, or explore MSBTE diploma resources in the **Curriculum** section!`;
+  return `I am **College Mitra**, your AI academic counselor! Please feel free to ask your question about programming, technical topics, science, or general knowledge in more detail so I can help you!`;
 }
 
 // POST /api/chat - Main AI Chat Route
@@ -99,15 +67,15 @@ router.post('/', async (req, res) => {
   const rawMsg = messages[messages.length - 1]?.content || '';
   const apiKey = process.env.GEMINI_API_KEY;
 
-  // Try Google Gemini API if a valid key is provided
-  if (apiKey && apiKey.startsWith('AIzaSy')) {
+  // 1. Try Google Gemini 2.0 Flash API if configured
+  if (apiKey && apiKey.length > 10 && !apiKey.startsWith('AQ.')) {
     const contents = messages.map(msg => ({
       role: msg.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: msg.content }]
     }));
 
     if (contents.length > 0 && contents[0].role === 'user') {
-      contents[0].parts[0].text = `You are College Mitra, an encouraging and knowledgeable AI academic counselor for polytechnic diploma students (MSBTE curriculum). Be helpful, friendly, and answer clearly: ${contents[0].parts[0].text}`;
+      contents[0].parts[0].text = `You are College Mitra, an encouraging, highly intelligent AI academic counselor for polytechnic diploma students (MSBTE curriculum). Answer clearly, accurately, and dynamically: ${contents[0].parts[0].text}`;
     }
 
     try {
@@ -124,13 +92,13 @@ router.post('/', async (req, res) => {
         return res.status(200).json({ reply });
       }
     } catch (err) {
-      console.error('Gemini API call failed, switching to smart knowledge engine:', err.message);
+      console.error('Gemini API call error, falling back to dynamic search engine:', err.message);
     }
   }
 
-  // Fallback: Smart Knowledge Engine (DuckDuckGo + Wikipedia + Math + Academic Bank)
-  const smartReply = await getSmartReply(rawMsg);
-  return res.status(200).json({ reply: smartReply });
+  // 2. Dynamic Real-Time Knowledge & AI Engine Fallback
+  const dynamicReply = await getDynamicResponse(rawMsg);
+  return res.status(200).json({ reply: dynamicReply });
 });
 
 module.exports = router;
