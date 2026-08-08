@@ -40,8 +40,9 @@ router.post('/', verifyAuth, async (req, res) => {
     return res.status(400).json({ error: 'Title, category, driveLink, and subjectCode are required fields' });
   }
 
-  // If the uploader is NOT the admin, prefix title with [PENDING] for moderation
-  const finalTitle = req.isAdmin ? title : `[PENDING] ${title}`;
+  // If the uploader is NOT the admin, prefix title with [PENDING][by:email] for user isolation and moderation
+  const uploaderEmail = req.user?.email || 'student';
+  const finalTitle = req.isAdmin ? title : `[PENDING][by:${uploaderEmail}] ${title}`;
 
   try {
     const { data, error } = await supabase
@@ -122,8 +123,8 @@ router.put('/:id/approve', verifyAuth, async (req, res) => {
   const { title } = req.body;
 
   try {
-    // Remove [PENDING] from title to publish it
-    const newTitle = title.replace(/^\[PENDING\]\s*/, '');
+    // Remove [PENDING] and optional [by:email] prefix from title to publish it
+    const newTitle = title.replace(/^\[PENDING\](\[by:.*?\])?\s*/i, '');
 
     const { data, error } = await supabase
       .from('materials')

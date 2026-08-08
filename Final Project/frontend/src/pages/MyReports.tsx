@@ -59,26 +59,40 @@ export function MyReports() {
         return;
       }
 
-      // Filter: pending items (those with [PENDING] prefix are student-submitted)
-      // We store them all and let user see what they submitted
-      // Since we don't track user ID per material yet, show all pending + help user identify theirs
-      const allDocs: Document[] = data.map((item: any) => ({
-        id: item.id,
-        title: item.title.replace(/^\[PENDING\]\s*/, ''),
-        description: item.description || '',
-        category: item.category,
-        branch: item.branch || '',
-        semester: item.semester || '',
-        subject_code: item.subject_code || '',
-        drive_link: item.drive_link,
-        created_at: item.created_at,
-        status: item.title.startsWith('[PENDING]') ? 'pending' : 'approved',
-      }));
+      // Filter materials: only show materials uploaded by THIS user
+      const userDocs: Document[] = [];
 
-      // Show only pending items (student submissions) and let user manage them
-      // Approved docs are visible in the main materials section
-      const myDocs = allDocs.filter(d => d.status === 'pending');
-      setDocuments(myDocs);
+      data.forEach((item: any) => {
+        const rawTitle = item.title || '';
+        const isPending = rawTitle.startsWith('[PENDING]');
+        
+        // Parse uploader email from [PENDING][by:email] prefix
+        const pendingMatch = rawTitle.match(/^\[PENDING\](\[by:(.*?)\])?\s*(.*)$/i);
+        
+        if (isPending && pendingMatch) {
+          const uploaderEmail = pendingMatch[2] ? pendingMatch[2].toLowerCase().trim() : null;
+          const cleanTitle = pendingMatch[3] || rawTitle.replace(/^\[PENDING\]\s*/i, '');
+
+          // Strict user isolation: if uploader email is recorded, only match user's email
+          // If legacy pending item (without by:email tag), don't show to other users
+          if (!uploaderEmail || uploaderEmail === userEmail.toLowerCase().trim()) {
+            userDocs.push({
+              id: item.id,
+              title: cleanTitle,
+              description: item.description || '',
+              category: item.category,
+              branch: item.branch || '',
+              semester: item.semester || '',
+              subject_code: item.subject_code || '',
+              drive_link: item.drive_link,
+              created_at: item.created_at,
+              status: 'pending',
+            });
+          }
+        }
+      });
+
+      setDocuments(userDocs);
     } catch (err: any) {
       setError('Failed to load documents. Please try again.');
     } finally {

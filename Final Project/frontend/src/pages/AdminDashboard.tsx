@@ -391,7 +391,7 @@ export function AdminDashboard() {
                       <div key={mat.id} className="pending-item">
                         <div className="pending-item-left">
                           <span className="pending-category-badge"><FileText size={10} />{mat.category}</span>
-                          <h3 className="pending-item-title">{mat.title.replace('[PENDING]', '').trim()}</h3>
+                          <h3 className="pending-item-title">{mat.title.replace(/^\[PENDING\](\[by:.*?\])?\s*/i, '').trim()}</h3>
                           <div className="pending-item-meta">
                             <span className="meta-chip code">{mat.subject_code || 'No Code'}</span>
                             <span className="meta-chip"><BookOpen size={12} />{mat.branch}</span>
