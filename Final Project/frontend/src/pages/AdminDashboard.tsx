@@ -438,7 +438,7 @@ export function AdminDashboard() {
                       type="text"
                       placeholder="Search by title or subject code..."
                       value={tableSearch}
-                      onChange={e => setTableSearch(e.target.v5alue)}
+                      onChange={e => setTableSearch(e.target.value)}
                       className="table-search-input"
                     />
                   </div>
