@@ -1,90 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us – ShopKing</title>
-    <link rel="stylesheet" href="shared-nav.css">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us – ShopKing Support</title>
+  <link rel="stylesheet" href="shared-nav.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- ===== NAVBAR ===== -->
-    <div id="nav-placeholder"></div>
+  <!-- ===== NAVBAR ===== -->
+  <div id="nav-placeholder"></div>
 
-    <main class="container animate-up delay-3">
-        <div class="banner">
-            <h2>Contact Us</h2>
-            <p>Have questions, suggestions, or feedback? We'd love to hear from you.</p>
+  <main class="container" style="padding-top: 40px; padding-bottom: 60px;">
+    <div class="banner">
+      <h2>Get In Touch With Us</h2>
+      <p>Have questions about your order, shipping, or product details? We are available 24/7 to assist you.</p>
+    </div>
+
+    <!-- Contact Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
+      
+      <!-- Contact Form -->
+      <section class="glass-card">
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 20px;">✉️ Send Us a Message</h2>
+        <form id="contact-form">
+          <div class="form-group">
+            <label for="contact-name">Your Full Name</label>
+            <input type="text" id="contact-name" placeholder="e.g. Yash Patil" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="contact-email">Email Address</label>
+            <input type="email" id="contact-email" placeholder="name@domain.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="contact-subject">Inquiry Subject</label>
+            <select id="contact-subject" required>
+              <option value="">Select a subject...</option>
+              <option value="Order Tracking">📦 Order & Shipping Status</option>
+              <option value="Product Inquiry">📱 Product Information</option>
+              <option value="Returns & Refunds">↩️ Returns & Refund Request</option>
+              <option value="Business Partnership">🤝 Business & Wholesale Partnership</option>
+              <option value="Other">💬 General Feedback</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="contact-message">Your Message</label>
+            <textarea id="contact-message" rows="5" placeholder="How can we help you today?" required></textarea>
+          </div>
+
+          <button class="btn-primary" type="submit" style="width: 100%;">Submit Inquiry →</button>
+        </form>
+      </section>
+
+      <!-- Contact Details & Direct Helpline -->
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        <section class="glass-card">
+          <h2 style="font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 20px;">📍 Customer Helpdesk</h2>
+          
+          <div style="display: flex; flex-direction: column; gap: 18px;">
+            <div style="display: flex; gap: 14px; align-items: center;">
+              <div class="why-icon" style="margin: 0; width: 50px; height: 50px; font-size: 1.5rem;">📧</div>
+              <div>
+                <strong style="color: white; display: block;">Email Support</strong>
+                <span style="color: var(--text-muted); font-size: 0.9rem;">support@shopking.com</span>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 14px; align-items: center;">
+              <div class="why-icon" style="margin: 0; width: 50px; height: 50px; font-size: 1.5rem;">📞</div>
+              <div>
+                <strong style="color: white; display: block;">Toll-Free Helpline</strong>
+                <span style="color: var(--text-muted); font-size: 0.9rem;">+91 95272 66485 (Mon-Sat, 9am - 8pm)</span>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 14px; align-items: center;">
+              <div class="why-icon" style="margin: 0; width: 50px; height: 50px; font-size: 1.5rem;">🏢</div>
+              <div>
+                <strong style="color: white; display: block;">Corporate Headquarters</strong>
+                <span style="color: var(--text-muted); font-size: 0.9rem;">ShopKing Towers, Tech Park, Pune, MH - 411057</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Live Chat Card -->
+        <section class="glass-card" style="background: linear-gradient(135deg, rgba(255,153,0,0.15), rgba(30,42,58,0.7));">
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--brand-orange); margin-bottom: 8px;">⚡ Instant Live Chat Support</h3>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px;">Chat live with our customer support specialists for real-time resolution.</p>
+          <button class="btn-primary" onclick="showToast('💬 Connecting to live agent... Please wait a moment!')" style="font-size: 0.88rem; padding: 10px 20px;">Start Live Chat 💬</button>
+        </section>
+      </div>
+
+    </div>
+
+    <!-- FAQ Accordion -->
+    <section class="faq-section">
+      <div class="section-header" style="margin-bottom: 28px;">
+        <h2>Frequently Asked Questions</h2>
+        <p>Quick answers to common questions about shopping, shipping, and returns</p>
+      </div>
+
+      <div class="faq-grid">
+        <div class="faq-item">
+          <div class="faq-question">How long does delivery take?</div>
+          <div class="faq-answer">Standard delivery takes 1-3 business days across major cities in India. Express same-day delivery is available for eligible pin codes selected at checkout.</div>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
-            <section class="glass-card">
-                <h2>Send a Message</h2>
-                <form>
-                    <div class="form-group">
-                        <input type="text" placeholder="Enter Your Name" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" placeholder="Enter Your Email" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" placeholder="Enter Subject" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea rows="6" placeholder="Enter Your Message" required></textarea>
-                    </div>
-                    <button class="btn" type="submit">Send Message</button>
-                </form>
-            </section>
-
-            <section class="glass-card">
-                <h2>Contact Information</h2>
-                <div style="margin-top: 20px; font-size: 1.1rem; line-height: 2;">
-                    <p><strong>📧 Email:</strong> support@amazon.com</p>
-                    <p><strong>📞 Phone:</strong> +91 9527266485</p>
-                    <p><strong>📍 Address:</strong> Pune, Maharashtra, India</p>
-                    <p><strong>🕒 Working Hours:</strong> Monday - Saturday, 9:00 AM - 6:00 PM</p>
-                </div>
-            </section>
+        <div class="faq-item">
+          <div class="faq-question">What is your 30-day return policy?</div>
+          <div class="faq-answer">If you are not satisfied with your purchase, you can initiate a return request from your Profile page within 30 days of delivery. Free doorstep pickup is provided with full refunds processed within 48 hours.</div>
         </div>
-    </main>
+
+        <div class="faq-item">
+          <div class="faq-question">What payment methods do you accept?</div>
+          <div class="faq-answer">We accept all major UPI applications (Google Pay, PhonePe, Paytm), Credit & Debit Cards (Visa, MasterCard, RuPay), Net Banking, and Cash on Delivery (COD).</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">How can I track my live order?</div>
+          <div class="faq-answer">Once your order ships, a SMS and email containing a tracking link will be dispatched. You can also view real-time tracking from your ShopKing Profile page under "My Orders".</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
 
   <!-- ===== FOOTER ===== -->
   <footer>
     <div class="container footer-inner">
       <div class="footer-brand">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkQZwfIF1UdjlMBtjg4fmlfdGU0suXMgG5qA&s" alt="Logo">
-        <strong>Amazon : The Shopping King</strong>
-        <p>Your one-stop destination for millions of products at unbeatable prices. Trusted by 10M+ customers across India.</p>
+        <div class="sn-logo-badge">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+        </div>
+        <strong>ShopKing Platform</strong>
+        <p>Your premier destination for millions of authentic products at unbeatable prices. Trusted by 10M+ happy shoppers.</p>
       </div>
       <div class="footer-links-col">
         <h4>Quick Links</h4>
         <a href="index.html">Home</a>
-        <a href="shopping.html">Shopping</a>
+        <a href="shopping.html">Shopping Catalog</a>
         <a href="profile.html">My Profile</a>
         <a href="contact.html">Contact Us</a>
+        <a href="privacy.html">Privacy Policy</a>
       </div>
       <div class="footer-links-col">
         <h4>Legal</h4>
         <a href="privacy.html">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Cookie Policy</a>
-        <a href="#">Refund Policy</a>
+        <a href="privacy.html#terms">Terms of Service</a>
+        <a href="privacy.html#cookies">Cookie Policy</a>
+        <a href="privacy.html#returns">Refund Policy</a>
       </div>
       <div class="footer-links-col">
-        <h4>Contact</h4>
-        <p>📧 support@amazon.com</p>
-        <p>📞 +91 9527266485</p>
-        <p>📍 Pune, Maharashtra</p>
-        <p>🕐 24×7 Support</p>
+        <h4>Contact Support</h4>
+        <p>📧 support@shopking.com</p>
+        <p>📞 +91 95272 66485</p>
+        <p>📍 Tech Park, Pune, MH</p>
+        <p>🕐 24×7 Customer Care</p>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 Amazon : The Shopping King. All Rights Reserved. Made with ❤️ in India.</p>
+      <p>© 2026 ShopKing Platform. All Rights Reserved. Crafted with ❤️ in India.</p>
     </div>
   </footer>
 
-    <script type="module" src="navbar.js"></script>
+  <script type="module" src="navbar.js"></script>
+  <script type="module">
+    import { showToast } from "./cart.js";
+
+    // Attach toast to window for inline call
+    window.showToast = showToast;
+
+    // Contact Form Submit Handler
+    const form = document.getElementById("contact-form");
+    if (form) {
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = document.getElementById("contact-name").value;
+        showToast(`🎉 Thank you, ${name}! Your message has been received. Our team will contact you shortly.`);
+        form.reset();
+      });
+    }
+
+    // FAQ Accordion Interactivity
+    const faqItems = document.querySelectorAll(".faq-item");
+    faqItems.forEach(item => {
+      const q = item.querySelector(".faq-question");
+      q.addEventListener("click", () => {
+        const isActive = item.classList.contains("active");
+        faqItems.forEach(i => i.classList.remove("active"));
+        if (!isActive) item.classList.add("active");
+      });
+    });
+  </script>
 </body>
 </html>

@@ -1,121 +1,315 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping – ShopKing</title>
-    <link rel="stylesheet" href="shared-nav.css">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Catalog – ShopKing</title>
+  <link rel="stylesheet" href="shared-nav.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- ===== NAVBAR ===== -->
-    <div id="nav-placeholder"></div>
+  <!-- ===== NAVBAR ===== -->
+  <div id="nav-placeholder"></div>
 
-    <main class="container animate-up delay-3">
-        <div class="banner">
-            <h2>Our Products</h2>
-            <p>Explore our collection of quality products at affordable prices.</p>
-        </div>
+  <main class="container">
+    <div class="banner">
+      <h2>Explore Our Catalog</h2>
+      <p>Discover hand-picked premium items across electronics, fashion, home decor, sports, and books with instant delivery.</p>
+    </div>
 
-        <section id="products">
-            <div class="product">
-                <div class="product-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff" alt="Nike Shoes">
-                </div>
-                <h3>Nike Shoes</h3>
-                <p class="price">₹4,999</p>
-                <p>Comfortable running shoes for everyday use.</p>
-                <button class="btn">Order Now</button>
-            </div>
+    <!-- Search & Filters -->
+    <div class="shop-controls">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="shop-search" placeholder="Search products by title or keyword...">
+      </div>
 
-            <div class="product">
-                <div class="product-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="Headphones">
-                </div>
-                <h3>Headphones</h3>
-                <p class="price">₹1,499</p>
-                <p>Premium sound quality and comfortable design.</p>
-                <button class="btn">Order Now</button>
-            </div>
+      <div class="filter-pills" id="filter-pills">
+        <button class="filter-pill active" data-cat="All">All Items</button>
+        <button class="filter-pill" data-cat="Electronics">Electronics</button>
+        <button class="filter-pill" data-cat="Fashion">Fashion</button>
+        <button class="filter-pill" data-cat="Home">Home & Living</button>
+        <button class="filter-pill" data-cat="Sports">Sports</button>
+        <button class="filter-pill" data-cat="Books">Books</button>
+        <button class="filter-pill" data-cat="Beauty">Beauty</button>
+      </div>
 
-            <div class="product">
-                <div class="product-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab" alt="T-Shirt">
-                </div>
-                <h3>T-Shirt</h3>
-                <p class="price">₹799</p>
-                <p>Soft cotton fabric with modern style.</p>
-                <button class="btn">Order Now</button>
-            </div>
+      <select id="sort-select" class="sort-select">
+        <option value="featured">Sort by: Featured</option>
+        <option value="low-high">Price: Low to High</option>
+        <option value="high-low">Price: High to Low</option>
+        <option value="rating">Highest Rated</option>
+      </select>
+    </div>
 
-             <div class="product">
-                <div class="product-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12" alt="Smart Watch">
-                </div>
-                <h3>Smart Watch</h3>
-                <p class="price">₹2,999</p>
-                <p>Track your fitness and stay connected.</p>
-                <button class="btn">Order Now</button>
-            </div>
-
-             <div class="product">
-                <div class="product-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90" alt="Backpack">
-                </div>
-                <h3>Travel Backpack</h3>
-                <p class="price">₹1,299</p>
-                <p>Durable and spacious for all your adventures.</p>
-                <button class="btn">Order Now</button>
-            </div>
-
-             <div class="product">
-                <div class="product-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083" alt="Sunglasses">
-                </div>
-                <h3>Polarized Sunglasses</h3>
-                <p class="price">₹999</p>
-                <p>Protect your eyes with style.</p>
-                <button class="btn">Order Now</button>
-            </div>
-        </section>
-    </main>
+    <!-- Products Grid -->
+    <section id="products">
+      <!-- Dynamic Products injected via JS script below -->
+    </section>
+  </main>
 
   <!-- ===== FOOTER ===== -->
   <footer>
     <div class="container footer-inner">
       <div class="footer-brand">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkQZwfIF1UdjlMBtjg4fmlfdGU0suXMgG5qA&s" alt="Logo">
-        <strong>Amazon : The Shopping King</strong>
-        <p>Your one-stop destination for millions of products at unbeatable prices. Trusted by 10M+ customers across India.</p>
+        <div class="sn-logo-badge">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+        </div>
+        <strong>ShopKing Platform</strong>
+        <p>Your premier destination for millions of authentic products at unbeatable prices. Trusted by 10M+ happy shoppers.</p>
       </div>
       <div class="footer-links-col">
         <h4>Quick Links</h4>
         <a href="index.html">Home</a>
-        <a href="shopping.html">Shopping</a>
+        <a href="shopping.html">Shopping Catalog</a>
         <a href="profile.html">My Profile</a>
         <a href="contact.html">Contact Us</a>
+        <a href="privacy.html">Privacy Policy</a>
       </div>
       <div class="footer-links-col">
         <h4>Legal</h4>
         <a href="privacy.html">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Cookie Policy</a>
-        <a href="#">Refund Policy</a>
+        <a href="privacy.html#terms">Terms of Service</a>
+        <a href="privacy.html#cookies">Cookie Policy</a>
+        <a href="privacy.html#returns">Refund Policy</a>
       </div>
       <div class="footer-links-col">
-        <h4>Contact</h4>
-        <p>📧 support@amazon.com</p>
-        <p>📞 +91 9527266485</p>
-        <p>📍 Pune, Maharashtra</p>
-        <p>🕐 24×7 Support</p>
+        <h4>Contact Support</h4>
+        <p>📧 support@shopking.com</p>
+        <p>📞 +91 95272 66485</p>
+        <p>📍 Tech Park, Pune, MH</p>
+        <p>🕐 24×7 Customer Care</p>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 Amazon : The Shopping King. All Rights Reserved. Made with ❤️ in India.</p>
+      <p>© 2026 ShopKing Platform. All Rights Reserved. Crafted with ❤️ in India.</p>
     </div>
   </footer>
 
-    <script type="module" src="navbar.js"></script>
+  <script type="module" src="navbar.js"></script>
+  <script type="module">
+    import { addToCart } from "./cart.js";
+
+    const PRODUCTS_DATA = [
+      {
+        id: "prod_1",
+        title: "Nike Speed Running Shoes",
+        category: "Sports",
+        price: 4999,
+        oldPrice: 8299,
+        badge: "-40%",
+        rating: 4.9,
+        reviews: 2150,
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&auto=format&fit=crop&q=80",
+        desc: "Ultra-lightweight mesh upper with responsive Air cushioning."
+      },
+      {
+        id: "prod_2",
+        title: "Wireless ANC Headphones",
+        category: "Electronics",
+        price: 1499,
+        oldPrice: 1999,
+        badge: "-25%",
+        rating: 4.8,
+        reviews: 4520,
+        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=80",
+        desc: "Active noise cancelling with 40-hour deep bass playback."
+      },
+      {
+        id: "prod_3",
+        title: "Classic Cotton T-Shirt",
+        category: "Fashion",
+        price: 799,
+        oldPrice: 1299,
+        badge: "-38%",
+        rating: 4.5,
+        reviews: 980,
+        image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&auto=format&fit=crop&q=80",
+        desc: "100% organic breathable cotton with contemporary tailored fit."
+      },
+      {
+        id: "prod_4",
+        title: "Smart Watch Pro Series",
+        category: "Electronics",
+        price: 2999,
+        oldPrice: 4599,
+        badge: "-35%",
+        rating: 4.7,
+        reviews: 1840,
+        image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500&auto=format&fit=crop&q=80",
+        desc: "AMOLED screen with continuous SpO2 & Heart Rate tracking."
+      },
+      {
+        id: "prod_5",
+        title: "Expedition Travel Backpack",
+        category: "Home",
+        price: 1299,
+        oldPrice: 2199,
+        badge: "-40%",
+        rating: 4.6,
+        reviews: 1120,
+        image: "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=500&auto=format&fit=crop&q=80",
+        desc: "Water-resistant 35L capacity with laptop compartment."
+      },
+      {
+        id: "prod_6",
+        title: "Polarized UV Aviator Glasses",
+        category: "Fashion",
+        price: 999,
+        oldPrice: 1699,
+        badge: "-41%",
+        rating: 4.8,
+        reviews: 3200,
+        image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500&auto=format&fit=crop&q=80",
+        desc: "100% UV400 protection with lightweight metal frame."
+      },
+      {
+        id: "prod_7",
+        title: "Minimalist Modern Desk Lamp",
+        category: "Home",
+        price: 1899,
+        oldPrice: 2499,
+        badge: "-24%",
+        rating: 4.6,
+        reviews: 640,
+        image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500&auto=format&fit=crop&q=80",
+        desc: "Touch control LED dimmable lamp with USB charging port."
+      },
+      {
+        id: "prod_8",
+        title: "Atomic Habits Hardcover",
+        category: "Books",
+        price: 499,
+        oldPrice: 799,
+        badge: "-37%",
+        rating: 4.9,
+        reviews: 12400,
+        image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=80",
+        desc: "An easy & proven way to build good habits & break bad ones."
+      },
+      {
+        id: "prod_9",
+        title: "Organic Rosehip Face Serum",
+        category: "Beauty",
+        price: 899,
+        oldPrice: 1399,
+        badge: "-35%",
+        rating: 4.7,
+        reviews: 1540,
+        image: "https://images.unsplash.com/photo-1608248597261-83325805435f?w=500&auto=format&fit=crop&q=80",
+        desc: "Nourishing botanical oil serum for radiant skin texture."
+      }
+    ];
+
+    let activeCategory = "All";
+    let searchQuery = "";
+    let sortBy = "featured";
+
+    // Read category from URL params if present
+    const urlParams = new URLSearchParams(window.location.search);
+    const catParam = urlParams.get('cat');
+    if (catParam) {
+      activeCategory = catParam;
+    }
+
+    const container = document.getElementById("products");
+    const searchInput = document.getElementById("shop-search");
+    const filterPills = document.querySelectorAll(".filter-pill");
+    const sortSelect = document.getElementById("sort-select");
+
+    // Initialize category pill active states
+    filterPills.forEach(pill => {
+      if (pill.dataset.cat.toLowerCase() === activeCategory.toLowerCase()) {
+        pill.classList.add("active");
+      } else {
+        pill.classList.remove("active");
+      }
+
+      pill.addEventListener("click", () => {
+        filterPills.forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        activeCategory = pill.dataset.cat;
+        renderProducts();
+      });
+    });
+
+    searchInput.addEventListener("input", (e) => {
+      searchQuery = e.target.value.toLowerCase().trim();
+      renderProducts();
+    });
+
+    sortSelect.addEventListener("change", (e) => {
+      sortBy = e.target.value;
+      renderProducts();
+    });
+
+    function renderProducts() {
+      let filtered = PRODUCTS_DATA.filter(item => {
+        const matchesCategory = activeCategory === "All" || item.category.toLowerCase() === activeCategory.toLowerCase();
+        const matchesSearch = searchQuery === "" || 
+          item.title.toLowerCase().includes(searchQuery) || 
+          item.desc.toLowerCase().includes(searchQuery) ||
+          item.category.toLowerCase().includes(searchQuery);
+        return matchesCategory && matchesSearch;
+      });
+
+      // Sort
+      if (sortBy === "low-high") {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (sortBy === "high-low") {
+        filtered.sort((a, b) => b.price - a.price);
+      } else if (sortBy === "rating") {
+        filtered.sort((a, b) => b.rating - a.rating);
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align:center; padding:80px 20px;" class="glass-card">
+            <div style="font-size:3.5rem; margin-bottom:16px;">🔍</div>
+            <h3 style="font-size:1.4rem; margin-bottom:8px; color:white;">No products found</h3>
+            <p style="color:var(--text-muted);">Try adjusting your search criteria or selecting a different category.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => `
+        <div class="product-card">
+          ${item.badge ? `<div class="product-badge">${item.badge}</div>` : ''}
+          <div class="product-img-wrap">
+            <img src="${item.image}" alt="${item.title}" loading="lazy">
+          </div>
+          <div class="product-info">
+            <h3>${item.title}</h3>
+            <p class="desc">${item.desc}</p>
+            <div class="rating">⭐ ${item.rating} <span>(${item.reviews} reviews)</span></div>
+            <div class="price-row">
+              <span class="price">₹${item.price.toLocaleString('en-IN')}</span>
+              ${item.oldPrice ? `<span class="price-old">₹${item.oldPrice.toLocaleString('en-IN')}</span>` : ''}
+            </div>
+            <button class="btn-add-cart" data-id="${item.id}">Add to Cart 🛒</button>
+          </div>
+        </div>
+      `).join('');
+
+      // Attach Add to Cart listener
+      container.querySelectorAll('.btn-add-cart').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = e.target.getAttribute('data-id');
+          const product = PRODUCTS_DATA.find(p => p.id === id);
+          if (product) {
+            addToCart(product);
+          }
+        });
+      });
+    }
+
+    renderProducts();
+  </script>
 </body>
 </html>

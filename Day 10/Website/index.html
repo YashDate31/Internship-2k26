@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="ShopKing - India's #1 shopping platform for electronics, fashion, home & living, and more at unbeatable prices.">
-  <meta name="keywords" content="shopking, e-commerce, online shopping, electronics, fashion, india">
+  <meta name="description" content="ShopKing — India's #1 shopping platform for electronics, fashion, home & living, books, and sports at unbeatable prices.">
+  <meta name="keywords" content="ShopKing, e-commerce, online shopping, electronics, fashion, india">
   <title>ShopKing — India's #1 Shopping Platform</title>
   <link rel="stylesheet" href="shared-nav.css">
   <link rel="stylesheet" href="styles.css">
@@ -21,7 +21,7 @@
       <div class="hero-text">
         <span class="hero-badge">🛒 India's #1 Shopping Platform</span>
         <h1>Shop Smarter,<br><span class="gradient-text">Live Better</span></h1>
-        <p>Discover millions of products at unbeatable prices. Lightning-fast delivery, bank-grade security, and 24×7 support — all in one place.</p>
+        <p>Discover millions of top-rated products at unbeatable prices. Lightning-fast delivery, bank-grade security, and 24×7 support — all in one place.</p>
         <div class="hero-cta">
           <a href="shopping.html" class="btn-primary">🔥 Explore Deals</a>
           <a href="login.html" class="btn-outline">Get Started Free →</a>
@@ -44,46 +44,41 @@
         </div>
       </div>
     </div>
-    <div class="hero-wave">
-      <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-        <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#131921"/>
-      </svg>
-    </div>
   </section>
 
   <!-- ===== CATEGORIES ===== -->
   <section class="section container" id="categories">
     <div class="section-header">
       <h2>Browse Categories</h2>
-      <p>Find exactly what you're looking for across 6 popular categories</p>
+      <p>Find exactly what you're looking for across our popular collections</p>
     </div>
     <div class="categories-grid">
-      <a href="shopping.html" class="category-card cat-electronics">
+      <a href="shopping.html?cat=Electronics" class="category-card cat-electronics">
         <span class="cat-icon">📱</span>
         <h3>Electronics</h3>
         <p>2,400+ items</p>
       </a>
-      <a href="shopping.html" class="category-card cat-fashion">
+      <a href="shopping.html?cat=Fashion" class="category-card cat-fashion">
         <span class="cat-icon">👗</span>
         <h3>Fashion</h3>
         <p>5,100+ items</p>
       </a>
-      <a href="shopping.html" class="category-card cat-home">
+      <a href="shopping.html?cat=Home" class="category-card cat-home">
         <span class="cat-icon">🏠</span>
         <h3>Home &amp; Living</h3>
         <p>3,200+ items</p>
       </a>
-      <a href="shopping.html" class="category-card cat-sports">
+      <a href="shopping.html?cat=Sports" class="category-card cat-sports">
         <span class="cat-icon">⚽</span>
         <h3>Sports</h3>
         <p>1,800+ items</p>
       </a>
-      <a href="shopping.html" class="category-card cat-books">
+      <a href="shopping.html?cat=Books" class="category-card cat-books">
         <span class="cat-icon">📚</span>
         <h3>Books</h3>
         <p>9,000+ items</p>
       </a>
-      <a href="shopping.html" class="category-card cat-beauty">
+      <a href="shopping.html?cat=Beauty" class="category-card cat-beauty">
         <span class="cat-icon">💄</span>
         <h3>Beauty</h3>
         <p>2,900+ items</p>
@@ -103,32 +98,34 @@
         <div class="product-card">
           <div class="product-badge">-40%</div>
           <div class="product-img-wrap">
-            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&auto=format&fit=crop&q=80" alt="Nike Running Shoes">
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&auto=format&fit=crop&q=80" alt="Nike Speed Shoes">
           </div>
           <div class="product-info">
-            <h3>Nike Running Shoes</h3>
+            <h3>Nike Speed Shoes</h3>
+            <p class="desc">Ergonomic ultra-lightweight running shoes.</p>
             <div class="rating">⭐⭐⭐⭐⭐ <span>(2.1k reviews)</span></div>
             <div class="price-row">
               <span class="price">₹4,999</span>
               <span class="price-old">₹8,299</span>
             </div>
-            <button class="btn-add-cart">Add to Cart 🛒</button>
+            <button class="btn-add-cart" onclick="addToCart({id: 'nike_speed', title: 'Nike Speed Shoes', price: 4999, image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&auto=format&fit=crop&q=80'})">Add to Cart 🛒</button>
           </div>
         </div>
 
         <div class="product-card">
           <div class="product-badge">-25%</div>
           <div class="product-img-wrap">
-            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&auto=format&fit=crop&q=80" alt="Premium Headphones">
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&auto=format&fit=crop&q=80" alt="Premium Wireless Headphones">
           </div>
           <div class="product-info">
             <h3>Premium Headphones</h3>
+            <p class="desc">Active Noise Cancellation with 40-hr battery life.</p>
             <div class="rating">⭐⭐⭐⭐⭐ <span>(4.5k reviews)</span></div>
             <div class="price-row">
               <span class="price">₹1,499</span>
               <span class="price-old">₹1,999</span>
             </div>
-            <button class="btn-add-cart">Add to Cart 🛒</button>
+            <button class="btn-add-cart" onclick="addToCart({id: 'headphones_pro', title: 'Premium Headphones', price: 1499, image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&auto=format&fit=crop&q=80'})">Add to Cart 🛒</button>
           </div>
         </div>
 
@@ -139,12 +136,13 @@
           </div>
           <div class="product-info">
             <h3>Smart Watch Pro</h3>
+            <p class="desc">SpO2, Heart Rate monitor & AMOLED screen.</p>
             <div class="rating">⭐⭐⭐⭐ <span>(1.8k reviews)</span></div>
             <div class="price-row">
               <span class="price">₹2,999</span>
               <span class="price-old">₹4,599</span>
             </div>
-            <button class="btn-add-cart">Add to Cart 🛒</button>
+            <button class="btn-add-cart" onclick="addToCart({id: 'smartwatch_pro', title: 'Smart Watch Pro', price: 2999, image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400&auto=format&fit=crop&q=80'})">Add to Cart 🛒</button>
           </div>
         </div>
 
@@ -165,22 +163,22 @@
       <div class="why-card">
         <div class="why-icon">⚡</div>
         <h3>Lightning Fast Delivery</h3>
-        <p>Same-day and next-day delivery across all major Indian cities. Your schedule, your order.</p>
+        <p>Same-day and next-day delivery across all major Indian cities. Express shipping guaranteed.</p>
       </div>
       <div class="why-card">
         <div class="why-icon">🔒</div>
         <h3>Bank-Grade Security</h3>
-        <p>256-bit SSL encryption on every transaction. Your payment data is always 100% safe.</p>
+        <p>256-bit SSL encryption on every transaction. Your payment details remain 100% confidential.</p>
       </div>
       <div class="why-card">
         <div class="why-icon">💬</div>
         <h3>24×7 Live Support</h3>
-        <p>Real humans available around the clock via chat, call, and email. We are always here for you.</p>
+        <p>Real human assistance around the clock via live chat, email, and toll-free helpline.</p>
       </div>
       <div class="why-card">
         <div class="why-icon">↩️</div>
         <h3>Easy 30-Day Returns</h3>
-        <p>Not satisfied? Return anything within 30 days — no questions asked, full refund guaranteed.</p>
+        <p>Hassle-free 30-day return policy. Instant refund process with zero questions asked.</p>
       </div>
     </div>
   </section>
@@ -200,58 +198,44 @@
   <footer>
     <div class="container footer-inner">
       <div class="footer-brand">
-        <img src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=100&auto=format&fit=crop&q=80" alt="ShopKing Logo">
-        <strong>ShopKing</strong>
-        <p>Your one-stop destination for millions of products at unbeatable prices. Trusted by 10M+ customers across India.</p>
+        <div class="sn-logo-badge">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+        </div>
+        <strong>ShopKing Platform</strong>
+        <p>Your premier destination for millions of authentic products at unbeatable prices. Trusted by 10M+ happy shoppers.</p>
       </div>
       <div class="footer-links-col">
         <h4>Quick Links</h4>
         <a href="index.html">Home</a>
-        <a href="shopping.html">Shopping</a>
+        <a href="shopping.html">Shopping Catalog</a>
         <a href="profile.html">My Profile</a>
         <a href="contact.html">Contact Us</a>
+        <a href="privacy.html">Privacy Policy</a>
       </div>
       <div class="footer-links-col">
         <h4>Legal</h4>
         <a href="privacy.html">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Cookie Policy</a>
-        <a href="#">Refund Policy</a>
+        <a href="privacy.html#terms">Terms of Service</a>
+        <a href="privacy.html#cookies">Cookie Policy</a>
+        <a href="privacy.html#returns">Refund Policy</a>
       </div>
       <div class="footer-links-col">
-        <h4>Contact</h4>
+        <h4>Contact Support</h4>
         <p>📧 support@shopking.com</p>
-        <p>📞 +91 9527266485</p>
-        <p>📍 Pune, Maharashtra</p>
-        <p>🕐 24×7 Support</p>
+        <p>📞 +91 95272 66485</p>
+        <p>📍 Tech Park, Pune, MH</p>
+        <p>🕐 24×7 Customer Care</p>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 ShopKing. All Rights Reserved. Made with ❤️ in India.</p>
+      <p>© 2026 ShopKing Platform. All Rights Reserved. Crafted with ❤️ in India.</p>
     </div>
   </footer>
 
   <script type="module" src="navbar.js"></script>
-  <script>
-    // Scroll reveal
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("visible"); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll(".category-card, .product-card, .why-card").forEach(el => observer.observe(el));
-
-    // Add to cart button feedback
-    document.querySelectorAll('.btn-add-cart').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const orig = this.textContent;
-        this.textContent = '✅ Added!';
-        this.style.background = '#00a650';
-        setTimeout(() => {
-          this.textContent = orig;
-          this.style.background = '';
-        }, 1500);
-      });
-    });
-  </script>
-
 </body>
 </html>
