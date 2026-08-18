@@ -47,19 +47,56 @@ export function Chatbot() {
       });
 
       if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        const errReply = errData.reply || errData.error || "Sorry, I'm having trouble connecting to my servers right now. Please try again later.";
-        setMessages([...newMessages, { role: 'assistant', content: errReply }]);
+        setIsLoading(false);
+        setMessages([...newMessages, { role: 'assistant', content: "Sorry, I'm having trouble connecting to my servers right now." }]);
         return;
       }
 
-      const data = await response.json();
-      setMessages([...newMessages, { role: 'assistant', content: data.reply }]);
+      setIsLoading(false);
+      // Create empty message for assistant
+      setMessages([...newMessages, { role: 'assistant', content: '' }]);
+
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let assistantContent = '';
+
+      if (reader) {
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split('\n');
+          
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              try {
+                const parsed = JSON.parse(line.slice(6));
+                if (parsed.text) {
+                  assistantContent += parsed.text;
+                  
+                  // Filter out the internal <think>...</think> block from Qwen models
+                  let displayContent = assistantContent.replace(/<think>[\s\S]*?(?:<\/think>|$)/gi, '').trim();
+                  
+                  // Provide a visual cue while thinking
+                  if (assistantContent.includes('<think>') && !assistantContent.includes('</think>')) {
+                    displayContent = "🤔 *College Mitra is thinking...*\n\n" + displayContent;
+                  }
+
+                  setMessages(prev => {
+                    const updated = [...prev];
+                    updated[updated.length - 1].content = displayContent || '...';
+                    return updated;
+                  });
+                }
+              } catch (e) {}
+            }
+          }
+        }
+      }
     } catch (error) {
       console.error('Chat error:', error);
-      setMessages([...newMessages, { role: 'assistant', content: "Sorry, I'm having trouble connecting to my servers right now. Please check your network." }]);
-    } finally {
       setIsLoading(false);
+      setMessages([...newMessages, { role: 'assistant', content: "Sorry, I'm having trouble connecting. Please check your network." }]);
     }
   };
 
