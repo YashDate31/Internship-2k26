@@ -7,7 +7,7 @@ import {
   BookOpen, LogOut, PlusCircle, Upload, CheckCircle, List,
   FileText, Check, Trash2, Clock, Users, Database, RefreshCw,
   LayoutDashboard, ExternalLink, AlertCircle, GraduationCap,
-  BookMarked, Flame, Star, Table2, Eye, EyeOff
+  BookMarked, Flame, Star, Table2, Eye, EyeOff, Inbox, MailOpen, Mail
 } from 'lucide-react';
 import { API_URL } from '../utils/api';
 import './AdminDashboard.css';
@@ -25,9 +25,18 @@ interface Material {
   created_at: string;
 }
 
+interface FeedbackItem {
+  id: string;
+  type: string;
+  message: string;
+  email: string;
+  status: 'read' | 'unread';
+  created_at: string;
+}
+
 export function AdminDashboard() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'overview' | 'upload' | 'pending' | 'table' | 'trending'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'upload' | 'pending' | 'table' | 'trending' | 'feedback'>('overview');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -36,6 +45,11 @@ export function AdminDashboard() {
   const [pendingMaterials, setPendingMaterials] = useState<Material[]>([]);
   const [activeMaterials, setActiveMaterials] = useState<Material[]>([]);
   const [fetchingPending, setFetchingPending] = useState(true);
+
+  // Feedback State
+  const [feedbackItems, setFeedbackItems] = useState<FeedbackItem[]>([]);
+  const [fetchingFeedback, setFetchingFeedback] = useState(false);
+  const [selectedFeedback, setSelectedFeedback] = useState<FeedbackItem | null>(null);
 
   // Table search/filter
   const [tableSearch, setTableSearch] = useState('');
@@ -77,8 +91,28 @@ export function AdminDashboard() {
     }
   };
 
+  const fetchFeedback = async () => {
+    setFetchingFeedback(true);
+    try {
+      const token = getAuthToken();
+      if (!token) return;
+      const res = await fetch(`${API_URL}/api/feedback`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setFeedbackItems(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch feedback');
+    } finally {
+      setFetchingFeedback(false);
+    }
+  };
+
   useEffect(() => {
     fetchAllMaterials();
+    fetchFeedback();
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -190,6 +224,37 @@ export function AdminDashboard() {
     } catch (err) { alert(err); }
   };
 
+  const handleToggleReadFeedback = async (id: string, currentStatus: string) => {
+    try {
+      const token = getAuthToken();
+      if (!token) throw new Error('Not authenticated');
+      const newStatus = currentStatus === 'read' ? 'unread' : 'read';
+      await fetch(`${API_URL}/api/feedback/${id}/read`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ status: newStatus })
+      });
+      fetchFeedback();
+      if (selectedFeedback && selectedFeedback.id === id) {
+        setSelectedFeedback({ ...selectedFeedback, status: newStatus });
+      }
+    } catch (err) { alert(err); }
+  };
+
+  const handleDeleteFeedback = async (id: string) => {
+    if (!window.confirm('Delete this feedback? This cannot be undone.')) return;
+    try {
+      const token = getAuthToken();
+      if (!token) throw new Error('Not authenticated');
+      await fetch(`${API_URL}/api/feedback/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      fetchFeedback();
+      if (selectedFeedback && selectedFeedback.id === id) setSelectedFeedback(null);
+    } catch (err) { alert(err); }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('auth_token');
     // Also sign out Firebase if user had Google-login session
@@ -203,6 +268,7 @@ export function AdminDashboard() {
     { id: 'upload', label: 'Upload Material', icon: <PlusCircle size={18} /> },
     { id: 'table', label: 'All Materials', icon: <Table2 size={18} /> },
     { id: 'trending', label: 'Manage Trending', icon: <Flame size={18} /> },
+    { id: 'feedback', label: 'User Feedback', icon: <Inbox size={18} />, badge: feedbackItems.filter(f => f.status === 'unread').length > 0 ? feedbackItems.filter(f => f.status === 'unread').length : undefined },
   ];
 
   const topbarTitles: Record<string, { title: string; sub: string }> = {
@@ -211,6 +277,7 @@ export function AdminDashboard() {
     upload: { title: 'Upload Material', sub: 'Publish content directly' },
     table: { title: 'All Materials', sub: `${activeMaterials.length} active resources` },
     trending: { title: 'Manage Trending', sub: 'Pin materials on the homepage' },
+    feedback: { title: 'Feedback Inbox', sub: `Manage user feedback and feature requests` },
   };
 
   const filteredTableMaterials = activeMaterials.filter(m => {
@@ -282,13 +349,23 @@ export function AdminDashboard() {
                 {pendingMaterials.length} pending review
               </div>
             )}
-            <button
-              className="admin-nav-item"
-              style={{ padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid #e2e8f0', color: '#64748b', fontSize: '0.82rem' }}
-              onClick={fetchAllMaterials}
-            >
-              <RefreshCw size={14} /> Refresh
-            </button>
+            {activeTab === 'feedback' ? (
+              <button
+                className="admin-nav-item"
+                style={{ padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid #e2e8f0', color: '#64748b', fontSize: '0.82rem' }}
+                onClick={fetchFeedback}
+              >
+                <RefreshCw size={14} /> Refresh Inbox
+              </button>
+            ) : (
+              <button
+                className="admin-nav-item"
+                style={{ padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid #e2e8f0', color: '#64748b', fontSize: '0.82rem' }}
+                onClick={fetchAllMaterials}
+              >
+                <RefreshCw size={14} /> Refresh
+              </button>
+            )}
           </div>
         </header>
 
@@ -344,7 +421,7 @@ export function AdminDashboard() {
                     { tab: 'pending', icon: <List size={22} />, wrap: 'yellow', label: 'Review Submissions', sub: pendingMaterials.length > 0 ? `${pendingMaterials.length} waiting` : 'All caught up!' },
                     { tab: 'upload', icon: <Upload size={22} />, wrap: 'blue', label: 'Upload Material', sub: 'Publish directly' },
                     { tab: 'table', icon: <Table2 size={22} />, wrap: 'green', label: 'All Materials', sub: `${activeMaterials.length} items` },
-                    { tab: 'trending', icon: <Flame size={22} />, wrap: 'purple', label: 'Manage Trending', sub: `${trendingMaterials.length} pinned` },
+                    { tab: 'feedback', icon: <Inbox size={22} />, wrap: 'purple', label: 'User Feedback', sub: `${feedbackItems.filter(f => f.status === 'unread').length} unread` },
                   ].map(({ tab, icon, wrap, label, sub }) => (
                     <button
                       key={tab}
@@ -610,6 +687,93 @@ export function AdminDashboard() {
                     </table>
                   </div>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── FEEDBACK INBOX ── */}
+          {activeTab === 'feedback' && (
+            <div className="feedback-inbox-container">
+              <div className="feedback-list-pane">
+                <div className="feedback-list-header">
+                  <h3>Inbox <span className="feedback-count">{feedbackItems.length}</span></h3>
+                </div>
+                <div className="feedback-list-content">
+                  {fetchingFeedback ? (
+                    <div className="admin-empty-state"><p>Loading feedback...</p></div>
+                  ) : feedbackItems.length === 0 ? (
+                    <div className="admin-empty-state">
+                      <Inbox size={48} />
+                      <h3>Inbox Zero!</h3>
+                      <p>You have no feedback right now.</p>
+                    </div>
+                  ) : (
+                    feedbackItems.map(item => (
+                      <div 
+                        key={item.id} 
+                        className={`feedback-list-item ${item.status === 'unread' ? 'unread' : ''} ${selectedFeedback?.id === item.id ? 'selected' : ''}`}
+                        onClick={() => setSelectedFeedback(item)}
+                      >
+                        <div className="feedback-item-top">
+                          <span className="feedback-sender">{item.email}</span>
+                          <span className="feedback-date">{new Date(item.created_at).toLocaleDateString()}</span>
+                        </div>
+                        <div className="feedback-item-title">
+                          {item.type === 'bug' && <span className="feedback-badge bug">Bug</span>}
+                          {item.type === 'suggestion' && <span className="feedback-badge suggestion">Suggestion</span>}
+                          {item.type === 'content' && <span className="feedback-badge content">Request</span>}
+                          {item.type === 'other' && <span className="feedback-badge other">Other</span>}
+                        </div>
+                        <p className="feedback-item-preview">{item.message}</p>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              <div className="feedback-view-pane">
+                {selectedFeedback ? (
+                  <div className="feedback-view-content animate-fade-in">
+                    <div className="feedback-view-header">
+                      <div className="feedback-view-meta">
+                        <h2>{selectedFeedback.type.charAt(0).toUpperCase() + selectedFeedback.type.slice(1)} Feedback</h2>
+                        <div className="feedback-sender-info">
+                          <div className="sender-avatar">
+                            <Mail size={16} />
+                          </div>
+                          <div>
+                            <strong>{selectedFeedback.email}</strong>
+                            <div className="sender-time">{new Date(selectedFeedback.created_at).toLocaleString()}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="feedback-view-actions">
+                        <button 
+                          className="btn-mark-read" 
+                          onClick={() => handleToggleReadFeedback(selectedFeedback.id, selectedFeedback.status)}
+                        >
+                          {selectedFeedback.status === 'unread' ? <MailOpen size={16} /> : <Mail size={16} />}
+                          {selectedFeedback.status === 'unread' ? 'Mark as Read' : 'Mark as Unread'}
+                        </button>
+                        <button 
+                          className="btn-delete-mail"
+                          onClick={() => handleDeleteFeedback(selectedFeedback.id)}
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </div>
+                    <div className="feedback-view-body">
+                      <p style={{ whiteSpace: 'pre-wrap' }}>{selectedFeedback.message}</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="feedback-view-empty">
+                    <MailOpen size={48} style={{ opacity: 0.3, marginBottom: '1rem' }} />
+                    <h3>Select an item to read</h3>
+                    <p>Click on any feedback from the list to view its contents.</p>
+                  </div>
+                )}
               </div>
             </div>
           )}

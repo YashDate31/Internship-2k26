@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MessageSquare, Send, CheckCircle } from 'lucide-react';
 import { API_URL } from '../utils/api';
+import { jwtDecode } from 'jwt-decode';
 import './Login.css'; // For .auth-input and .form-group
 
 export function Feedback() {
@@ -12,6 +13,20 @@ export function Feedback() {
   const [feedbackType, setFeedbackType] = useState('suggestion');
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    try {
+      const token = localStorage.getItem('auth_token');
+      if (token) {
+        const decoded: any = jwtDecode(token);
+        if (decoded && decoded.email) {
+          setEmail(decoded.email);
+        }
+      }
+    } catch (e) {
+      // ignore decoding errors
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
