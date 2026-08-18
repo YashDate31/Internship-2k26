@@ -7,33 +7,249 @@ function cleanKey(key) {
 }
 
 // System persona for College Mitra
-const systemPrompt = `You are College Mitra, an expert and empathetic AI academic and career counselor designed for MSBTE polytechnic diploma students across Maharashtra. 
-You provide clear, accurate, and encouraging academic guidance in clean Markdown formatting. 
-When asked technical or programming questions, give concise explanations with practical code snippets. 
-When asked about MSBTE curriculum, subjects, lab manuals, question papers, micro-projects, or Direct Second Year (DSE) engineering admissions, provide actionable and well-structured answers.`;
+const systemPrompt = `You are College Mitra, an intelligent, friendly, and expert AI academic counselor designed for polytechnic diploma students (MSBTE curriculum) in Maharashtra.
+You provide clear, accurate, and structured answers in clean Markdown formatting.
+When asked programming questions, provide complete code with explanations.
+When asked about MSBTE subjects, exams, or career advice (like DSE admission), provide practical and helpful guidance.`;
 
-// Intelligent Built-in Academic Knowledge Engine (Zero Downtime Fallback)
-function getSmartKnowledgeResponse(userMessage) {
-  const q = (userMessage || '').toLowerCase().trim();
+// Code Generator for standard programming queries
+function getAlgorithmOrCode(q) {
+  const query = q.toLowerCase();
 
-  // 1. Greetings & Introductions
-  if (/^(hey|hi|hello|namaste|hola|good\s*(morning|afternoon|evening)|yo|sup)\b/i.test(q)) {
-    return `### 👋 Hello! I'm **College Mitra**
-I am your 24/7 AI academic counselor for **MSBTE Polytechnic Diploma** studies.
+  // Binary Search
+  if (query.includes('binary search')) {
+    return `### 🔍 Binary Search Algorithm
+Binary search is an efficient $O(\\log n)$ algorithm for finding an element in a **sorted array** by repeatedly dividing the search interval in half.
 
-Here is what I can help you with:
-- 📚 **Subject Concepts & Explanations** (OSY, ACN, DAN, CLO, SEN, and more)
-- 📝 **Exam Preparation & Important Topics** (Summer / Winter Board Exams)
-- 🧪 **Lab Manuals & Practical Experiments**
-- 📄 **Previous Year Question Papers (PYQs)** & Model Answers
-- 💡 **Micro-Project Topics & Report Writing**
-- 🎓 **Direct Second Year (DSE) Degree Admissions & Career Advice**
+\`\`\`python
+def binary_search(arr, target):
+    low = 0
+    high = len(arr) - 1
 
-What topic or subject would you like to explore today?`;
+    while low <= high:
+        mid = (low + high) // 2
+        if arr[mid] == target:
+            return mid  # Target found at index mid
+        elif arr[mid] < target:
+            low = mid + 1  # Search right half
+        else:
+            high = mid - 1 # Search left half
+
+    return -1 # Target not found
+
+# Example Usage:
+numbers = [10, 23, 35, 47, 59, 72, 88, 91]
+target = 59
+result = binary_search(numbers, target)
+
+if result != -1:
+    print(f"Element {target} found at index {result}")
+else:
+    print("Element not found")
+\`\`\`
+
+#### ⏱️ Complexity:
+- **Time Complexity:** Best: $O(1)$, Average/Worst: $O(\\log n)$
+- **Space Complexity:** $O(1)$ (Iterative)`;
   }
 
-  // 2. Who created you / College Sahayak / Founder
-  if (/(who (made|created|developed|built|are)|about|founder|developer|yash).*(you|college sahayak|platform|website|yash|founder|creator)/i.test(q) || /(who created|who made|founder of|developer of|yash date)/i.test(q)) {
+  // Bubble Sort
+  if (query.includes('bubble sort')) {
+    return `### 🫧 Bubble Sort Algorithm
+Bubble sort repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.
+
+\`\`\`python
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        swapped = False
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swapped = True
+        if not swapped:
+            break
+    return arr
+
+# Example:
+data = [64, 34, 25, 12, 22, 11, 90]
+print("Sorted Array:", bubble_sort(data))
+\`\`\`
+
+#### ⏱️ Complexity:
+- **Time Complexity:** Best: $O(n)$, Average/Worst: $O(n^2)$
+- **Space Complexity:** $O(1)$`;
+  }
+
+  // Stack Implementation
+  if (query.includes('stack') && (query.includes('program') || query.includes('code') || query.includes('implement') || query.includes('push') || query.includes('pop'))) {
+    return `### 📚 Stack Data Structure (LIFO - Last In, First Out)
+
+\`\`\`python
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def push(self, item):
+        self.items.append(item)
+        print(f"Pushed: {item}")
+
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+        return "Stack Underflow!"
+
+    def peek(self):
+        return self.items[-1] if not self.is_empty() else None
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def size(self):
+        return len(self.items)
+
+# Usage:
+s = Stack()
+s.push(10)
+s.push(20)
+print("Top element:", s.peek())
+print("Popped:", s.pop())
+\`\`\``;
+  }
+
+  // Fibonacci
+  if (query.includes('fibonacci')) {
+    return `### 🔢 Fibonacci Series
+
+\`\`\`python
+def fibonacci(n):
+    a, b = 0, 1
+    series = []
+    for _ in range(n):
+        series.append(a)
+        a, b = b, a + b
+    return series
+
+# First 10 Fibonacci numbers
+print("Fibonacci Series:", fibonacci(10))
+# Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+\`\`\``;
+  }
+
+  // Factorial
+  if (query.includes('factorial')) {
+    return `### ❗ Factorial Calculation
+
+\`\`\`python
+def factorial(n):
+    if n < 0:
+        return "Invalid input"
+    if n == 0 or n == 1:
+        return 1
+    return n * factorial(n - 1)
+
+print("5! =", factorial(5)) # Output: 120
+\`\`\``;
+  }
+
+  // Palindrome
+  if (query.includes('palindrome')) {
+    return `### 🔁 Palindrome Check
+
+\`\`\`python
+def is_palindrome(s):
+    cleaned = ''.join(c.lower() for c in s if c.isalnum())
+    return cleaned == cleaned[::-1]
+
+print(is_palindrome("radar"))      # True
+print(is_palindrome("race a car")) # False
+print(is_palindrome("A man a plan a canal Panama")) # True
+\`\`\``;
+  }
+
+  // SQL Join
+  if (query.includes('sql') && (query.includes('join') || query.includes('query'))) {
+    return `### 🗄️ SQL Joins Explained
+
+\`\`\`sql
+-- 1. INNER JOIN (Matching records in both tables)
+SELECT Students.name, Departments.dept_name
+FROM Students
+INNER JOIN Departments ON Students.dept_id = Departments.dept_id;
+
+-- 2. LEFT JOIN (All students + matched departments)
+SELECT Students.name, Departments.dept_name
+FROM Students
+LEFT JOIN Departments ON Students.dept_id = Departments.dept_id;
+
+-- 3. GROUP BY with Aggregation
+SELECT dept_id, COUNT(*) as total_students, AVG(marks) as avg_score
+FROM Students
+GROUP BY dept_id
+HAVING AVG(marks) > 75;
+\`\`\``;
+  }
+
+  return null;
+}
+
+// Live Wikipedia Knowledge Fetcher
+async function fetchWikipediaSummary(query) {
+  try {
+    const cleanSearch = query
+      .replace(/^(what is|who is|explain|tell me about|define|describe|how does|what are|who was)\s+/i, '')
+      .replace(/[?.,!]/g, '')
+      .trim();
+
+    if (!cleanSearch || cleanSearch.length < 2) return null;
+
+    const sRes = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(cleanSearch)}&format=json&origin=*`, {
+      headers: { 'User-Agent': 'CollegeSahayak/1.0 (academic counselor bot)' }
+    });
+
+    if (!sRes.ok) return null;
+    const sData = await sRes.json();
+
+    if (sData.query?.search?.length > 0) {
+      const topTitle = sData.query.search[0].title;
+      const sumRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(topTitle)}`, {
+        headers: { 'User-Agent': 'CollegeSahayak/1.0 (academic counselor bot)' }
+      });
+
+      if (sumRes.ok) {
+        const sumData = await sumRes.json();
+        if (sumData.extract && sumData.extract.length > 25) {
+          return `### 📖 **${sumData.title}**\n\n${sumData.extract}\n\n*Source: Academic Encyclopedia Knowledge Base*`;
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Wikipedia fetch error:', err.message);
+  }
+  return null;
+}
+
+// Smart Academic Engine
+function getAcademicResponse(q) {
+  const query = (q || '').toLowerCase().trim();
+
+  // 1. Greetings
+  if (/^(hey|hi|hello|namaste|hola|good\s*(morning|afternoon|evening)|yo|sup)\b/i.test(query)) {
+    return `### 👋 Hello! I'm **College Mitra**
+I am your AI academic and career counselor for **MSBTE Polytechnic Diploma** studies.
+
+Here is what you can ask me:
+- 📚 **Subjects & Concepts:** Operating Systems (OSY), Computer Networks (ACN), Data Analytics (DAN), Cloud Computing (CLO), Software Engineering (SEN)
+- 💻 **Programming & Code:** Python, C/C++, Java, SQL, JavaScript, Web Development
+- ⚡ **Algorithms & Logic:** CPU Scheduling, Page Replacement, Binary Search, Sorting
+- 📝 **MSBTE Exam Prep:** 70-mark paper patterns, important topics, scoring tips
+- 🎓 **DSE Admissions:** Direct Second Year engineering cutoff, CAP rounds, eligibility
+
+What would you like help with today?`;
+  }
+
+  // 2. Founder & College Sahayak
+  if (/(who (made|created|developed|built|are)|about|founder|developer|yash).*(you|college sahayak|platform|website|yash|founder|creator)/i.test(query) || /(who created|who made|founder of|developer of|yash date)/i.test(query)) {
     return `### 🎓 About College Sahayak & College Mitra
 **College Sahayak** is Maharashtra's dedicated digital platform designed to provide MSBTE diploma students with free, verified academic resources.
 
@@ -45,27 +261,27 @@ You can learn more on our [About Page](/about) or browse study materials in the 
   }
 
   // 3. Operating System (OSY - 315319)
-  if (/(operating system|osy|315319|process management|cpu scheduling|paging|deadlock|semaphore|thread)/i.test(q)) {
-    if (/cpu scheduling|fcfs|sjf|round robin|priority/i.test(q)) {
+  if (/\b(operating system|osy|315319|process management|cpu scheduling|paging|deadlock|semaphore|threads?)\b/i.test(query)) {
+    if (/\b(cpu scheduling|fcfs|sjf|round robin|priority scheduling)\b/i.test(query)) {
       return `### ⚡ CPU Scheduling in Operating System (OSY - 315319)
-CPU scheduling determines which process in the ready queue gets the CPU when it becomes idle.
+CPU scheduling decides which process gets CPU time when the CPU becomes idle.
 
 #### 🔹 Key Scheduling Algorithms:
-1. **FCFS (First-Come, First-Served):** Non-preemptive. Executes processes in order of arrival. Can cause *Convoy Effect*.
-2. **SJF (Shortest Job First):** Executes the process with the shortest burst time. Gives optimal average waiting time.
-3. **Round Robin (RR):** Preemptive. Each process gets a fixed **Time Quantum (TQ)**. Ideal for time-sharing systems.
-4. **Priority Scheduling:** Each process is assigned a priority integer. Can lead to *Starvation* (solved by *Aging*).
+1. **FCFS (First-Come, First-Served):** Non-preemptive. Simple FIFO queue execution. Can suffer from *Convoy Effect*.
+2. **SJF (Shortest Job First):** Non-preemptive or Preemptive (SRTF). Selects process with shortest burst time. Gives minimal average waiting time.
+3. **Round Robin (RR):** Preemptive. Each process receives a fixed **Time Quantum (TQ)**. Ideal for interactive systems.
+4. **Priority Scheduling:** Processes executed based on priority numbers. Solves starvation using *Aging*.
 
-#### 📊 Important Formulas:
+#### 📊 Turnaround & Waiting Time Formulas:
 - $\\text{Turnaround Time (TAT)} = \\text{Completion Time (CT)} - \\text{Arrival Time (AT)}$
 - $\\text{Waiting Time (WT)} = \\text{Turnaround Time (TAT)} - \\text{Burst Time (BT)}$`;
     }
 
-    if (/deadlock/i.test(q)) {
+    if (/deadlock/i.test(query)) {
       return `### 🔒 Deadlock in Operating System (OSY)
 A **Deadlock** occurs when a set of processes are blocked because each process is holding a resource and waiting for another resource held by another process.
 
-#### 4 Necessary Coffman Conditions for Deadlock:
+#### 4 Necessary Coffman Conditions:
 1. **Mutual Exclusion:** Resources cannot be shared simultaneously.
 2. **Hold and Wait:** A process holds at least one resource while waiting for others.
 3. **No Preemption:** Resources cannot be forcibly taken from a process.
@@ -91,7 +307,7 @@ A **Deadlock** occurs when a set of processes are blocked because each process i
   }
 
   // 4. Advanced Computer Networks (ACN - 315321)
-  if (/(acn|315321|computer network|tcp|udp|ipv4|ipv6|subnet|osi model|router|switch)/i.test(q)) {
+  if (/\b(acn|315321|computer networks?|tcp|udp|ipv4|ipv6|subnetting|osi model|router|switch)\b/i.test(query)) {
     return `### 🌐 Advanced Computer Networks (ACN - 315321)
 **MSBTE 5th Semester Computer Engineering**
 
@@ -107,7 +323,7 @@ A **Deadlock** occurs when a set of processes are blocked because each process i
   }
 
   // 5. Data Analytics (DAN - 315326)
-  if (/(data analytics|dan|315326|pandas|numpy|matplotlib|regression|machine learning|csv|data cleaning)/i.test(q)) {
+  if (/\b(data analytics|dan|315326|pandas|numpy|matplotlib|regression|machine learning|csv|data cleaning)\b/i.test(query)) {
     return `### 📊 Data Analytics (DAN - 315326)
 **MSBTE 5th Semester Computer Engineering**
 
@@ -139,7 +355,7 @@ plt.show()
   }
 
   // 6. Cloud Computing (CLO - 315325)
-  if (/(cloud computing|clo|315325|aws|azure|iaas|paas|saas|virtualization|docker|hypervisor)/i.test(q)) {
+  if (/\b(cloud computing|clo|315325|aws|azure|iaas|paas|saas|virtualization|docker|hypervisor)\b/i.test(query)) {
     return `### ☁️ Cloud Computing (CLO - 315325)
 **MSBTE 5th Semester Computer Engineering**
 
@@ -156,7 +372,7 @@ plt.show()
   }
 
   // 7. Software Engineering (SEN - 315323)
-  if (/(software engineering|sen|315323|agile|scrum|waterfall|sdlc|srs|testing|dfd|use case)/i.test(q)) {
+  if (/\b(software engineering|sen|315323|agile|scrum|waterfall|sdlc|srs|testing|dfd|use case)\b/i.test(query)) {
     return `### ⚙️ Software Engineering (SEN - 315323)
 **MSBTE 5th Semester Computer Engineering**
 
@@ -173,7 +389,7 @@ plt.show()
   }
 
   // 8. Exam Preparation & MSBTE Passing Tips
-  if (/(exam|preparation|tips|passing marks|study plan|how to study|important questions|imp|score good marks)/i.test(q)) {
+  if (/(exam|preparation|tips|passing marks|study plan|how to study|important questions|imp|score good marks)/i.test(query)) {
     return `### 🎯 MSBTE Board Exam Preparation Strategy (70 Marks)
 
 #### 📝 MSBTE 70-Mark Question Paper Pattern:
@@ -190,7 +406,7 @@ plt.show()
   }
 
   // 9. Direct Second Year (DSE) Admissions
-  if (/(dse|direct second year|engineering admission|cap round|cutoff|b\.?tech|b\.?e\.?)/i.test(q)) {
+  if (/(dse|direct second year|engineering admission|cap round|cutoff|b\.?tech|b\.?e\.?)/i.test(query)) {
     return `### 🎓 Direct Second Year Engineering (DSE) Admission Guide
 After completing your 3-year polytechnic diploma, you are eligible for direct admission to the 2nd Year (3rd Semester) of B.Tech / B.E. in Maharashtra.
 
@@ -203,31 +419,10 @@ After completing your 3-year polytechnic diploma, you are eligible for direct ad
 4. **Reservation & TFWS:** Tuition Fee Waiver Scheme (TFWS) is available for eligible meritorious students.`;
   }
 
-  // 10. General Coding & Programming Questions
-  if (/(code|program|python|javascript|c\+\+|java|sql|function|loop|array|pointer|object)/i.test(q)) {
-    return `### 💻 Programming & Technical Support
-I can help you write, debug, and explain code for all diploma engineering languages:
-
-- **C / C++:** Pointers, Structures, OOPs, Memory Allocation (\`malloc\`/\`free\`), File Handling.
-- **Java:** Classes, Inheritance, Exception Handling, Multithreading, JDBC.
-- **Python:** Data Structures (Lists, Dictionaries, Tuples), Pandas, NumPy, File I/O.
-- **Web Tech:** HTML5, CSS3, JavaScript, React, Node.js, REST APIs.
-- **SQL & Databases:** DDL, DML, Joins, Triggers, Normalization (1NF, 2NF, 3NF, BCNF).
-
-*Feel free to paste any specific code snippet, algorithm question, or error message and I'll explain it step-by-step!*`;
-  }
-
-  // 11. Contextual Fallback
-  return `### 💡 College Mitra Guidance
-I understand you are asking about: **"${userMessage.substring(0, 80)}"**
-
-Here is how you can proceed:
-- 📖 **Check Study Materials:** Browse our verified [Curriculum](/curriculum), [Lab Manuals](/manuals), and [Previous Year Papers](/pyqs).
-- 🔍 **Be Specific:** You can ask me for definitions, code examples, comparison tables, or step-by-step algorithms (e.g., *"Explain Round Robin CPU scheduling with Gantt chart"* or *"Differentiate between IPv4 and IPv6"*).
-- ❓ **Ask Anything:** Feel free to rephrase or ask any MSBTE diploma related question!`;
+  return null;
 }
 
-// POST /api/chat — Powered by Groq AI (LLaMA 3), Gemini AI, and College Mitra Knowledge Engine
+// POST /api/chat — Multi-tier AI Chat Route
 router.post('/', async (req, res) => {
   const { messages } = req.body;
 
@@ -236,6 +431,7 @@ router.post('/', async (req, res) => {
   }
 
   const latestUserMessage = [...messages].reverse().find(m => m.role === 'user')?.content || '';
+  const rawMsg = latestUserMessage.trim();
   const groqKey = cleanKey(process.env.GROQ_API_KEY);
   const geminiKey = cleanKey(process.env.GEMINI_API_KEY);
 
@@ -266,7 +462,6 @@ router.post('/', async (req, res) => {
       if (response.ok && data.choices?.[0]?.message?.content) {
         return res.status(200).json({ reply: data.choices[0].message.content });
       }
-
       console.error('Groq error:', data.error?.message);
     } catch (err) {
       console.error('Groq fetch error:', err.message);
@@ -287,6 +482,7 @@ router.post('/', async (req, res) => {
     const geminiUrls = [
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`,
+      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${geminiKey}`
     ];
 
     for (const url of geminiUrls) {
@@ -308,9 +504,44 @@ router.post('/', async (req, res) => {
     }
   }
 
-  // ── 3. Intelligent Built-in College Mitra Knowledge Engine (Always Available) ──
-  const smartReply = getSmartKnowledgeResponse(latestUserMessage);
-  return res.status(200).json({ reply: smartReply });
+  // ── 3. Instant Math & Expression Evaluator ───────────────────────────────
+  const mathMatch = rawMsg.match(/^(\d+(\.\d+)?\s*[\+\-\*\/\%]\s*\d+(\.\d+)?(\s*[\+\-\*\/\%]\s*\d+(\.\d+)?)*)$/);
+  if (mathMatch) {
+    try {
+      const expr = mathMatch[1].replace(/\s+/g, '');
+      const result = Function('"use strict";return (' + expr + ')')();
+      return res.status(200).json({ reply: `The calculated result of **${expr}** is **${result}**.` });
+    } catch (e) {}
+  }
+
+  // ── 4. Code & Algorithm Generator ─────────────────────────────────────────
+  const codeReply = getAlgorithmOrCode(rawMsg);
+  if (codeReply) {
+    return res.status(200).json({ reply: codeReply });
+  }
+
+  // ── 5. MSBTE Academic & Curriculum Engine ────────────────────────────────
+  const academicReply = getAcademicResponse(rawMsg);
+  if (academicReply) {
+    return res.status(200).json({ reply: academicReply });
+  }
+
+  // ── 6. Live Dynamic Knowledge Search Engine (Wikipedia) ──────────────────
+  const wikiReply = await fetchWikipediaSummary(rawMsg);
+  if (wikiReply) {
+    return res.status(200).json({ reply: wikiReply });
+  }
+
+  // ── 7. Comprehensive Academic Fallback ───────────────────────────────────
+  return res.status(200).json({
+    reply: `### 💡 College Mitra Guidance
+I understand you are asking about: **"${rawMsg.substring(0, 80)}"**
+
+Here are some helpful options:
+- 📖 **Check Study Materials:** Explore our verified [Curriculum](/curriculum), [Lab Manuals](/manuals), and [Previous Year Papers](/pyqs).
+- 🔍 **Ask for Code or Concepts:** Try asking *"Write binary search in Python"*, *"Explain CPU scheduling in OSY"*, or *"How to prepare for MSBTE board exams"*.
+- 💬 **Ask Details:** Feel free to provide more details about your specific question!`
+  });
 });
 
 module.exports = router;
