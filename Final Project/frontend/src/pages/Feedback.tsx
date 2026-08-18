@@ -140,6 +140,8 @@ export function Feedback() {
               placeholder="Your email address"
               required
               value={email}
+              readOnly={true}
+              style={{ opacity: 0.7, cursor: 'not-allowed', backgroundColor: 'var(--bg-color)' }}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
