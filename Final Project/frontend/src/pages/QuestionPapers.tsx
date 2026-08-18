@@ -1,4 +1,5 @@
-﻿import { Search, Filter, GraduationCap, Download, Calendar, FileText, BookOpen } from 'lucide-react';
+import { Search, Filter, GraduationCap, Download, Calendar, FileText, BookOpen } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import './Curriculum.css';
 import { handleProtectedDownload } from '../utils/auth';
@@ -63,6 +64,11 @@ export function QuestionPapers() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>MSBTE Previous Year Question Papers (PYQ) | K-Scheme</title>
+        <meta name="description" content="Download MSBTE previous year question papers (PYQs) and model answers for all diploma engineering branches." />
+      </Helmet>
     <div className="material-page-wrapper">
       <div className="material-hero">
         <div className="container">
@@ -205,6 +211,7 @@ export function QuestionPapers() {
         </main>
       </div>
     </div>
+    </>
   );
 }
 

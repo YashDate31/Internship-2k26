@@ -1,4 +1,5 @@
-﻿import { Star, Search, Download, Filter, GraduationCap, BookOpen } from 'lucide-react';
+import { Star, Search, Filter, BookOpen, Download, GraduationCap } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import './Curriculum.css';
 import { handleProtectedDownload } from '../utils/auth';
@@ -52,6 +53,11 @@ export function MsbteImp() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>MSBTE IMP Questions | K-Scheme Important Questions</title>
+        <meta name="description" content="Download MSBTE K-Scheme most important questions (IMP) and exam preparation material for diploma students." />
+      </Helmet>
     <div className="material-page-wrapper">
       <div className="material-hero">
         <div className="container">
@@ -174,6 +180,7 @@ export function MsbteImp() {
         </main>
       </div>
     </div>
+    </>
   );
 }
 

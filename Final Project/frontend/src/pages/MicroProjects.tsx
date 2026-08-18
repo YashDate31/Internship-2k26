@@ -1,4 +1,5 @@
-﻿import { Rocket, Search, Filter, GraduationCap, Download, FileText, BookOpen } from 'lucide-react';
+import { Rocket, Search, Filter, GraduationCap, Download, FileText, BookOpen } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import './Curriculum.css';
 import { handleProtectedDownload } from '../utils/auth';
@@ -56,6 +57,11 @@ export function MicroProjects() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>MSBTE Micro Projects | Ideas & Reports | K-Scheme</title>
+        <meta name="description" content="Get the best MSBTE K-Scheme micro project ideas, reports, and source code for Computer, IT, and other diploma branches." />
+      </Helmet>
     <div className="material-page-wrapper">
       <div className="material-hero">
         <div className="container">
@@ -178,6 +184,7 @@ export function MicroProjects() {
         </main>
       </div>
     </div>
+    </>
   );
 }
 

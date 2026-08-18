@@ -1,4 +1,5 @@
-﻿import { BookOpen, Search, Download, Filter, GraduationCap, FileText } from 'lucide-react';
+import { BookOpen, Search, Download, Filter, GraduationCap } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import './Curriculum.css';
 import { handleProtectedDownload } from '../utils/auth';
@@ -52,6 +53,11 @@ export function Notes() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>MSBTE Diploma Notes | K-Scheme Study Material</title>
+        <meta name="description" content="Download high-quality handwritten and typed notes for MSBTE K-Scheme diploma students." />
+      </Helmet>
     <div className="material-page-wrapper">
       <div className="material-hero">
         <div className="container">
@@ -174,6 +180,7 @@ export function Notes() {
         </main>
       </div>
     </div>
+    </>
   );
 }
 

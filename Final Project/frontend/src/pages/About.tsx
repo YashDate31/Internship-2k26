@@ -1,9 +1,15 @@
 import { BookOpen, GraduationCap, Users, Heart, Zap, Sparkles } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import './About.css';
 
 export function About() {
   return (
-    <div className="about-page-wrapper">
+    <>
+      <Helmet>
+        <title>About Us | College Sahayak - MSBTE K-Scheme Study Materials</title>
+        <meta name="description" content="Learn about College Sahayak, dedicated to providing MSBTE diploma students in Maharashtra with free, high-quality K-Scheme study materials, lab manuals, and microprojects." />
+      </Helmet>
+      <div className="about-page-wrapper">
       
       {/* Hero Section */}
       <section className="about-hero">
@@ -150,5 +156,6 @@ export function About() {
       </section>
 
     </div>
+    </>
   );
 }

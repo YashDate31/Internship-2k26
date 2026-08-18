@@ -1,4 +1,5 @@
-﻿import { PlayCircle, Search, ExternalLink, Filter, GraduationCap, Video } from 'lucide-react';
+import { PlayCircle, Search, ExternalLink, Filter, GraduationCap, Video } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import './Curriculum.css';
 import { handleProtectedDownload } from '../utils/auth';
@@ -52,6 +53,11 @@ export function LectureVideos() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>MSBTE Lecture Videos | K-Scheme Study Material | College Sahayak</title>
+        <meta name="description" content="Watch high-quality MSBTE K-Scheme lecture videos and tutorials for all polytechnic diploma subjects." />
+      </Helmet>
     <div className="material-page-wrapper">
       <div className="material-hero">
         <div className="container">
@@ -175,6 +181,7 @@ export function LectureVideos() {
         </main>
       </div>
     </div>
+    </>
   );
 }
 

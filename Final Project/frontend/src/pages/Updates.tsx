@@ -1,4 +1,5 @@
-﻿import { Bell, Search, ExternalLink, Filter, GraduationCap, Calendar } from 'lucide-react';
+import { Bell, Search, Filter, Calendar, ExternalLink, GraduationCap } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import './Curriculum.css';
 import { handleProtectedDownload } from '../utils/auth';
@@ -52,6 +53,11 @@ export function Updates() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>MSBTE Updates & Academic News | College Sahayak</title>
+        <meta name="description" content="Get the latest official MSBTE updates, exam schedules, and circulars for diploma students in Maharashtra." />
+      </Helmet>
     <div className="material-page-wrapper">
       <div className="material-hero">
         <div className="container">
@@ -174,6 +180,7 @@ export function Updates() {
         </main>
       </div>
     </div>
+    </>
   );
 }
 

@@ -1,4 +1,5 @@
-﻿import { CheckCircle, Search, Download, Filter, GraduationCap, FileText, BookOpen } from 'lucide-react';
+import { CheckCircle, Search, Download, Filter, GraduationCap, FileText, BookOpen } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import './Curriculum.css';
 import { handleProtectedDownload } from '../utils/auth';
@@ -52,6 +53,11 @@ export function ManualAnswers() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>MSBTE Manual Answers | Solved Lab Manuals K-Scheme</title>
+        <meta name="description" content="Download solved MSBTE K-Scheme manual answers and lab manuals. Complete solutions for all diploma branches." />
+      </Helmet>
     <div className="material-page-wrapper">
       <div className="material-hero">
         <div className="container">
@@ -174,6 +180,7 @@ export function ManualAnswers() {
         </main>
       </div>
     </div>
+    </>
   );
 }
 

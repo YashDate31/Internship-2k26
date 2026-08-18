@@ -1,4 +1,5 @@
-﻿import { FileText, Search, Download, Filter, GraduationCap, Calendar } from 'lucide-react';
+import { FileText, Search, Download, Filter, GraduationCap, Calendar, BookOpen } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import './Curriculum.css';
 import { handleProtectedDownload } from '../utils/auth';
@@ -52,6 +53,11 @@ export function Assignments() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>MSBTE Assignments | K-Scheme Study Material</title>
+        <meta name="description" content="Download solved assignments and practice problems for MSBTE diploma students." />
+      </Helmet>
     <div className="material-page-wrapper">
       <div className="material-hero">
         <div className="container">
@@ -174,6 +180,7 @@ export function Assignments() {
         </main>
       </div>
     </div>
+    </>
   );
 }
 

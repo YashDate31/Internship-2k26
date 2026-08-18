@@ -1,4 +1,5 @@
 import { GraduationCap, Search, Filter, BookOpen, Download, FileX } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import { handleProtectedDownload } from '../utils/auth';
 import { API_URL } from '../utils/api';
@@ -55,6 +56,11 @@ export function Curriculum() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>MSBTE K-Scheme Curriculum & Syllabus | College Sahayak</title>
+        <meta name="description" content="Download official MSBTE K-Scheme curriculum, syllabus, and course outcomes for all diploma branches and semesters." />
+      </Helmet>
     <div className="material-page-wrapper">
       
       {/* Hero Section */}
@@ -216,5 +222,6 @@ export function Curriculum() {
 
       </div>
     </div>
+    </>
   );
 }

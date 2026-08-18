@@ -1,4 +1,5 @@
-﻿import { BookOpen, Search, Download, Lock, Filter, GraduationCap, Settings } from 'lucide-react';
+import { Search, Filter, BookOpen, Download, Settings, GraduationCap } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import { UpgradeModal } from '../components/UpgradeModal';
 import './Curriculum.css';
@@ -54,6 +55,11 @@ export function LabManuals() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>MSBTE Lab Manuals PDF | College Sahayak K-Scheme</title>
+        <meta name="description" content="Download solved and unsolved MSBTE K-Scheme lab manuals for all branches and semesters. Free PDF downloads for diploma students." />
+      </Helmet>
     <div className="material-page-wrapper">
       <div className="material-hero">
         <div className="container">
@@ -178,9 +184,6 @@ export function LabManuals() {
 
       <UpgradeModal isOpen={isUpgradeOpen} onClose={() => setIsUpgradeOpen(false)} />
     </div>
+    </>
   );
 }
-
-
-
-
