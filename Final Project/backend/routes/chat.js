@@ -153,13 +153,16 @@ router.post('/', async (req, res) => {
       if (response.ok) {
         const reader = response.body.getReader();
         const decoder = new TextDecoder("utf-8");
+        let buffer = "";
         while (true) {
           const { value, done } = await reader.read();
           if (done) break;
-          const chunk = decoder.decode(value, { stream: true });
-          const lines = chunk.split('\\n');
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop() || "";
+          
           for (const line of lines) {
-            if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+            if (line.startsWith('data: ') && line.trim() !== 'data: [DONE]') {
               try {
                 const parsed = JSON.parse(line.slice(6));
                 const text = parsed.choices[0]?.delta?.content || '';
@@ -193,11 +196,14 @@ router.post('/', async (req, res) => {
       if (response.ok) {
         const reader = response.body.getReader();
         const decoder = new TextDecoder("utf-8");
+        let buffer = "";
         while (true) {
           const { value, done } = await reader.read();
           if (done) break;
-          const chunk = decoder.decode(value, { stream: true });
-          const lines = chunk.split('\\n');
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop() || "";
+          
           for (const line of lines) {
             if (line.startsWith('data: ')) {
               try {
