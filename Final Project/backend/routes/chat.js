@@ -143,7 +143,7 @@ router.post('/', async (req, res) => {
           'Authorization': `Bearer ${groqKey}`
         },
         body: JSON.stringify({
-          model: 'qwen/qwen3.6-27b',
+          model: 'llama3-8b-8192',
           messages: groqMessages,
           stream: true
         }),
