@@ -394,5 +394,6 @@ This project is created and maintained by **Yash Date**.
 * **Developer:** **Yash Vijay Date** ([GitHub Profile](https://github.com/YashDate31))
 * **Academic Institute:** Government Polytechnic Awasari (Khurd)
 * **Industry Mentor:** Mr. Yuvraj Hande Sir (Somayu Infotech)
+...
 
 *Dhanyawad! (Thanks for reading!)* 🎓
