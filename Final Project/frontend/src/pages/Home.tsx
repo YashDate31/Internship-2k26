@@ -10,6 +10,7 @@ import { handleProtectedDownload } from '../utils/auth';
 import { API_URL } from '../utils/api';
 import './Home.css';
 
+// --- Data ---
 const branches = [
   { id: 'CO', name: 'Computer Engineering', icon: 'CE' },
   { id: 'ME', name: 'Mechanical Engineering', icon: 'ME' },
@@ -104,9 +105,9 @@ export function Home() {
   return (
     <>
       <Helmet>
-        <title>College Sahayak - Free MSBTE Diploma Study Material &amp; Resources</title>
+        <title>College Sahayak - Free MSBTE Diploma Study Material & Resources</title>
         <meta name="description" content="Download free MSBTE polytechnic diploma study materials, lab manuals, assignments, microprojects, and previous year question papers for Maharashtra students." />
-        <meta name="keywords" content="College Sahayak, MSBTE, polytechnic, diploma notes, lab manuals, microprojects, previous year papers, Maharashtra" />
+        <meta name="keywords" content="MSBTE, polytechnic, diploma notes, lab manuals, microprojects, previous year papers, Maharashtra, computer engineering" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{
           __html: `
             {
@@ -114,7 +115,7 @@ export function Home() {
               "@type": "WebSite",
               "name": "College Sahayak",
               "url": "https://internship-2k26.vercel.app/",
-              "description": "Free MSBTE diploma study resources for Maharashtra polytechnic students."
+              "description": "Educational resources for MSBTE diploma students."
             }
           `
         }} />
