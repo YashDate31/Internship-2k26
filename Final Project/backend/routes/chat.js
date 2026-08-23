@@ -1,19 +1,16 @@
 const express = require('express');
 const router = express.Router();
 
-// Helper to clean API Key string
 function cleanKey(key) {
   return (key || '').replace(/^[ '"\r\n]+|[ '"\r\n]+$/g, '').trim();
 }
 
-// System persona for College Mitra
 const systemPrompt = `You are College Mitra, an intelligent, friendly, and expert AI academic counselor designed for polytechnic diploma students (MSBTE curriculum) in Maharashtra.
 You provide clear, accurate, and structured answers in clean Markdown formatting.
 When asked programming questions, provide complete code with explanations.
 When asked about MSBTE subjects, exams, or career advice (like DSE admission), provide practical and helpful guidance.
 CRITICAL INSTRUCTION: DO NOT output any internal thinking process, reasoning steps, or chain of thought (e.g., do not output <think> blocks or "Here's a thinking process"). Only output the final response directly to the user.`;
 
-// Code Generator for standard programming queries
 function getAlgorithmOrCode(q) {
   const query = q.toLowerCase();
 
@@ -41,7 +38,6 @@ function getAlgorithmOrCode(q) {
   return null;
 }
 
-// Live Wikipedia Knowledge Fetcher
 async function fetchWikipediaSummary(query) {
   try {
     const cleanSearch = query
@@ -75,7 +71,6 @@ async function fetchWikipediaSummary(query) {
   return null;
 }
 
-// Smart Academic Engine
 function getAcademicResponse(q) {
   const query = (q || '').toLowerCase().trim();
 
@@ -106,8 +101,6 @@ function getAcademicResponse(q) {
   return null;
 }
 
-
-// POST /api/chat — Multi-tier Real-time Streaming AI Chat Route
 router.post('/', async (req, res) => {
   const { messages } = req.body;
 
@@ -115,7 +108,6 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ error: 'Messages array is required' });
   }
 
-  // Set headers for SSE (Server-Sent Events)
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
@@ -134,7 +126,7 @@ router.post('/', async (req, res) => {
   const geminiKey = cleanKey(process.env.GEMINI_API_KEY);
 
   try {
-    // ── 1. Try Groq AI (Streaming) ──────────────────────
+
     if (groqKey) {
       const groqMessages = [{ role: 'system', content: systemPrompt }, ...messages];
       const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -176,7 +168,6 @@ router.post('/', async (req, res) => {
       }
     }
 
-    // ── 2. Try Google Gemini AI (Streaming) ──────────────────────
     if (geminiKey) {
       const contents = messages.map(msg => ({
         role: msg.role === 'assistant' ? 'model' : 'user',
@@ -219,10 +210,8 @@ router.post('/', async (req, res) => {
       }
     }
 
-    // ── FALLBACKS (Simulate Streaming for UX) ──────────────────────
     let finalReply = '';
 
-    // 3. Instant Math
     const mathMatch = rawMsg.match(/^(\\d+(\\.\\d+)?\\s*[\\+\\-\\*\\/\\%]\\s*\\d+(\\.\\d+)?(\\s*[\\+\\-\\*\\/\\%]\\s*\\d+(\\.\\d+)?)*)$/);
     if (mathMatch && !finalReply) {
       try {
@@ -232,16 +221,12 @@ router.post('/', async (req, res) => {
       } catch (e) {}
     }
 
-    // 4. Code & Algorithm Generator
     if (!finalReply) finalReply = getAlgorithmOrCode(rawMsg);
 
-    // 5. MSBTE Academic Engine
     if (!finalReply) finalReply = getAcademicResponse(rawMsg);
 
-    // 6. Live Wikipedia Engine
     if (!finalReply) finalReply = await fetchWikipediaSummary(rawMsg);
 
-    // 7. Generic Fallback
     if (!finalReply) {
       finalReply = `### 💡 College Mitra Guidance\nI understand you are asking about: **"${rawMsg.substring(0, 80)}"**\n\nHere are some helpful options:\n- 📖 **Check Study Materials:** Explore our [Curriculum](/curriculum), [Lab Manuals](/manuals), and [PYQs](/pyqs).\n- 🔍 **Ask Details:** Feel free to provide more details about your specific question!`;
     }

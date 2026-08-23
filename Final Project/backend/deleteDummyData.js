@@ -4,7 +4,6 @@ const supabase = require('./config/supabase');
 async function clearMaterials() {
   console.log('Deleting all materials from database to clear dummy data...');
   
-  // This will delete all rows from the materials table
   const { data, error } = await supabase
     .from('materials')
     .delete()

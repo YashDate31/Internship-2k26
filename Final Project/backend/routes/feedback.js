@@ -4,7 +4,6 @@ const { sendFeedbackEmail } = require('../utils/sendEmail');
 const supabase = require('../config/supabase');
 const verifyAuth = require('../middleware/auth');
 
-// POST /api/feedback - Submit new feedback
 router.post('/', async (req, res) => {
   const { type, message, email } = req.body;
 
@@ -13,10 +12,9 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    // 1. Send the email (existing functionality)
+
     const emailSuccess = await sendFeedbackEmail(type, message, email);
-    
-    // 2. Store in Supabase
+
     let dbSuccess = false;
     if (supabase) {
       const { error } = await supabase
@@ -41,7 +39,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// GET /api/feedback - Get all feedback (Admin Only)
 router.get('/', verifyAuth, async (req, res) => {
   if (!req.isAdmin) {
     return res.status(403).json({ error: 'Forbidden: Admin access required' });
@@ -68,7 +65,6 @@ router.get('/', verifyAuth, async (req, res) => {
   }
 });
 
-// PUT /api/feedback/:id/read - Mark feedback as read/unread (Admin Only)
 router.put('/:id/read', verifyAuth, async (req, res) => {
   if (!req.isAdmin) {
     return res.status(403).json({ error: 'Forbidden: Admin access required' });
@@ -97,7 +93,6 @@ router.put('/:id/read', verifyAuth, async (req, res) => {
   }
 });
 
-// DELETE /api/feedback/:id - Delete feedback (Admin Only)
 router.delete('/:id', verifyAuth, async (req, res) => {
   if (!req.isAdmin) {
     return res.status(403).json({ error: 'Forbidden: Admin access required' });

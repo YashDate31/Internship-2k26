@@ -1,7 +1,5 @@
 const https = require('https');
-const nodemailer = require('nodemailer');
-
-// 1. Try sending via Brevo REST API (for v3 API keys starting with xkeysib-)
+const nodemailer = require('nodemailer');
 const sendViaBrevoAPI = (to, subject, htmlContent) => {
   return new Promise((resolve, reject) => {
     const apiKey = (process.env.BREVO_API_KEY || '').trim();
@@ -44,9 +42,7 @@ const sendViaBrevoAPI = (to, subject, htmlContent) => {
     req.write(body);
     req.end();
   });
-};
-
-// 2. Try sending via Gmail / SMTP Nodemailer
+};
 const sendViaNodemailer = async (to, subject, htmlContent) => {
   const user = process.env.EMAIL_USER || 'collegesahayak@gmail.com';
   const pass = (process.env.EMAIL_PASS || '').replace(/\s+/g, '');

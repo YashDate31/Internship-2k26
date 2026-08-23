@@ -185,6 +185,3 @@ export function LectureVideos() {
   );
 }
 
-
-
-

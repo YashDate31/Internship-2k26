@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-me-in-production';
 
-// POST /api/users/sync - Sync Firebase user to Supabase
 router.post('/sync', verifyTokenOnly, async (req, res) => {
   if (!supabase) {
     return res.status(500).json({ error: 'Supabase client not initialized' });
@@ -19,7 +18,7 @@ router.post('/sync', verifyTokenOnly, async (req, res) => {
   }
 
   try {
-    // Check if user already exists
+
     const { data: existingUser, error: checkError } = await supabase
       .from('users')
       .select('*')

@@ -19,11 +19,13 @@ dist-ssr/
 build/
 
 # OS files
-.DS_Storeh 
+.DS_Store
 Thumbs.db
 
-# Large media files
+# Large media files and unused assets
 info/
+img/
+resourses 5th sem/
 *.mp4
 *.pptx
 
@@ -35,3 +37,4 @@ info/
 # Logs
 logs/
 *.log
+

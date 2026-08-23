@@ -334,6 +334,3 @@ export function MaterialsHub() {
   );
 }
 
-
-
-

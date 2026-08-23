@@ -3,7 +3,6 @@ const router = express.Router();
 const supabase = require('../config/supabase');
 const verifyAuth = require('../middleware/auth');
 
-// GET /api/materials - Fetch all materials (Public)
 router.get('/', async (req, res) => {
   if (!supabase) {
     return res.status(500).json({ error: 'Supabase client not initialized' });
@@ -27,7 +26,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST /api/materials - Add a new material (Protected)
 // Admins upload directly; students get a [PENDING] prefix for moderation
 router.post('/', verifyAuth, async (req, res) => {
   if (!supabase) {
@@ -73,7 +71,6 @@ router.post('/', verifyAuth, async (req, res) => {
   }
 });
 
-// DELETE /api/materials/:id - Delete a material (Protected - Admin Only)
 router.delete('/:id', verifyAuth, async (req, res) => {
   if (!req.isAdmin) {
     return res.status(403).json({ error: 'Forbidden: Admin access required' });
@@ -108,7 +105,6 @@ router.delete('/:id', verifyAuth, async (req, res) => {
   }
 });
 
-// PUT /api/materials/:id/approve - Approve a student-submitted material (Admin Only)
 // This strips the [PENDING] prefix and makes the material visible to all students
 router.put('/:id/approve', verifyAuth, async (req, res) => {
   if (!req.isAdmin) {
@@ -148,7 +144,6 @@ router.put('/:id/approve', verifyAuth, async (req, res) => {
   }
 });
 
-// PUT /api/materials/:id/trending - Toggle trending flag (Admin Only)
 router.put('/:id/trending', verifyAuth, async (req, res) => {
   if (!req.isAdmin) {
     return res.status(403).json({ error: 'Forbidden: Admin access required' });

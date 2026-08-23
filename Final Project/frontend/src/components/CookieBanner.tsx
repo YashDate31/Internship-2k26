@@ -6,7 +6,7 @@ export function CookieBanner() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Check if the user has already consented
+
     const consent = localStorage.getItem('cookie_consent');
     if (!consent) {
       // Small delay to make the entrance feel smoother

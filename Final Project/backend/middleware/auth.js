@@ -13,8 +13,6 @@ const verifyAuth = async (req, res, next) => {
   try {
     const decodedToken = jwt.verify(token, JWT_SECRET);
     req.user = decodedToken;
-    
-    // Check if the user is the admin
     req.isAdmin = decodedToken.role === 'admin';
 
     next();

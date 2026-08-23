@@ -8,7 +8,6 @@ const rateLimit = require('express-rate-limit');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-me-in-production';
 
-// Rate limiters
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 15,
@@ -21,10 +20,8 @@ const otpLimiter = rateLimit({
   message: { error: 'Too many OTP attempts from this IP, please try again after 15 minutes' }
 });
 
-// Helper to generate 6-digit OTP
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
 
-// POST /api/auth/register
 router.post('/register', authLimiter, async (req, res) => {
   if (!supabase) {
     return res.status(500).json({ error: 'Supabase client not initialized' });
@@ -37,7 +34,7 @@ router.post('/register', authLimiter, async (req, res) => {
   }
 
   try {
-    // 1. Check if user already exists
+
     const { data: existingUser, error: checkError } = await supabase
       .from('users')
       .select('*')
@@ -45,13 +42,12 @@ router.post('/register', authLimiter, async (req, res) => {
       .single();
 
     if (existingUser) {
-      // If user exists but is NOT verified, allow them to re-register (refresh OTP)
+
       if (existingUser.is_verified === false) {
         const newOtp = generateOTP();
         const newExpiry = new Date();
         newExpiry.setMinutes(newExpiry.getMinutes() + 10);
 
-        // Update OTP and password hash in case they changed their password
         const salt = await bcrypt.genSalt(10);
         const password_hash = await bcrypt.hash(password, salt);
 
@@ -68,7 +64,6 @@ router.post('/register', authLimiter, async (req, res) => {
         });
       }
 
-      // User is fully verified — block re-registration
       return res.status(400).json({ error: 'User with this email already exists' });
     }
 
@@ -77,16 +72,13 @@ router.post('/register', authLimiter, async (req, res) => {
       return res.status(500).json({ error: 'Database error while checking user' });
     }
 
-    // 2. Hash the password
     const salt = await bcrypt.genSalt(10);
     const password_hash = await bcrypt.hash(password, salt);
 
-    // 3. Generate OTP and expiry (10 minutes)
     const otp = generateOTP();
     const otpExpiry = new Date();
     otpExpiry.setMinutes(otpExpiry.getMinutes() + 10);
 
-    // 4. Create user in Supabase (unverified)
     const { data: newUser, error: insertError } = await supabase
       .from('users')
       .insert([
@@ -109,7 +101,6 @@ router.post('/register', authLimiter, async (req, res) => {
       return res.status(500).json({ error: 'Failed to create user' });
     }
 
-    // 5. Send OTP Email
     await sendOTP(email, otp);
 
     res.status(201).json({
@@ -123,7 +114,6 @@ router.post('/register', authLimiter, async (req, res) => {
   }
 });
 
-// POST /api/auth/verify-otp
 router.post('/verify-otp', otpLimiter, async (req, res) => {
   const { email, otp } = req.body;
 
@@ -132,7 +122,7 @@ router.post('/verify-otp', otpLimiter, async (req, res) => {
   }
 
   try {
-    // 1. Find user
+
     const { data: user, error: findError } = await supabase
       .from('users')
       .select('*')
@@ -147,17 +137,14 @@ router.post('/verify-otp', otpLimiter, async (req, res) => {
       return res.status(400).json({ error: 'User is already verified' });
     }
 
-    // 2. Check OTP match
     if (user.otp_code !== otp) {
       return res.status(400).json({ error: 'Invalid OTP' });
     }
 
-    // 3. Check OTP expiry
     if (new Date(user.otp_expiry) < new Date()) {
       return res.status(400).json({ error: 'OTP has expired. Please register again.' });
     }
 
-    // 4. Mark verified, clear OTP
     const { error: updateError } = await supabase
       .from('users')
       .update({
@@ -172,7 +159,6 @@ router.post('/verify-otp', otpLimiter, async (req, res) => {
       return res.status(500).json({ error: 'Failed to verify user' });
     }
 
-    // 5. Generate JWT token
     const token = jwt.sign(
       { 
         id: user.id,
@@ -199,7 +185,6 @@ router.post('/verify-otp', otpLimiter, async (req, res) => {
   }
 });
 
-// POST /api/auth/login
 router.post('/login', authLimiter, async (req, res) => {
   if (!supabase) {
     return res.status(500).json({ error: 'Supabase client not initialized' });
@@ -212,7 +197,7 @@ router.post('/login', authLimiter, async (req, res) => {
   }
 
   try {
-    // 1. Find user by email
+
     const { data: user, error: findError } = await supabase
       .from('users')
       .select('*')
@@ -223,23 +208,19 @@ router.post('/login', authLimiter, async (req, res) => {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    // 2. Check if the user has a password hash (might be a Google-only user if password_hash is null)
     if (!user.password_hash) {
       return res.status(401).json({ error: 'Please log in with Google, or reset your password' });
     }
 
-    // 3. Compare passwords
     const isMatch = await bcrypt.compare(password, user.password_hash);
     if (!isMatch) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    // 4. Check if verified
     if (user.is_verified === false) {
       return res.status(403).json({ error: 'Please verify your email before logging in. Check your email for the OTP.' });
     }
 
-    // 5. Generate JWT token
     const token = jwt.sign(
       { 
         id: user.id,
@@ -267,8 +248,6 @@ router.post('/login', authLimiter, async (req, res) => {
   }
 });
 
-
-// POST /api/auth/forgot-password
 router.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: 'Email is required' });
@@ -281,7 +260,7 @@ router.post('/forgot-password', async (req, res) => {
       .single();
 
     if (findError || !user) {
-      // Even if not found, we shouldn't reveal email existence. Just return success.
+
       return res.status(200).json({ message: 'If that email exists, we have sent a reset link.' });
     }
 
@@ -302,7 +281,7 @@ router.post('/forgot-password', async (req, res) => {
     const emailSent = await sendOTP(email, otp);
     
     if (!emailSent) {
-      // If email couldn't be sent (e.g. Render blocks SMTP or missing credentials), auto-verify the user so they aren't stuck!
+
       await supabase.from('users').update({ is_verified: true }).eq('email', email);
     }
 
@@ -313,7 +292,6 @@ router.post('/forgot-password', async (req, res) => {
   }
 });
 
-// POST /api/auth/reset-password
 router.post('/reset-password', async (req, res) => {
   const { email, otp, newPassword } = req.body;
   if (!email || !otp || !newPassword) {
@@ -359,7 +337,6 @@ router.post('/reset-password', async (req, res) => {
   }
 });
 
-// GET /api/auth/check-role - Debug: Check the role in a JWT token
 router.get('/check-role', async (req, res) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -379,7 +356,6 @@ router.get('/check-role', async (req, res) => {
   }
 });
 
-// POST /api/auth/make-admin - Set a user as admin (requires secret key)
 router.post('/make-admin', async (req, res) => {
   const { email, secretKey } = req.body;
   const ADMIN_SECRET = process.env.ADMIN_SECRET_KEY || 'college-sahayak-admin-2026';

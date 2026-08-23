@@ -65,9 +65,7 @@ export function AdminDashboard() {
     examSession: 'Summer',
     driveLink: '',
     imageLink: ''
-  });
-
-  // Helper to get the admin's auth token (custom JWT from email/password login)
+  });
   const getAuthToken = (): string => {
     return localStorage.getItem('auth_token') || '';
   };
