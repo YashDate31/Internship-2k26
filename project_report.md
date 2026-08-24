@@ -1,6 +1,6 @@
 # CHAPTER 8
 ## DETAILED REPORT ON TASK UNDERTAKEN
-
+why
 ### INTRODUCTION
 The main objective of the project was to develop **College Sahayak**, a comprehensive, full-stack educational web application designed specifically for MSBTE polytechnic diploma students in Maharashtra. The system acts as a centralized digital platform, allowing students to access verified academic resources such as K-Scheme curriculum details, lab manuals, manual answers, previous year question papers (PYQs), microprojects, and lecture notes. 
 
