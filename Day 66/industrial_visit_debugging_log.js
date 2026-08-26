@@ -1,5 +1,6 @@
 // Day 66: Mentor Industrial Visit & Debugging Log (8 Aug 2026)
-// College Mentor: Mansi
+// College Mentor: Chavan mam
+
 
 const debugLog = [
     { issue: 'Duplicate resource cards on fast pagination clicks', status: 'RESOLVED', fix: 'Debounced API call handler' },
