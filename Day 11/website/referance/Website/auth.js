@@ -9,7 +9,7 @@ import {
 
 const provider = new GoogleAuthProvider();
 
-/* -------- Sign in with Google -------- */
+/* Sign in with Google */
 export async function signInWithGoogle() {
   try {
     const result = await signInWithPopup(auth, provider);
@@ -20,7 +20,7 @@ export async function signInWithGoogle() {
   }
 }
 
-/* -------- Sign out -------- */
+/* Sign out */
 export async function signOutUser() {
   try {
     await signOut(auth);
@@ -30,12 +30,12 @@ export async function signOutUser() {
   }
 }
 
-/* -------- Observe auth state -------- */
+/* Observe auth state */
 export function observeAuth(callback) {
   return onAuthStateChanged(auth, callback);
 }
 
-/* -------- Update nav UI based on user -------- */
+/* Update nav UI based on user */
 export function updateNavAuth(user) {
   const loginLink = document.getElementById("nav-login");
   const logoutBtn = document.getElementById("nav-logout");

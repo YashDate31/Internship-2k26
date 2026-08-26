@@ -31,9 +31,7 @@ def wrap_html(content, title="College Sahayak"):
 </body>
 </html>"""
 
-# -----------------
 # 1. create login.html
-# -----------------
 login_content = """
 <section class="py-16 bg-gray-50 flex items-center justify-center min-h-[calc(100vh-4rem)]">
     <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
@@ -109,9 +107,7 @@ login_content = """
 with open(os.path.join(base_dir, "login.html"), "w", encoding="utf-8") as f:
     f.write(wrap_html(login_content, "Login - College Sahayak"))
 
-# -----------------
 # 2. create resources.html
-# -----------------
 resources_content = """
 <section class="py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -248,9 +244,7 @@ resources_content = """
 with open(os.path.join(base_dir, "resources.html"), "w", encoding="utf-8") as f:
     f.write(wrap_html(resources_content, "Resources - College Sahayak"))
 
-# -----------------
 # 3. create about.html
-# -----------------
 about_content = """
 <section class="py-20 bg-white">
     <div class="max-w-3xl mx-auto px-4 text-center">
@@ -273,9 +267,7 @@ about_content = """
 with open(os.path.join(base_dir, "about.html"), "w", encoding="utf-8") as f:
     f.write(wrap_html(about_content, "About Us - College Sahayak"))
 
-# -----------------
 # 4. create feedback.html
-# -----------------
 feedback_content = """
 <section class="py-16 bg-gray-50 flex items-center justify-center min-h-[calc(100vh-4rem)]">
     <div class="max-w-2xl w-full bg-white rounded-2xl shadow-xl p-8 lg:p-12 border border-gray-100">

@@ -15,9 +15,7 @@ def inject_main_content(filename, new_content):
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(new_html)
 
-# ---------------------------------------------------------
 # 1. Syllabus Dummy Data
-# ---------------------------------------------------------
 syllabus_content = """
 <div class="max-w-4xl mx-auto px-4 py-12">
     <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
@@ -121,9 +119,7 @@ syllabus_content = """
 """
 inject_main_content('syllabus.html', syllabus_content)
 
-# ---------------------------------------------------------
 # 2. Lab Manuals Dummy Data
-# ---------------------------------------------------------
 lab_content = """
 <div class="max-w-7xl mx-auto px-4 py-12 flex flex-col lg:flex-row gap-8">
     <!-- Left Sidebar: Experiments List -->

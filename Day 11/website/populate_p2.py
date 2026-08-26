@@ -11,9 +11,7 @@ def inject_main_content(filename, new_content):
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(new_html)
 
-# ---------------------------------------------------------
 # 3. Assignments Dummy Data
-# ---------------------------------------------------------
 assign_content = """
 <div class="max-w-5xl mx-auto px-4 py-12">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
@@ -164,9 +162,7 @@ assign_content = """
 """
 inject_main_content('assignments.html', assign_content)
 
-# ---------------------------------------------------------
 # 4. Micro-Projects Dummy Data
-# ---------------------------------------------------------
 micro_content = """
 <div class="max-w-7xl mx-auto px-4 py-12">
     <div class="text-center mb-12">

@@ -1,4 +1,3 @@
-/* ============================================================
    shared-nav.css — Same dark navbar for ALL pages
    ============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
@@ -14,7 +13,7 @@
 
 body { padding-top: 70px; font-family: 'Outfit', sans-serif; }
 
-/* ---- Navbar wrapper ---- */
+/* Navbar wrapper */
 #shared-navbar {
   position: fixed;
   top: 0; left: 0;

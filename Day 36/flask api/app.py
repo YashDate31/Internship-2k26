@@ -25,7 +25,6 @@ app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', '')
 app.config['MYSQL_DB'] = os.getenv('MYSQL_DB', 'studentdb')
 app.config['MYSQL_PORT'] = int(os.getenv('MYSQL_PORT', '3307'))
 mysql = MySQL(app) #Create MySQL Object
-# -----------------------------------
 # CREATE API
 @app.route('/students', methods=['POST'])
 def add_student():
@@ -40,9 +39,7 @@ def add_student():
     mysql.connection.commit()
     cur.close()
     return jsonify({"message":"Student Added Successfully"}), 201
-# -----------------------------------
 # READ ALL API
-# -----------------------------------
 @app.route('/students', methods=['GET'])
 def get_students():
     cur = mysql.connection.cursor()
@@ -64,9 +61,7 @@ def get_students():
 
 
 
-# -----------------------------------
 # READ SINGLE API
-# -----------------------------------
 @app.route('/students/<int:id>', methods=['GET'])
 def get_student(id):
     cur = mysql.connection.cursor()
@@ -88,9 +83,7 @@ def get_student(id):
 
 
 
-# -----------------------------------
 # UPDATE API
-# -----------------------------------
 @app.route('/students/<int:id>', methods=['PUT'])
 def update_student(id):
     data=request.json
@@ -112,7 +105,6 @@ def update_student(id):
 
 # -----------------5------------------
 # DELETE API
-# -----------------------------------
 @app.route('/students/<int:id>', methods=['DELETE'])
 def delete_student(id):
     cur=mysql.connection.cursor()

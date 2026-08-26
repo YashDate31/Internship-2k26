@@ -64,9 +64,7 @@ def wrap_html(content, title="College Sahayak"):
 </body>
 </html>"""
 
-# -----------------
 # Task 2: profile.html
-# -----------------
 profile_content = """
 <section class="py-12 bg-gray-50 min-h-screen">
     <div class="max-w-5xl mx-auto px-4">
@@ -163,9 +161,7 @@ profile_content = """
 with open(os.path.join(base_dir, "profile.html"), "w", encoding="utf-8") as f:
     f.write(wrap_html(profile_content, "My Profile"))
 
-# -----------------
 # Task 3: blog.html
-# -----------------
 blog_content = """
 <section class="py-16 bg-white min-h-screen">
     <div class="max-w-7xl mx-auto px-4">
@@ -226,9 +222,7 @@ blog_content = """
 with open(os.path.join(base_dir, "blog.html"), "w", encoding="utf-8") as f:
     f.write(wrap_html(blog_content, "Blog"))
 
-# -----------------
 # Task 4: discover.html (Styled Wireframe)
-# -----------------
 discover_content = """
 <section class="bg-white border-b border-gray-200 py-10">
     <div class="max-w-7xl mx-auto px-4 text-center">

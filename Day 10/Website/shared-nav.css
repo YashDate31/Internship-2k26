@@ -1,4 +1,3 @@
-/* ============================================================
    shared-nav.css — Premium Dark Navbar — ShopKing Design System
    ============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
@@ -19,7 +18,7 @@ body {
   margin: 0;
 }
 
-/* ---- Navbar wrapper ---- */
+/* Navbar wrapper */
 #shared-navbar {
   position: fixed;
   top: 0; left: 0;

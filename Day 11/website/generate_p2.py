@@ -44,9 +44,7 @@ def wrap_html(content, title="College Sahayak"):
 </body>
 </html>"""
 
-# -----------------
 # 5. syllabus.html (Accordion/Timeline UI)
-# -----------------
 syllabus_content = """
 <div class="max-w-4xl mx-auto px-4 py-12">
     <div class="flex items-center space-x-4 mb-8">
@@ -94,9 +92,7 @@ syllabus_content = """
 with open(os.path.join(base_dir, "syllabus.html"), "w", encoding="utf-8") as f:
     f.write(wrap_html(syllabus_content, "Syllabus"))
 
-# -----------------
 # 6. lab-manuals.html (Split Journal View)
-# -----------------
 lab_content = """
 <div class="max-w-7xl mx-auto px-4 py-12 flex flex-col lg:flex-row gap-8">
     <div class="w-full lg:w-1/3">
@@ -144,9 +140,7 @@ lab_content = """
 with open(os.path.join(base_dir, "lab-manuals.html"), "w", encoding="utf-8") as f:
     f.write(wrap_html(lab_content, "Lab Manuals"))
 
-# -----------------
 # 7. assignments.html (Task List UI)
-# -----------------
 assign_content = """
 <div class="max-w-5xl mx-auto px-4 py-12">
     <div class="flex justify-between items-end mb-8">
@@ -208,9 +202,7 @@ assign_content = """
 with open(os.path.join(base_dir, "assignments.html"), "w", encoding="utf-8") as f:
     f.write(wrap_html(assign_content, "Assignments"))
 
-# -----------------
 # 8. microprojects.html (Gallery)
-# -----------------
 micro_content = """
 <div class="max-w-7xl mx-auto px-4 py-12">
     <div class="text-center mb-12">
@@ -269,9 +261,7 @@ micro_content = """
 with open(os.path.join(base_dir, "microprojects.html"), "w", encoding="utf-8") as f:
     f.write(wrap_html(micro_content, "Micro-Projects"))
 
-# -----------------
 # 9. question_papers.html (Data Table UI)
-# -----------------
 papers_content = """
 <div class="max-w-6xl mx-auto px-4 py-12">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">

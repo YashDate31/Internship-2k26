@@ -41,3 +41,7 @@ Thumbs.db
 .idea/
 *.suo
 *.user
+
+# Ignored specific folders
+Intership Documentation/
+timepass/

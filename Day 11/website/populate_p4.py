@@ -11,9 +11,7 @@ def inject_main_content(filename, new_content):
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(new_html)
 
-# ---------------------------------------------------------
 # 6. Blog Dummy Data
-# ---------------------------------------------------------
 blog_content = """
 <section class="py-16 bg-white min-h-screen">
     <div class="max-w-7xl mx-auto px-4">

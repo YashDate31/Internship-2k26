@@ -11,9 +11,7 @@ def inject_main_content(filename, new_content):
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(new_html)
 
-# ---------------------------------------------------------
 # 5. Question Papers Dummy Data
-# ---------------------------------------------------------
 papers_content = """
 <div class="max-w-6xl mx-auto px-4 py-12">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">

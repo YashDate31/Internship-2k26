@@ -405,7 +405,7 @@
       if (user) window.location.href = "profile.html";
     });
 
-    /* ---- Helpers ---- */
+    /* Helpers */
     function showMessage(text, type = "error") {
       const el = document.getElementById("message");
       el.textContent = text;
@@ -423,7 +423,7 @@
       }
     }
 
-    /* ---- Email Login ---- */
+    /* Email Login */
     document.getElementById("login-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const email = document.getElementById("login-email").value;
@@ -439,7 +439,7 @@
       }
     });
 
-    /* ---- Email Register ---- */
+    /* Email Register */
     document.getElementById("register-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const name = document.getElementById("reg-name").value;
@@ -457,7 +457,7 @@
       }
     });
 
-    /* ---- Google Auth ---- */
+    /* Google Auth */
     async function googleSignIn() {
       try {
         await signInWithPopup(auth, provider);
@@ -470,7 +470,7 @@
     document.getElementById("google-login-btn").addEventListener("click", googleSignIn);
     document.getElementById("google-register-btn").addEventListener("click", googleSignIn);
 
-    /* ---- Password Reset ---- */
+    /* Password Reset */
     window.resetPassword = async () => {
       const email = document.getElementById("login-email").value;
       if (!email) { showMessage("Enter your email first to reset password."); return; }
@@ -482,7 +482,7 @@
       }
     };
 
-    /* ---- Tab switch ---- */
+    /* Tab switch */
     window.switchTab = (tab) => {
       document.getElementById("tab-login").classList.toggle("active", tab === "login");
       document.getElementById("tab-register").classList.toggle("active", tab === "register");
@@ -491,14 +491,14 @@
       document.getElementById("message").className = "message";
     };
 
-    /* ---- Toggle password visibility ---- */
+    /* Toggle password visibility */
     window.togglePw = (id, btn) => {
       const input = document.getElementById(id);
       if (input.type === "password") { input.type = "text"; btn.textContent = "🙈"; }
       else { input.type = "password"; btn.textContent = "👁"; }
     };
 
-    /* ---- Friendly Firebase errors ---- */
+    /* Friendly Firebase errors */
     function friendlyError(code) {
       const map = {
         "auth/invalid-email": "Invalid email address.",
