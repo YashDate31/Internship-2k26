@@ -6,7 +6,7 @@
 ---
 
 ## 📝 Discussion Topics & Activities
-Today, there was industrial visit of our college mentor. Mansi guide us regarding project. In internship today almost all student finish their presentation. Also today I started my project debugging.
+Today, there was industrial visit of our college mentor. chavan mam guide us regarding project. In internship today almost all student finish their presentation. Also today I started my project debugging.
 
 ---
 
